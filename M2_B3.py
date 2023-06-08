@@ -35,8 +35,9 @@ gedcom_parser.parse_file(file_path)
 root_child_elements = gedcom_parser.get_root_child_elements()
 
 #Valid Tag List
-Tags = ["INDI", "NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "FAM", "MARR", "HUSB", "WIFE", "CHIL", "DIV", "DATE", "HEAD", "TRLR", "NOTE"]
-
+# Tags = ["INDI", "NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "FAM", "MARR", "HUSB", "WIFE", "CHIL", "DIV", "DATE", "HEAD", "TRLR", "NOTE"]
+Tags = ['INDI','NAME',"SEX","BIRT","DATE","DEAT","CHIL","HUSB","WIFE"]
+indi_list = []
 for element in root_child_elements:
     print("--> " + str(element))
     if element.get_tag() in Tags:
