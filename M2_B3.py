@@ -7,6 +7,7 @@ from gedcom.parser import Parser
 from pathlib import Path
 from gedcom.element.element import Element
 from gedcom.element.family import FamilyElement
+import os
 
 def child_helper(element):
     children = element.get_child_elements()
