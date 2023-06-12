@@ -154,7 +154,7 @@ def family_helper(element, fID):
 
 # Path to your `.ged` file
 folderPath = Path.cwd()
-file_path = folderPath / "CS_555_M1_B6.ged"
+file_path = folderPath / "TEST_FILE_1.ged"
 
 # Initialize the parser
 gedcom_parser = Parser()
