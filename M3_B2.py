@@ -11,6 +11,7 @@ from gedcom.element.element import Element
 from gedcom.element.family import FamilyElement
 import json
 from prettytable import PrettyTable
+import os
 
 #initialize tables
 fTable = PrettyTable() #table for families
@@ -152,7 +153,7 @@ def family_helper(element, fID):
 
 
 # Path to your `.ged` file
-folderPath = Path("C:/Users/JRoll/OneDrive - stevens.edu/Stevens/CS-555/Module2_AgileCultures_UseCases_UserStories/Rollins_Jamie_M2_B3_GEDCOM/")
+folderPath = Path.cwd()
 file_path = folderPath / "CS_555_M1_B6.ged"
 
 # Initialize the parser
