@@ -1,0 +1,34 @@
+Individual
++-----+---------------------+--------+--------------+------+-------+-------------+-------+--------+
+|  ID |         Name        | Gender |   Birthday   | Age  | Alive |    Death    | Child | Spouse |
++-----+---------------------+--------+--------------+------+-------+-------------+-------+--------+
+|  I1 |  Elizabeth /O'Mara/ |   F    |  10 JAN 2002 |  21  |  True |      NA     |   F1  |   NA   |
+|  I2 |    Braden /O'Mara/  |   M    |  7 JUN 1969  |  54  |  True |      NA     |   F2  |   F1   |
+|  I3 |     Catia /Sordi/   |   F    |  12 SEP 1971 |  52  |  True |      NA     |   F3  |   F1   |
+|  I4 |   Michael /O'Mara/  |   M    |  10 JAN 2002 |  21  |  True |      NA     |   F1  |   NA   |
+|  I5 |   Giuliano /Sordi/  |   M    |  25 JAN 1935 |  83  | False |  6 FEB 2018 |   NA  |   F3   |
+|  I6 |   Catalina /Spada/  |   F    |  9 JUL 1843  | 180  |  True |      NA     |   NA  |   F4   |
+|  I7 |     Cosmo /Croce/   |   M    |  16 DEC 1940 |  83  |  True |      NA     |   NA  |   F5   |
+|  I8 |    Lorenzo /Croce/  |   M    |  31 OCT 1975 |  48  |  True |      NA     |   F5  |   NA   |
+|  I9 |    Edward /O'Mara/  |   M    |      NA      | 2023 |  True |      NA     |   NA  |   F2   |
+| I10 |   Collean /O'Kief/  |   F    |  17 AUG 1936 |  87  |  True |      NA     |   NA  |   F2   |
+| I11 |     Liana /Sordi/   |   F    |  19 JAN 1973 |  50  |  True |      NA     |   F3  |   F7   |
+| I12 |   Antonio /Akakios/ |   M    |  4 DEC 1970  |  53  |  True |      NA     |   NA  |   F7   |
+| I13 |    Kayla /Akakios/  |   F    |  10 APR 2003 |  20  |  True |      NA     |   F7  |   NA   |
+| I14 |   Alexei /Vasiylev/ |   M    |  15 MAR 1972 |  51  |  True |      NA     |   NA  |   F6   |
+| I15 |   Marcus /Vasiylev/ |   M    |  1 APR 2012  |  11  |  True |      NA     |   F6  |   NA   |
++-----+---------------------+--------+--------------+------+-------+-------------+-------+--------+
+Families
++----+--------------+------------------+------------+--------------------+---------+-------------------+---------------+
+| ID |   Married    |     Divorced     | Husband ID |    Husband Name    | Wife ID |     Wife Name     |    Children   |
++----+--------------+------------------+------------+--------------------+---------+-------------------+---------------+
+| F1 |  11 OCT 1998 |        NA        |     I2     |   Braden /O'Mara/  |    I3   |    Catia /Sordi/  |  ['I1', 'I4'] |
+| F2 |  20 APR 1956 |        NA        |     I9     |   Edward /O'Mara/  |   I10   |  Collean /O'Kief/ |     ['I2']    |
+| F3 |  8 MAR 1965  |        NA        |     I5     |  Giuliano /Sordi/  |    I6   |  Catalina /Spada/ | ['I3', 'I11'] |
+| F4 |  10 MAY 2021 |        NA        |     I7     |    Cosmo /Croce/   |    I6   |  Catalina /Spada/ |       []      |
+| F5 |      NA      |        NA        |     I7     |    Cosmo /Croce/   |    NA   |        None       |     ['I8']    |
+| F6 |  10 FEB 2011 |        NA        |    I14     |  Alexei /Vasiylev/ |   I11   |    Liana /Sordi/  |    ['I15']    |
+| F7 |  27 MAY 2001 | [' 18 NOV 2009'] |    I12     |  Antonio /Akakios/ |   I11   |    Liana /Sordi/  |    ['I13']    |
++----+--------------+------------------+------------+--------------------+---------+-------------------+---------------+
+Individuals over 30 who have never been married ['I1', 'I4', 'I8', 'I13', 'I15']
+Individuals who were born at the same time [['I1', 'I4']]
