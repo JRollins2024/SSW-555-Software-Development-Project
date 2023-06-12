@@ -12,6 +12,7 @@ from gedcom.element.family import FamilyElement
 import json
 from prettytable import PrettyTable
 import os
+import sys
 
 #initialize tables
 fTable = PrettyTable() #table for families
@@ -151,16 +152,24 @@ def family_helper(element, fID):
         wName = individuals_dict.get(wID)
         fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
-
-# Path to your `.ged` file
-folderPath = Path.cwd()
-file_path = folderPath / "CS_555_M1_B6.ged"
-
 # Initialize the parser
 gedcom_parser = Parser()
 
-# Parse your file
-gedcom_parser.parse_file(file_path)
+# Get the file name from the user
+print("Welcome to the GEDCOM file reader!\nType EXIT to exit the program.")
+
+# Find the file and parse it
+while True:
+    file_name = input("Please enter the name of the GEDCOM file to be processed: ")
+    if file_name == "EXIT":
+        print("Exiting program.")
+        exit()
+    try:
+        file_path = os.path.join(os.getcwd(), file_name)
+        gedcom_parser.parse_file(file_path)
+        break
+    except:
+        print("File not found. Please try again.")
 
 root_child_elements = gedcom_parser.get_root_child_elements()
 
@@ -182,11 +191,23 @@ for element in root_child_elements:
             fID = fID[0]
             family_helper(element,fID)
 
+stdout_fileno = sys.stdout # Save the file descriptor for stdout
+
+# Open a file called "output.txt" for writing.
+# If the file cannot be opened, print an error message and terminate the program.
+try:
+    sys.stdout = open("output.txt", 'w')
+except FileNotFoundError:
+    print("File not found. Please try again.")
+    exit(0)
+
 print("Individual")
 print(iTable)
 
 print("Families")
 print(fTable)
 
+sys.stdout.close()
 
-
+# Reset stdout to the original file descriptor
+sys.stdout = stdout_fileno
