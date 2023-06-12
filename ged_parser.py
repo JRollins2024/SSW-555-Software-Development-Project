@@ -12,6 +12,7 @@ from gedcom.element.family import FamilyElement
 import json
 from prettytable import PrettyTable
 import os
+import sys
 
 #initialize tables
 fTable = PrettyTable() #table for families
@@ -182,11 +183,23 @@ for element in root_child_elements:
             fID = fID[0]
             family_helper(element,fID)
 
+stdout_fileno = sys.stdout # Save the file descriptor for stdout
+
+# Open a file called "output.txt" for writing.
+# If the file cannot be opened, print an error message and terminate the program.
+try:
+    sys.stdout = open("output.txt", 'w')
+except FileNotFoundError:
+    print("File not found. Please try again.")
+    exit(0)
+
 print("Individual")
 print(iTable)
 
 print("Families")
 print(fTable)
 
+sys.stdout.close()
 
-
+# Reset stdout to the original file descriptor
+sys.stdout = stdout_fileno
