@@ -152,16 +152,24 @@ def family_helper(element, fID):
         wName = individuals_dict.get(wID)
         fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
-
-# Path to your `.ged` file
-folderPath = Path.cwd()
-file_path = folderPath / "TEST_FILE_1.ged"
-
 # Initialize the parser
 gedcom_parser = Parser()
 
-# Parse your file
-gedcom_parser.parse_file(file_path)
+# Get the file name from the user
+print("Welcome to the GEDCOM file reader!\nType EXIT to exit the program.")
+
+# Find the file and parse it
+while True:
+    file_name = input("Please enter the name of the GEDCOM file to be processed: ")
+    if file_name == "EXIT":
+        print("Exiting program.")
+        exit()
+    try:
+        file_path = os.path.join(os.getcwd(), file_name)
+        gedcom_parser.parse_file(file_path)
+        break
+    except:
+        print("File not found. Please try again.")
 
 root_child_elements = gedcom_parser.get_root_child_elements()
 
