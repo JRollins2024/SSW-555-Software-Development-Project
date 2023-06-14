@@ -1,0 +1,47 @@
+Individual
++-----+------------------------+--------+--------------+-----+-------+--------------+-------+--------+
+|  ID |          Name          | Gender |   Birthday   | Age | Alive |    Death     | Child | Spouse |
++-----+------------------------+--------+--------------+-----+-------+--------------+-------+--------+
+|  I1 |     Emily /Johnson/    |   F    |  6 AUG 1995  |  16 | False |  10 JUL 2011 |   F3  |   F2   |
+|  I2 |  Christopher /Johnson/ |   M    |  4 FEB 1964  |  59 |  True |      NA      |   F4  |   F3   |
+|  I3 |    Sopia /Martinez/    |   F    |  10 JUN 1977 |  46 |  True |      NA      |   F6  |   F5   |
+|  I4 |   Benjamin /Roberts/   |   M    |  16 NOV 1955 |  68 | False |      NA      |   F8  |   F7   |
+|  I5 |      Julia /Davis/     |   F    |  6 APR 1967  |  23 | False |  14 MAY 1990 |   NA  |   F7   |
+|  I6 |      Ava /Roberts/     |   F    |  10 NOV 1985 |  35 | False |  8 NOV 2020  |   F7  |  F12   |
+|  I7 |   Alexander /Roberts/  |   M    |  9 SEP 1996  |  27 |  True |      NA      |   F5  |   F9   |
+|  I8 |    William /Roberts/   |   M    |  12 MAY 1998 |  25 |  True |      NA      |   F5  |   NA   |
+|  I9 |   Michael /Martinez/   |   M    |  8 OCT 1940  |  83 |  True |      NA      |   NA  |   F6   |
+| I10 |    Isabella /Clark/    |   F    |  10 OCT 1945 |  78 |  True |      NA      |   NA  |   F6   |
+| I11 |     Ethan /Harris/     |   M    |  9 OCT 1989  |  21 | False |  12 JUN 2010 |   NA  |   F2   |
+| I12 |    Matthew /Thomas/    |   M    |  8 SEP 1975  |  48 |  True |      NA      |   NA  |  F10   |
+| I13 |    Olivia /Johnson/    |   F    |  8 NOV 1990  |  33 |  True |      NA      |   F3  |   NA   |
+| I14 |     David /Johnson/    |   M    |  12 JUL 1940 |  80 | False |  10 JUN 2020 |   NA  |   F4   |
+| I15 |    Grace /Rodriguez/   |   F    |  28 APR 1946 |  77 | False |      NA      |   NA  |   F4   |
+| I16 |    Mathew /Roberts/    |   M    |  7 JUL 1935  |  88 |  True |      NA      |   NA  |   F8   |
+| I17 |      Chloe /White/     |   F    |  5 NOV 1938  |  85 |  True |      NA      |   NA  |   F8   |
+| I18 |      Mia /Roberts/     |   F    |  6 AUG 1976  |  47 |  True |      NA      |   F8  |  F11   |
+| I19 |      Lily /Parker/     |   F    |  10 JUL 2004 |  19 |  True |      NA      |  F11  |   NA   |
+| I20 |     Megan /Harris/     |   F    |  10 OCT 2010 |  13 |  True |      NA      |   F2  |   NA   |
+| I21 |    Alexis /Roberts/    |   F    |  12 FEB 1969 |  54 |  True |      NA      |   NA  |   F9   |
+| I22 |     Lily /Roberts/     |   F    |  6 NOV 2008  |  15 |  True |      NA      |  F12  |   NA   |
+| I23 |      Emma /Thomas/     |   F    |  7 NOV 1996  |  27 |  True |      NA      |   NA  |  F10   |
++-----+------------------------+--------+--------------+-----+-------+--------------+-------+--------+
+Families
++-----+--------------+------------------+------------+------------------------+---------+--------------------+---------------+
+|  ID |   Married    |     Divorced     | Husband ID |      Husband Name      | Wife ID |     Wife Name      |    Children   |
++-----+--------------+------------------+------------+------------------------+---------+--------------------+---------------+
+|  F1 |  11 MAY 2004 |        NA        |    I12     |    Matthew /Thomas/    |    I1   |   Emily /Johnson/  |       []      |
+|  F2 |  11 SEP 2000 |        NA        |    I11     |     Ethan /Harris/     |    I1   |   Emily /Johnson/  |    ['I20']    |
+|  F3 |  7 JUN 1990  | [' 19 MAY 1993'] |     I2     |  Christopher /Johnson/ |    I3   |  Sopia /Martinez/  | ['I1', 'I13'] |
+|  F4 |  19 MAY 1960 |        NA        |    I14     |     David /Johnson/    |   I15   |  Grace /Rodriguez/ |     ['I2']    |
+|  F5 |  4 OCT 1999  |        NA        |     I4     |   Benjamin /Roberts/   |    I3   |  Sopia /Martinez/  |  ['I7', 'I8'] |
+|  F7 |      NA      |        NA        |     I4     |   Benjamin /Roberts/   |    I5   |    Julia /Davis/   |     ['I6']    |
+|  F6 |  12 SEP 1994 |        NA        |     I9     |   Michael /Martinez/   |   I10   |  Isabella /Clark/  |     ['I3']    |
+|  F8 |  18 OCT 1997 |        NA        |    I16     |    Mathew /Roberts/    |   I17   |    Chloe /White/   | ['I4', 'I18'] |
+|  F9 |      NA      |        NA        |     I7     |   Alexander /Roberts/  |   I21   |  Alexis /Roberts/  |       []      |
+| F10 |      NA      |        NA        |    I12     |    Matthew /Thomas/    |   I23   |    Emma /Thomas/   |       []      |
+| F11 |      NA      |        NA        |     NA     |          None          |   I18   |    Mia /Roberts/   |    ['I19']    |
+| F12 |      NA      |        NA        |     NA     |          None          |    I6   |    Ava /Roberts/   |    ['I22']    |
++-----+--------------+------------------+------------+------------------------+---------+--------------------+---------------+
+Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file ['I20', 'I22']
+Couples who were married when the older spouse was more than twice as old as the younger spouse [['I12', 'I1'], ['I4', 'I5']]
