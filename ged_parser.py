@@ -23,6 +23,9 @@ fTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name",
 #Initialize Dictionaries
 individuals_dict, families_dict = {}, {}
 
+# Initialize lists
+deceased_list, living_married_list = [], []
+
 #elements at level 1 and deeper
 def child_helper(element,ID):
     name = "NA"
@@ -152,6 +155,23 @@ def family_helper(element, fID):
         wName = individuals_dict.get(wID)
         fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
+
+# is element married
+def isMarr(element):
+    children = element.get_child_elements()
+    for child in children:
+        if child.get_tag() == "FAMS": # is the individual the spouse in a family
+            return True
+    return False
+
+# is element deceased
+def isDeceased(element):
+    children = element.get_child_elements()
+    for child in children:
+        if child.get_tag() == "DEAT": # is the individual the spouse in a family
+            return True
+    return False
+
 # Initialize the parser
 gedcom_parser = Parser()
 
@@ -177,11 +197,21 @@ root_child_elements = gedcom_parser.get_root_child_elements()
 for element in root_child_elements:
     if element.get_level() == 0:
         if element.get_tag() == "INDI":
+            married = isMarr(element) # returns true if married, false if not
+            deceased = isDeceased(element) # returns true if deceased, false if not
             ID = str(element)[2:].replace(str(element.get_tag()), '')
             ID = ID.replace("@", '')
             ID = ID.replace(" ", '')
             ID = ID.splitlines()
             ID = ID[0]
+
+            if deceased:
+                # Add the ID to the deceased list
+                deceased_list.append(ID)
+            elif married:
+                # Add the ID to the living married list
+                living_married_list.append(ID)
+
             child_helper(element,ID)
         if element.get_tag() == "FAM":
             fID = str(element)[2:].replace(str(element.get_tag()), '')
@@ -206,6 +236,10 @@ print(iTable)
 
 print("Families")
 print(fTable)
+
+print("Deceased Individuals", deceased_list)
+
+print("Living Married Individuals", living_married_list)
 
 sys.stdout.close()
 
