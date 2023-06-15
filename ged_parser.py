@@ -25,7 +25,8 @@ class Sprint1:
     individuals_dict, families_dict = {}, {}
 
     #Singles List
-    Singles = []
+    Singles = [] # will hold the IDs of all individuals who are single
+    Singles_elem = [] # will hold the full element of all individuals who are single
 
     #Multiples List
     Multiples = []
@@ -248,6 +249,7 @@ class Sprint1:
                     ID = ID[0]
                     if married == False and dead == False:
                         self.Singles.append(ID)
+                        self.Singles_elem.append(element)
                     sprint1.child_helper(element,ID)
                 
                 if element.get_tag() == "FAM":
@@ -260,6 +262,9 @@ class Sprint1:
     
     def getSingles(self):
         return self.Singles
+    
+    def getSinglesElem(self):
+        return self.Singles_elem
 
     def getMultipleBirths(self):
         return self.Multiples

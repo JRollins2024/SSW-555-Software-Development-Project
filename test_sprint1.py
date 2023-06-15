@@ -1,12 +1,12 @@
 import unittest
 
 #import Class I want to test
-import Sprint1
+import ged_parser
 
 
 class Test(unittest.TestCase):
 
-    sprint = Sprint1.Sprint1() #instantiates the Sprint1Class
+    sprint = ged_parser.Sprint1() #instantiates the Sprint1Class
 
     '''Test that the amount of individuals listed do not exceed the amount of individuals in the gedcom file'''
     def test_0_Singles_Size(self):
@@ -49,7 +49,12 @@ class Test(unittest.TestCase):
         print("Starting to test: Singles",end="\n\n")
 
         # Get actual output from class
-        actual = self.sprint.getSingles()
+        actual = self.sprint.getSinglesElem()
+
+        # iterate through each element in the list
+        for i in actual:
+            # and assert that each one returns false
+            self.assertFalse(self.sprint.isMarr(i))
 
         # An indiviudal counts as single if they do not have the tag 'FAMS'
         
