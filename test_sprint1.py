@@ -66,6 +66,14 @@ class Test(unittest.TestCase):
     #TODO
     def test_3_Singles_Alive(self):
         print("Starting to test: Singles_Alive",end="\n\n")
+        
+        # Get the return list of individuals listed
+        actual = self.sprint.getSinglesElem()
+
+        # iterate through each element in the list
+        for i in actual:
+            # and assert that each one returns False when checking if they are dead
+            self.assertFalse(self.sprint.isDead(i))
         print("Finished testing: Singles_Alive",end="\n\n")
 
 
