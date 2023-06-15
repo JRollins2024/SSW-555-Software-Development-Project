@@ -30,10 +30,12 @@ class Sprint1:
 
     #Multiples List
     Multiples = []
+    Multiples_elem = []
 
     #compare each individual's birthday and famc to every other individual's birthday and famc
     def compareBirthday(self,birthday, family, ID):
         mult = []
+        mult_elem = []
         multiples = False
         for e in gedcom_parser.get_root_child_elements():
             sameFam = False
@@ -73,6 +75,7 @@ class Sprint1:
             if sameFam and sameBirth and not samePerson:
                 multiples = True
                 mult.append(id)
+                mult_elem.append(e)
         if multiples == True:
             mult.append(ID)
             #check if this set of multiples has already been added to the list (including reversal)
@@ -81,6 +84,7 @@ class Sprint1:
                 if m == mult:
                     return
             self.Multiples.append(mult)
+            self.Multiples_elem.append(mult_elem)
 
 
     #elements at level 1 and deeper
@@ -231,7 +235,6 @@ class Sprint1:
             if child.get_tag() == "DEAT":
                 return True
         return False
-
     
     #Start parsing the file
     def parse(self):
@@ -260,6 +263,33 @@ class Sprint1:
                     fID = fID[0]
                     sprint1.family_helper(element,fID)
     
+    def getBirthDates(self,element):
+        children = element.get_child_elements()
+        birthday = ""
+        for child in children:
+            if child.get_tag() == "BIRT":
+                dates = child.get_child_elements()
+                for d in dates:
+                    if d.get_tag() == "DATE":
+                        birthday = str(d)[2:].replace(str(d.get_tag()), '')
+                        birthday = birthday.splitlines()
+                        birthday = birthday[0]
+                        return birthday
+        return birthday
+
+    def getChildFamily(self,element):
+        childrem = element.get_child_elements()
+        famc = ""
+        for child in children:
+            if child.get_tag() == "FAMC":
+                famc = str(child)[2:].replace(str(child.get_tag()), '')
+                famc = famc.replace("@", '')
+                famc = famc.replace(" ", '')
+                famc = famc.splitlines()
+                famc = famc[0]
+                return famc
+        return famc
+    
     def getSingles(self):
         return self.Singles
     
@@ -268,6 +298,9 @@ class Sprint1:
 
     def getMultipleBirths(self):
         return self.Multiples
+
+    def getMultipleBirthsElem(self):
+        return self.Multiples_elem
 
 
 

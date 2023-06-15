@@ -8,6 +8,8 @@ class Test(unittest.TestCase):
 
     sprint = ged_parser.Sprint1() #instantiates the Sprint1Class
 
+################## USER STORY: List living single ##################
+
     '''Test that the amount of individuals listed do not exceed the amount of individuals in the gedcom file'''
     def test_0_Singles_Size(self):
         print("Starting to test: Singles_Size",end="\n\n")
@@ -93,10 +95,75 @@ class Test(unittest.TestCase):
         print("Expected: " + str(expected))
         print("Actual: " + str(actual),end="\n\n")
 
-'''
-NEXT USER STORY TEST
+
+################### USER STORY: List multiple births ##################
+
+    # Test that the amount of siblings who have the same birthday do not exceed the amount of individuals in the gedcom file
+    def test_0_Multiples_Size(self):
+        print("Starting to test: Multiples_Size",end="\n\n")
+
+        # get actual output from class
+        actual = self.sprint.getMultipleBirths()
+
+        # get all the individuals in the gedcom file
+        indi = self.sprint.individuals_dict
+
+        self.assertTrue(len(actual) <= len(indi))
+        print("Number of total individuals: " + str(len(indi)))
+        print("Number of multiple births: " + str(len(actual)), end="\n\n") 
+
+        print("Finished testing: Multiples_Size",end="\n\n")
+
+# Test that the amount of siblings who have the same birthday is not less than 0
+    def test_1_Multiples_Size2(self):
+        print("Starting to test: Multiples_Size2",end="\n\n")
+
+        # get actual output from class
+        actual = self.sprint.getMultipleBirths()
+
+        # get all the individuals in the gedcom file
+        indi = self.sprint.individuals_dict
+
+        self.assertTrue(len(actual) >= 0)
+        print("Number of singles: " + str(len(actual)), end="\n\n")
+
+        print("Finished testing: Multiples_Size2",end="\n\n")
+
+
+# Test that all siblings in a group have the same birthday
+    def test_2_Multiples_Birthday(self):
+        print("Starting to test: Multiples_Birthday",end="\n\n")
+
+        # get actual output from class
+        actual = self.sprint.getMultipleBirthsElem()
+
+        # iterate through each sibling group
+        for sg in actual[:-1]:
+            # check that the surrent individual has the same birthday as the next individual
+            for i in sg:
+                self.assertEqual(self.sprint.getBirthDate(i), self.sprint.getBirthDate(sg[i+1]))
+
+        print("Finished testing: Multiples_Birthday",end="\n\n")
+
+# Test that all individuals in the list are actually siblings
+    def test_3_Multiples_Siblings(self):
+        print("Starting to test: Multiples_Siblings",end="\n\n")
+
+        # get output from class
+        actual = self.sprint.getMultipleBirthsElem()
+
+        # iterate through each sibling group
+        for sg in actual[:-1]:
+            # iterate through each sibling in the group
+            for i in sg:
+                # and assert that each one is a sibling of the next individual by seeing they are both children of the same family
+                self.assertEqual(self.sprint.getChildFamily(i), self.sprint.getChildFamily(sg[i+1]))
+                
+        print("Finished testing: Multiples_Siblings",end="\n\n")
+
+
     # Test that all siblings who have the same birthday are listed in a list of lists
-    def test_1_Multiples(self):
+    def test_4_Multiples(self):
         print("Starting to test: Multiples",end="\n\n")
 
         # Get the actual output from the class
@@ -109,10 +176,8 @@ NEXT USER STORY TEST
         self.assertEqual(actual, expected)
         print("Expected: " + str(expected))
         print("Actual: " + str(actual), end="\n\n")
-        
 
         print("Finished testing: Multiples",end="\n\n")
-'''
 
 if __name__ == '__main__':
     # begin the unittest.main()
