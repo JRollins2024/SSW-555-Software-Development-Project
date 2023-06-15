@@ -23,6 +23,61 @@ fTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name",
 #Initialize Dictionaries
 individuals_dict, families_dict = {}, {}
 
+#Initialize Lists
+singles_list, multiples_list = [], []
+
+
+#compare each individual's birthday and famc to every other individual's birthday and famc
+def compareBirthday(birthday, family, ID):
+    mult = []
+    multiples = False
+    for e in gedcom_parser.get_root_child_elements():
+        sameFam = False
+        sameBirth = False
+        samePerson = False
+        #Get thid id of the individual you are comparing the given one to
+        if e.get_tag() == "INDI":
+            id = str(e)[2:].replace(str(e.get_tag()), '')
+            id = id.replace("@", '')
+            id = id.replace(" ", '')
+            id = id.splitlines()
+            id = id[0]
+            if ID == id:
+                samePerson = True
+        children = e.get_child_elements()
+        for child in children:
+            #Make sure siblings are children in the same family
+            if child.get_tag() == "FAMC":
+                spawn = str(child)[2:].replace(str(child.get_tag()), '')
+                spawn = spawn.replace("@", '')
+                spawn = spawn.replace(" ", '')
+                spawn = spawn.splitlines()
+                spawn = spawn[0]
+                if spawn == family:
+                    sameFam = True
+            #Get birthday of each child to compare to given birthday
+            if child.get_tag() == "BIRT":
+                dates = child.get_child_elements()
+                for d in dates:
+                    if d.get_tag() == "DATE":
+                        # separate date from rest of the line
+                        bday = str(d)[2:].replace(str(d.get_tag()), '')
+                        bday = bday.splitlines()
+                        bday = bday[0]
+                        if bday == birthday:
+                            sameBirth = True
+        if sameFam and sameBirth and not samePerson:
+            multiples = True
+            mult.append(id)
+    if multiples == True:
+        mult.append(ID)
+        #check if this set of multiples has already been added to the list (including reversal)
+        for m in multiples_list:
+            m.reverse()
+            if m == mult:
+                return
+        multiples_list.append(mult)
+
 #elements at level 1 and deeper
 def child_helper(element,ID):
     name = "NA"
@@ -81,6 +136,7 @@ def child_helper(element,ID):
                 spawn = spawn.replace(" ", '')
                 spawn = spawn.splitlines()
                 spawn = spawn[0]
+                compareBirthday(birthday, spawn, ID)
             # This individual is the spouse of this family ID
             if child.get_tag() == "FAMS":
                 spouse = str(child)[2:].replace(str(child.get_tag()), '')
@@ -152,6 +208,22 @@ def family_helper(element, fID):
         wName = individuals_dict.get(wID)
         fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
+# is element married
+def isMarr(element):
+    children = element.get_child_elements()
+    for child in children:
+        if child.get_tag() == "FAMS": # is the individual the spouse in a family
+            return True
+    return False
+
+# is element deceased
+def isDeceased(element):
+    children = element.get_child_elements()
+    for child in children:
+        if child.get_tag() == "DEAT": # is the individual the spouse in a family
+            return True
+    return False
+
 # Initialize the parser
 gedcom_parser = Parser()
 
@@ -177,11 +249,15 @@ root_child_elements = gedcom_parser.get_root_child_elements()
 for element in root_child_elements:
     if element.get_level() == 0:
         if element.get_tag() == "INDI":
+            married = isMarr(element) # returns true if individual is married
+            dead = isDeceased(element) # returns true if individual is dead
             ID = str(element)[2:].replace(str(element.get_tag()), '')
             ID = ID.replace("@", '')
             ID = ID.replace(" ", '')
             ID = ID.splitlines()
             ID = ID[0]
+            if married == False and dead == False:
+                singles_list.append(ID)
             child_helper(element,ID)
         if element.get_tag() == "FAM":
             fID = str(element)[2:].replace(str(element.get_tag()), '')
@@ -206,6 +282,10 @@ print(iTable)
 
 print("Families")
 print(fTable)
+
+print("Individuals over 30 and alive who have not married: ", singles_list)
+
+print("Siblings who were born at the same time: ", multiples_list)
 
 sys.stdout.close()
 
