@@ -32,6 +32,14 @@ class Sprint1:
     Multiples = []
     Multiples_elem = []
 
+    #Dead List
+    Dead = []
+    Dead_elem = []
+
+    #LivingMarried List
+    LivingMarried = []
+    LivingMarried_elem = []
+
     #compare each individual's birthday and famc to every other individual's birthday and famc
     def compareBirthday(self,birthday, family, ID):
         mult = []
@@ -250,9 +258,17 @@ class Sprint1:
                     ID = ID.replace(" ", '')
                     ID = ID.splitlines()
                     ID = ID[0]
+
+                    if married and not dead:
+                        self.LivingMarried.append(ID)
+                        self.LivingMarried_elem.append(element)
+                    if dead:
+                        self.Dead.append(ID)
+                        self.Dead_elem.append(element)
                     if married == False and dead == False:
                         self.Singles.append(ID)
                         self.Singles_elem.append(element)
+
                     sprint1.child_helper(element,ID)
                 
                 if element.get_tag() == "FAM":
@@ -301,7 +317,18 @@ class Sprint1:
 
     def getMultipleBirthsElem(self):
         return self.Multiples_elem
-
+    
+    def getLivingMarried(self):
+        return self.LivingMarried
+    
+    def getLivingMarriedElem(self):
+        return self.LivingMarried_elem
+    
+    def getDead(self):
+        return self.Dead
+    
+    def getDeadElem(self):
+        return self.Dead_elem
 
 
 sprint1 = Sprint1()
@@ -347,6 +374,10 @@ print(sprint1.fTable)
 print("Individuals over 30 who have never been married", sprint1.getSingles())
 
 print("Individuals who were born at the same time", sprint1.getMultipleBirths())
+
+print("Individuals who are married", sprint1.getLivingMarried())
+
+print("Individuals who are dead", sprint1.getDead())
 
 sys.stdout.close()
 
