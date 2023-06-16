@@ -22,7 +22,7 @@ class Sprint1:
     fTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
 
     #Initialize Dictionaries
-    individuals_dict, families_dict = {}, {}
+    individuals_dict, families_dict, individuals_age, is_alive = {}, {}, {}, {}
 
     #Singles List
     Singles = [] # will hold the IDs of all individuals who are single
@@ -39,6 +39,39 @@ class Sprint1:
     #LivingMarried List
     LivingMarried = []
     LivingMarried_elem = []
+
+    #orphans
+    orphansUnder18 = []
+
+    #Spouses who are twice the age of their younger spouse
+    SpouseTwiceTheAge = []
+
+    def ageDifference(self,hID, wID):  
+        """ This function returns the couples whose age difference is huge """
+        
+        ageDifferenceArray = []
+        husbandAge  = self.individuals_age.get(hID)
+        wifeAge = self.individuals_age.get(wID)
+        husbandName = self.individuals_dict.get(hID)
+        ages = [husbandAge, wifeAge]
+        # print(husbandName, husbandAge)
+        if husbandAge and wifeAge and max(ages)/min(ages) > 2:
+            husbandName = self.individuals_dict.get(hID)
+            wifeName = self.individuals_dict.get(wID)
+            ageDifferenceArray.append(hID)
+            ageDifferenceArray.append(wID)
+        return ageDifferenceArray
+
+    def orphans(self, hID, wID, chil):
+        
+        aliveFather = self.is_alive.get(hID)
+        aliveMother = self.is_alive.get(wID)
+        orphanChild = ""
+        if (aliveFather == 'False' or aliveFather == None) and (aliveMother == 'False' or aliveMother == None) and self.individuals_age.get(chil):
+            if self.individuals_age.get(chil) < 18:
+                orphanChild = chil
+                self.orphansUnder18.append(chil)
+        return orphanChild
 
     #compare each individual's birthday and famc to every other individual's birthday and famc
     def compareBirthday(self,birthday, family, ID):
@@ -146,6 +179,7 @@ class Sprint1:
                             death_year = death[-6:]
                             death = death.splitlines()
                             death = death[0]
+                self.is_alive[ID]=alive
                 # This individual is the child of the this family ID
                 if child.get_tag() == "FAMC":
                     #at this point birth day and family are identified
@@ -168,6 +202,7 @@ class Sprint1:
             else:
                 # Else subtract from the year of death
                 age = 2023 - int(birth_year)
+            self.individuals_age[ID] = age
             self.iTable.add_row([str(ID),name,gender,birthday,age,alive,death,spawn,spouse])
 
 
@@ -214,6 +249,9 @@ class Sprint1:
                     wID = wID.replace("@", '')
                     wID = wID.splitlines()
                     wID = wID[0]
+                    ageDifferenceVar = self.ageDifference(hID, wID)
+                    if ageDifferenceVar:
+                        self.SpouseTwiceTheAge.append(ageDifferenceVar)
                 if child.get_tag() == "CHIL":
                     #Append all children's IDs to list
                     chil = str(child)[2:].replace(str(child.get_tag()), '')
@@ -222,6 +260,7 @@ class Sprint1:
                     chil = chil.splitlines()
                     chil = chil[0]
                     spawns.append(chil)
+                    self.orphans(hID, wID, chil)
             #look up husband and wife IDs in dictionary
             hName = self.individuals_dict.get(hID)
             wName = self.individuals_dict.get(wID)
@@ -329,6 +368,12 @@ class Sprint1:
     
     def getDeadElem(self):
         return self.Dead_elem
+    
+    def getMultipleOrphans(self):
+        return self.orphansUnder18
+    
+    def getMultipleSpouseTwiceAge(self):
+        return self.SpouseTwiceTheAge
 
 
 sprint1 = Sprint1()
@@ -378,6 +423,10 @@ print("Individuals who were born at the same time", sprint1.getMultipleBirths())
 print("Individuals who are married", sprint1.getLivingMarried())
 
 print("Individuals who are dead", sprint1.getDead())
+
+print("Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file", sprint1.getMultipleOrphans())
+
+print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
 
 sys.stdout.close()
 
