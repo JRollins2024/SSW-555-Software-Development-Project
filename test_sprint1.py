@@ -360,7 +360,7 @@ class Test(unittest.TestCase):
         
         print("Starting to test: Couples",end="\n\n")
         print("Expected:", indi)
-        print("Actual:",[['I9', 'I10'], ['I7', 'I6']],"Not the couples with the older spouse more than twice the age of younger one")
+        print("Actual:",[['I9', 'I10'], ['I7', 'I6']],"Not the complete list")
         print("Finished testing: couples",end="\n\n")
 
 
