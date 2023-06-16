@@ -1,0 +1,4 @@
+pathlib==1.0.1
+prettytable==3.8.0
+python-gedcom==1.0.0
+wcwidth==0.2.6
