@@ -382,6 +382,15 @@ class Test(unittest.TestCase):
         print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
         print("Finished testing: orphans",end="\n\n")
 
+    def test_5_orphans(self):
+        orphans = self.sprint.getMultipleOrphans()
+        self.assertNotEqual(orphans,[ ], ' empty')
+
+        print("Starting to test: orphans",end="\n\n")
+        print("Expected:", orphans)
+        print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
+        print("Finished testing: orphans",end="\n\n")
+
 if __name__ == '__main__':
     # begin the unittest.main()
     unittest.main()
