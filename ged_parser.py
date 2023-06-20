@@ -13,6 +13,7 @@ import json
 from prettytable import PrettyTable
 import os
 import sys
+from datetime import date, datetime, timedelta
 
 class Sprint1:
     #initialize tables
@@ -23,6 +24,11 @@ class Sprint1:
 
     #Initialize Dictionaries
     individuals_dict, families_dict = {}, {}
+    abbMonth_value = {"JAN":1, "FEB":2, "MAR":3, "APR":4,"MAY":5, "JUN":6, "JUL":7, "AUG":8, "SEP":9, "OCT":10, "NOV":11, "DEC":12}
+    month_value = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, 'August':8, "September":9, "October":10, "November":11, "December":12 }
+
+    individuals_dict, families_dict, individuals_age, is_alive = {}, {}, {}, {}
+
 
     #Singles List
     Singles = [] # will hold the IDs of all individuals who are single
@@ -39,6 +45,42 @@ class Sprint1:
     #LivingMarried List
     LivingMarried = []
     LivingMarried_elem = []
+
+    #orphans
+    orphansUnder18 = []
+
+    #Spouses who are twice the age of their younger spouse
+    SpouseTwiceTheAge = []
+    
+    # People who where born or died in the last 30 days
+    recentbirths_list, recentdeaths_list = [], []
+
+    def ageDifference(self,hID, wID):  
+        """ This function returns the couples whose age difference is huge """
+        
+        ageDifferenceArray = []
+        husbandAge  = self.individuals_age.get(hID)
+        wifeAge = self.individuals_age.get(wID)
+        husbandName = self.individuals_dict.get(hID)
+        ages = [husbandAge, wifeAge]
+        # print(husbandName, husbandAge)
+        if husbandAge and wifeAge and max(ages)/min(ages) > 2:
+            husbandName = self.individuals_dict.get(hID)
+            wifeName = self.individuals_dict.get(wID)
+            ageDifferenceArray.append(hID)
+            ageDifferenceArray.append(wID)
+        return ageDifferenceArray
+
+    def orphans(self, hID, wID, chil):
+        
+        aliveFather = self.is_alive.get(hID)
+        aliveMother = self.is_alive.get(wID)
+        orphanChild = ""
+        if (aliveFather == 'False' or aliveFather == None) and (aliveMother == 'False' or aliveMother == None) and self.individuals_age.get(chil):
+            if self.individuals_age.get(chil) < 18:
+                orphanChild = chil
+                self.orphansUnder18.append(chil)
+        return orphanChild
 
     #compare each individual's birthday and famc to every other individual's birthday and famc
     def compareBirthday(self,birthday, family, ID):
@@ -146,6 +188,7 @@ class Sprint1:
                             death_year = death[-6:]
                             death = death.splitlines()
                             death = death[0]
+                self.is_alive[ID]=alive
                 # This individual is the child of the this family ID
                 if child.get_tag() == "FAMC":
                     #at this point birth day and family are identified
@@ -168,6 +211,7 @@ class Sprint1:
             else:
                 # Else subtract from the year of death
                 age = 2023 - int(birth_year)
+            self.individuals_age[ID] = age
             self.iTable.add_row([str(ID),name,gender,birthday,age,alive,death,spawn,spouse])
 
 
@@ -214,6 +258,9 @@ class Sprint1:
                     wID = wID.replace("@", '')
                     wID = wID.splitlines()
                     wID = wID[0]
+                    ageDifferenceVar = self.ageDifference(hID, wID)
+                    if ageDifferenceVar:
+                        self.SpouseTwiceTheAge.append(ageDifferenceVar)
                 if child.get_tag() == "CHIL":
                     #Append all children's IDs to list
                     chil = str(child)[2:].replace(str(child.get_tag()), '')
@@ -222,11 +269,58 @@ class Sprint1:
                     chil = chil.splitlines()
                     chil = chil[0]
                     spawns.append(chil)
+                    self.orphans(hID, wID, chil)
             #look up husband and wife IDs in dictionary
             hName = self.individuals_dict.get(hID)
             wName = self.individuals_dict.get(wID)
             self.fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
+    def isRecentlyBorn(self,element):
+        children = element.get_child_elements()
+        for child in children:
+            if child.get_tag() == "BIRT": # birthday!
+                d = child.get_child_elements()
+                for x in d:
+                    if x.get_tag() == "DATE":
+                        #get individuals birthday
+                        birthday = str(x)[2:].replace(str(x.get_tag()), '')
+                        birthday = birthday.splitlines()
+                        birthday = birthday[0] #EX: 10 JAN 2002
+                        bday = date(int(birthday[-4:]), self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
+
+                        #date_today  = today.strftime("%d %B %Y") #EX: June 15 2023
+                        date_today = date(2023, 6, 16)
+                        no_of_days = timedelta(days=30) # Create a delta of Thirty Days 
+                        
+                        #before_thirty_days = date_today - no_of_days # Use Delta for Past Date
+                        #print('Before Thirty Days:', before_thirty_days)
+                        if((date_today - bday).days < 30):
+                            return True
+        return False
+
+    # is element recent dead
+    def isRecentlyDead(self,element):
+        children = element.get_child_elements()
+        for child in children:
+            if child.get_tag() == "DEAT": # is the individual dead
+                d = child.get_child_elements()
+                for x in d:
+                    if x.get_tag() == "DATE":
+                        #get individuals birthday
+                        deathday = str(x)[2:].replace(str(x.get_tag()), '')
+                        deathday = deathday.splitlines()
+                        deathday = deathday[0] #EX: 10 JAN 2002
+                        dday = date(int(deathday[-4:]), self.abbMonth_value[deathday.split(" ")[2]], int(deathday.split(" ")[1]))
+
+                        #date_today  = today.strftime("%d %B %Y") #EX: June 15 2023
+                        date_today = date(2023, 6, 16)
+                        no_of_days = timedelta(days=30) # Create a delta of Thirty Days 
+                        
+                        #before_thirty_days = date_today - no_of_days # Use Delta for Past Date
+                        #print('Before Thirty Days:', before_thirty_days)
+                        if((date_today - dday).days < 30):
+                            return True
+        return False
 
     # is element married
     def isMarr(self,element):
@@ -253,6 +347,8 @@ class Sprint1:
                 if element.get_tag() == "INDI":
                     married = sprint1.isMarr(element) # returns true if married, false if not
                     dead = sprint1.isDead(element) # returns true if dead, false if not
+                    recently_born = sprint1.isRecentlyBorn(element) # returns true if recently born, false if not
+                    recently_dead = sprint1.isRecentlyDead(element) # returns true if recently dead, false if not
                     ID = str(element)[2:].replace(str(element.get_tag()), '')
                     ID = ID.replace("@", '')
                     ID = ID.replace(" ", '')
@@ -268,8 +364,15 @@ class Sprint1:
                     if married == False and dead == False:
                         self.Singles.append(ID)
                         self.Singles_elem.append(element)
+                    if recently_born:
+                # Add the ID to the recently born list
+                        self.recentbirths_list.append(ID)
+                    if recently_dead:
+                # Add the ID to the recently dead list
+                        self.recentdeaths_list.append(ID)
 
                     sprint1.child_helper(element,ID)
+                
                 
                 if element.get_tag() == "FAM":
                     fID = str(element)[2:].replace(str(element.get_tag()), '')
@@ -329,6 +432,12 @@ class Sprint1:
     
     def getDeadElem(self):
         return self.Dead_elem
+    
+    def getMultipleOrphans(self):
+        return self.orphansUnder18
+    
+    def getMultipleSpouseTwiceAge(self):
+        return self.SpouseTwiceTheAge
 
 
 sprint1 = Sprint1()
@@ -375,9 +484,19 @@ print("Individuals over 30 who have never been married", sprint1.getSingles())
 
 print("Individuals who were born at the same time", sprint1.getMultipleBirths())
 
+
+print("Recent Births", sprint1.recentbirths_list)
+
+print("Recent Deaths", sprint1.recentdeaths_list)
+
 print("Individuals who are married", sprint1.getLivingMarried())
 
 print("Individuals who are dead", sprint1.getDead())
+
+print("Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file", sprint1.getMultipleOrphans())
+
+print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
+
 
 sys.stdout.close()
 

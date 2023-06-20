@@ -328,6 +328,7 @@ class Test(unittest.TestCase):
         print("Finished testing: LivingMarried_Married",end="\n\n")
 
     '''Test that all individuals listed match the expected output'''
+
     def test_4_LivingMarried_Value(self):
         print("Starting to test: LivingMarried_Value",end="\n\n")
 
@@ -344,6 +345,42 @@ class Test(unittest.TestCase):
 
         print("Finished testing: LivingMarried_Value",end="\n\n")
 
+    def test_1_ageDifference(self):
+        indi = self.sprint.getMultipleSpouseTwiceAge()
+        self.assertEqual(indi,[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']],'Its has 3 couples with more than twice age')
+        
+        print("Starting to test: Couples",end="\n\n")
+        print("Expected:", indi)
+        print("Actual:",[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        print("Finished testing: couples",end="\n\n")
+
+    def test_2_ageDifference(self):
+        indi = self.sprint.getMultipleSpouseTwiceAge()
+        self.assertNotEqual(indi,[['I9', 'I10'], ['I7', 'I6']],'It has 3 couples with more than twice age')
+        
+        print("Starting to test: Couples",end="\n\n")
+        print("Expected:", indi)
+        print("Actual:",[['I9', 'I10'], ['I7', 'I6']],"Not the complete list")
+        print("Finished testing: couples",end="\n\n")
+
+
+    def test_3_orphans(self):
+        orphans = self.sprint.getMultipleOrphans()
+        self.assertEqual(orphans,['I8'], 'orphans')
+
+        print("Starting to test: orphans",end="\n\n")
+        print("Expected:", orphans)
+        print("Actual:",['I8'])
+        print("Finished testing: orphans",end="\n\n")
+
+    def test_4_orphans(self):
+        orphans = self.sprint.getMultipleOrphans()
+        self.assertNotEqual(orphans,['I8','I20'], ' not orphans')
+
+        print("Starting to test: orphans",end="\n\n")
+        print("Expected:", orphans)
+        print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
+        print("Finished testing: orphans",end="\n\n")
 
 if __name__ == '__main__':
     # begin the unittest.main()
