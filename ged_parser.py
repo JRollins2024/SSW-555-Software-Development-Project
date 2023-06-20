@@ -16,6 +16,9 @@ import sys
 from datetime import date, datetime, timedelta
 
 class Sprint1:
+    #initialize time
+    today = datetime.now()
+
     #initialize tables
     fTable = PrettyTable() #table for families
     iTable = PrettyTable() #table for individuals
@@ -288,8 +291,10 @@ class Sprint1:
                         birthday = birthday[0] #EX: 10 JAN 2002
                         bday = date(int(birthday[-4:]), self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
 
-                        #date_today  = today.strftime("%d %B %Y") #EX: June 15 2023
-                        date_today = date(2023, 6, 16)
+                        todayYear  = self.today.year
+                        todayMonth = self.today.month
+                        todayDay   = self.today.day
+                        date_today = date(todayYear, todayMonth, todayDay)
                         no_of_days = timedelta(days=30) # Create a delta of Thirty Days 
                         
                         #before_thirty_days = date_today - no_of_days # Use Delta for Past Date
