@@ -58,6 +58,9 @@ class Sprint1:
     # People who where born or died in the last 30 days
     recentbirths_list, recentdeaths_list = [], []
 
+    # People who died before they were born
+    DiedBeforeBorn = []
+
     def ageDifference(self,hID, wID):  
         """ This function returns the couples whose age difference is huge """
         
@@ -342,6 +345,39 @@ class Sprint1:
             if child.get_tag() == "DEAT":
                 return True
         return False
+
+    # Check that individual dies AFTER they are born
+    def checkDeadAfterBirth(self, element):
+        ID = str(element)[2:].replace(str(element.get_tag()), '')
+        ID = ID.replace("@", '')
+        ID = ID.replace(" ", '')
+        ID = ID.splitlines()
+        ID = ID[0]
+        if self.isDead(element):
+            children = element.get_child_elements()
+            for child in children:
+                if child.get_tag() == "BIRT":
+                    #compare death date to birthday
+                    d = child.get_child_elements()
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            birthday = str(x)[2:].replace(str(x.get_tag()), '')
+                            birthday = birthday.splitlines()
+                            birthday = birthday[0] #EX: 10 JAN 2002
+                            bday = date(int(birthday[-4:]), self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
+                elif child.get_tag() == "DEAT":
+                    d = child.get_child_elements()
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            deathday = str(x)[2:].replace(str(x.get_tag()), '')
+                            deathday = deathday.splitlines()
+                            deathday = deathday[0]
+                            dday = date(int(deathday[-4:]), self.abbMonth_value[deathday.split(" ")[2]], int(deathday.split(" ")[1]))
+            
+            if dday < bday:
+                # Add id birth before death list
+                self.DiedBeforeBorn.append(ID)
+
     
     #Start parsing the file
     def parse(self):
@@ -375,6 +411,9 @@ class Sprint1:
                     if recently_dead:
                 # Add the ID to the recently dead list
                         self.recentdeaths_list.append(ID)
+
+                # Add the ID to the list of all people who died before they were born
+                    self.checkDeadAfterBirth(element)
 
                     sprint1.child_helper(element,ID)
                 
@@ -502,6 +541,8 @@ print("Orphaned children (both parents dead and child < 18 years old) in a GEDCO
 
 print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
 
+for i in sprint1.DiedBeforeBorn:
+    print("Error: Individual " + i + " DIED BEFORE THEY WERE BORN.")
 
 sys.stdout.close()
 
