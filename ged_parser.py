@@ -26,11 +26,10 @@ class Sprint1:
     fTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
 
     #Initialize Dictionaries
-    individuals_dict, families_dict = {}, {}
     abbMonth_value = {"JAN":1, "FEB":2, "MAR":3, "APR":4,"MAY":5, "JUN":6, "JUL":7, "AUG":8, "SEP":9, "OCT":10, "NOV":11, "DEC":12}
     month_value = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, 'August':8, "September":9, "October":10, "November":11, "December":12 }
 
-    individuals_dict, families_dict, individuals_age, is_alive = {}, {}, {}, {}
+    individuals_dict, families_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}, {}
 
 
     #Singles List
@@ -57,6 +56,15 @@ class Sprint1:
     
     # People who where born or died in the last 30 days
     recentbirths_list, recentdeaths_list = [], []
+
+    # People who died before they were born
+    DiedBeforeBorn = []
+
+    # Marriages that took place after one of the spouses died
+    DiedBeforeMarriage = []
+
+    # Divorces that took place after one of the spouses died
+    DiedBeforeDivorce = []
 
     def ageDifference(self,hID, wID):  
         """ This function returns the couples whose age difference is huge """
@@ -191,6 +199,7 @@ class Sprint1:
                             death_year = death[-6:]
                             death = death.splitlines()
                             death = death[0]
+                            self.individuals_deathday[ID] = death
                 self.is_alive[ID]=alive
                 # This individual is the child of the this family ID
                 if child.get_tag() == "FAMC":
@@ -227,6 +236,8 @@ class Sprint1:
         wID = "NA"
         wName = "NA"
         spawns = []
+        mday = "NA"
+        dday = "NA"
         children = element.get_child_elements()
         #look at each child element (level 1)
         if children:
@@ -239,7 +250,9 @@ class Sprint1:
                         if d.get_tag() == "DATE":
                             married = str(d)[2:].replace(str(d.get_tag()), '')
                             married = married.splitlines()
-                            married = married[0]
+                            married = married[0] # marriage date
+                            # make sure marriage takes place before death of either spouse
+                            mday = date(int(married[-4:]), self.abbMonth_value[married.split(" ")[2]], int(married.split(" ")[1]))
                 if child.get_tag() == "DIV":
                     #go down to level 2
                     dates = child.get_child_elements()
@@ -247,6 +260,9 @@ class Sprint1:
                         if d.get_tag() == "DATE":
                             divorced = str(d)[2:].replace(str(d.get_tag()), '')
                             divorced = divorced.splitlines()
+                            divorced = divorced[0] # divorce date
+                            # make sure divorce takes place before death of either spouse
+                            dday = date(int(divorced[-4:]), self.abbMonth_value[divorced.split(" ")[2]], int(divorced.split(" ")[1]))
                 if child.get_tag() == "HUSB":
                     #handles getting the husband's ID separated from rest of the line
                     hID = str(child)[2:].replace(str(child.get_tag()), '')
@@ -277,6 +293,40 @@ class Sprint1:
             hName = self.individuals_dict.get(hID)
             wName = self.individuals_dict.get(wID)
             self.fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
+
+            # Check that husband and wife are married before either of them die
+            if hID in self.individuals_deathday:
+                # Husband's death
+                death = self.individuals_deathday.get(hID)
+                h_dday = date(int(death[-4:]), self.abbMonth_value[death.split(" ")[2]], int(death.split(" ")[1]))
+
+                # Wedding day
+                if mday != "NA":
+                    if mday > h_dday:
+                        self.DiedBeforeMarriage.append(hID)
+                
+                
+                # Divorce day
+                if dday != "NA":
+                    if dday > h_dday:
+                        self.DiedBeforeDivorce.append(hID)
+                        
+            if wID in self.individuals_deathday:
+                # Wife's death
+                death = self.individuals_deathday.get(wID)
+                w_dday = date(int(death[-4:]), self.abbMonth_value[death.split(" ")[2]], int(death.split(" ")[1]))
+
+                # Wedding day
+                if mday != "NA":
+                    if mday > w_dday:
+                        self.DiedBeforeMarriage.append(wID)
+
+                # Divorce day
+                if dday != "NA":
+                    if dday > w_dday:
+                        self.DiedBeforeDivorce.append(wID)
+
+
 
     def isRecentlyBorn(self,element):
         children = element.get_child_elements()
@@ -342,6 +392,39 @@ class Sprint1:
             if child.get_tag() == "DEAT":
                 return True
         return False
+
+    # Check that individual dies AFTER they are born
+    def checkDeadAfterBirth(self, element):
+        ID = str(element)[2:].replace(str(element.get_tag()), '')
+        ID = ID.replace("@", '')
+        ID = ID.replace(" ", '')
+        ID = ID.splitlines()
+        ID = ID[0]
+        if self.isDead(element):
+            children = element.get_child_elements()
+            for child in children:
+                if child.get_tag() == "BIRT":
+                    #compare death date to birthday
+                    d = child.get_child_elements()
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            birthday = str(x)[2:].replace(str(x.get_tag()), '')
+                            birthday = birthday.splitlines()
+                            birthday = birthday[0] #EX: 10 JAN 2002
+                            bday = date(int(birthday[-4:]), self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
+                elif child.get_tag() == "DEAT":
+                    d = child.get_child_elements()
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            deathday = str(x)[2:].replace(str(x.get_tag()), '')
+                            deathday = deathday.splitlines()
+                            deathday = deathday[0]
+                            dday = date(int(deathday[-4:]), self.abbMonth_value[deathday.split(" ")[2]], int(deathday.split(" ")[1]))
+            
+            if dday < bday:
+                # Add id birth before death list
+                self.DiedBeforeBorn.append(ID)
+
     
     #Start parsing the file
     def parse(self):
@@ -375,6 +458,9 @@ class Sprint1:
                     if recently_dead:
                 # Add the ID to the recently dead list
                         self.recentdeaths_list.append(ID)
+
+                # Add the ID to the list of all people who died before they were born
+                    self.checkDeadAfterBirth(element)
 
                     sprint1.child_helper(element,ID)
                 
@@ -502,6 +588,14 @@ print("Orphaned children (both parents dead and child < 18 years old) in a GEDCO
 
 print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
 
+for i in sprint1.DiedBeforeBorn:
+    print("Error: Individual " + i + " DIED BEFORE THEY WERE BORN.")
+
+for i in sprint1.DiedBeforeMarriage:
+    print("Error: Individual " + i + " DIED BEFORE THEY WERE MARRIED.")
+
+for i in sprint1.DiedBeforeDivorce:
+    print("Error: Individual " + i + " DIED BEFORE THEY WERE DIVORCED.")
 
 sys.stdout.close()
 
