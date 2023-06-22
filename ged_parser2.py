@@ -493,13 +493,9 @@ print("Children with same name and birth date in the GEDCOM file", sprint1.sameN
 
 print("No more than one family with the same spouses by name and the same marriage date should appear in a GEDCOM file",sprint1.couple)
 
-# print(sprint1.sameEntry)
 sprint1.extractChildren()
 
-print(sprint1.duplicate_name)
-# print(sprint1.individuals_dict)
 
-print(sprint1.individual_births)
 
 
 
