@@ -95,7 +95,7 @@ class Sprint1:
         final = []
         for siblings in self.Children:
             self.compareNamesAndBirth(siblings, final)
-        print("Children with the same name and birth date in a family",final)
+        print("ERROR: Children with the same name and birth date in a family",final)
 
     def compareNamesAndBirth(self,siblings, final):
         siblingName = []
@@ -489,9 +489,9 @@ print("Orphaned children (both parents dead and child < 18 years old) in a GEDCO
 print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
 
 
-print("Children with same name and birth date in the GEDCOM file", sprint1.sameNameSameBirthday())
+print("ERROR: Children with same name and birth date in the GEDCOM file", sprint1.sameNameSameBirthday())
 
-print("No more than one family with the same spouses by name and the same marriage date should appear in a GEDCOM file",sprint1.couple)
+print("ERROR: No more than one family with the same spouses by name and the same marriage date should appear in a GEDCOM file",sprint1.couple)
 
 sprint1.extractChildren()
 
