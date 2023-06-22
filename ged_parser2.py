@@ -1,4 +1,4 @@
-#Jamie Rollins
+#Ruchita Paithankar and David Rocha
 #M2_B3 GEDCOM Data
 #I pledge my honor that I have abided by the Stevens Honor System.
 
