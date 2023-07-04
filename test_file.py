@@ -6,7 +6,7 @@ import ged_parser
 
 class Test(unittest.TestCase):
 
-    sprint = ged_parser.Sprint1() #instantiates the Sprint1Class
+    sprint = ged_parser.Parser_Class() #instantiates the Sprint1Class
 
 ################## USER STORY: List living single ##################
 
