@@ -1,4 +1,4 @@
-#Jamie Rollins
+#Jamie Rollins, Dominick Varano, David Rocha, Ruchita Paithankar
 #M2_B3 GEDCOM Data
 #I pledge my honor that I have abided by the Stevens Honor System.
 
@@ -15,7 +15,7 @@ import os
 import sys
 from datetime import date, datetime, timedelta
 
-class Sprint1:
+class Parser_Class:
     #initialize time
     today = datetime.now()
 
@@ -531,7 +531,7 @@ class Sprint1:
         return self.SpouseTwiceTheAge
 
 
-sprint1 = Sprint1()
+sprint1 = Parser_Class()
 
     # Initialize the parser
 gedcom_parser = Parser()
