@@ -253,7 +253,7 @@ class Test(unittest.TestCase):
         actual = self.sprint.getDead()
 
         # Expected output from class
-        expected = ['I5', 'I7', 'I16']
+        expected = ['I5', 'I7', 'I16', 'I17', 'I18', 'I19']
 
         # Assert that actual matches expected output
         self.assertEqual(actual, expected)
@@ -381,6 +381,20 @@ class Test(unittest.TestCase):
         print("Expected:", orphans)
         print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
         print("Finished testing: orphans",end="\n\n")
+
+    
+    ############### Refactored Code 1 ###############
+
+    # Check that cleanString works as expected
+    def test_0_cleanString(self):
+        given = "@I12@"
+        expected = "I12"
+        actual = self.sprint.cleanString(given)
+        self.assertEqual(actual, expected)
+        print("Expected: " + str(expected))
+        print("Actual: " + str(actual))
+
+    # Test case for checking method isRecently dead already exists
 
 if __name__ == '__main__':
     # begin the unittest.main()

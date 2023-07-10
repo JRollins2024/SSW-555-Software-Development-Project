@@ -66,6 +66,18 @@ class Sprint1:
     # Divorces that took place after one of the spouses died
     DiedBeforeDivorce = []
 
+
+    """ 
+        Refactored code part 1
+    A method to return cleaned up strings of variables so these lines don't have to be repeated
+    """
+    def cleanString(self, var):
+        var = var.replace("@", '')
+        var = var.replace(" ", '')
+        var = var.splitlines()
+        var = var[0]
+        return var
+
     def ageDifference(self,hID, wID):  
         """ This function returns the couples whose age difference is huge """
         
@@ -105,10 +117,7 @@ class Sprint1:
             #Get thid id of the individual you are comparing the given one to
             if e.get_tag() == "INDI":
                 id = str(e)[2:].replace(str(e.get_tag()), '')
-                id = id.replace("@", '')
-                id = id.replace(" ", '')
-                id = id.splitlines()
-                id = id[0]
+                id = sprint1.cleanString(id)
                 if ID == id:
                     samePerson = True
             children = e.get_child_elements()
@@ -116,10 +125,7 @@ class Sprint1:
                 #Make sure siblings are children in the same family
                 if child.get_tag() == "FAMC":
                     spawn = str(child)[2:].replace(str(child.get_tag()), '')
-                    spawn = spawn.replace("@", '')
-                    spawn = spawn.replace(" ", '')
-                    spawn = spawn.splitlines()
-                    spawn = spawn[0]
+                    spawn = sprint1.cleanString(spawn)
                     if spawn == family:
                         sameFam = True
                 #Get birthday of each child to compare to given birthday
@@ -205,18 +211,12 @@ class Sprint1:
                 if child.get_tag() == "FAMC":
                     #at this point birth day and family are identified
                     spawn = str(child)[2:].replace(str(child.get_tag()), '')
-                    spawn = spawn.replace("@", '')
-                    spawn = spawn.replace(" ", '')
-                    spawn = spawn.splitlines()
-                    spawn = spawn[0]
+                    spawn = sprint1.cleanString(spawn)
                     sprint1.compareBirthday(birthday,spawn,ID)
                 # This individual is the spouse of this family ID
                 if child.get_tag() == "FAMS":
                     spouse = str(child)[2:].replace(str(child.get_tag()), '')
-                    spouse = spouse.replace("@", '')
-                    spouse = spouse.replace(" ", '')
-                    spouse = spouse.splitlines()
-                    spouse = spouse[0]
+                    spouse = sprint1.cleanString(spouse)
             # If the individual is NOT dead subtract birth year from current year
             if death != "NA":
                 age = int(death_year) - int(birth_year)
@@ -266,27 +266,18 @@ class Sprint1:
                 if child.get_tag() == "HUSB":
                     #handles getting the husband's ID separated from rest of the line
                     hID = str(child)[2:].replace(str(child.get_tag()), '')
-                    hID = hID.replace(" ", '')
-                    hID = hID.replace("@", '')
-                    hID = hID.splitlines()
-                    hID = hID[0]
+                    hID = sprint1.cleanString(hID)
                 if child.get_tag() == "WIFE":
                     #handles getting the wife's ID separated from rest of the line
                     wID = str(child)[2:].replace(str(child.get_tag()), '')
-                    wID = wID.replace(" ", '')
-                    wID = wID.replace("@", '')
-                    wID = wID.splitlines()
-                    wID = wID[0]
+                    wID = sprint1.cleanString(wID)
                     ageDifferenceVar = self.ageDifference(hID, wID)
                     if ageDifferenceVar:
                         self.SpouseTwiceTheAge.append(ageDifferenceVar)
                 if child.get_tag() == "CHIL":
                     #Append all children's IDs to list
                     chil = str(child)[2:].replace(str(child.get_tag()), '')
-                    chil = chil.replace("@", '')
-                    chil = chil.replace(" ", '')
-                    chil = chil.splitlines()
-                    chil = chil[0]
+                    chil = sprint1.cleanString(chil)
                     spawns.append(chil)
                     self.orphans(hID, wID, chil)
             #look up husband and wife IDs in dictionary
@@ -396,10 +387,7 @@ class Sprint1:
     # Check that individual dies AFTER they are born
     def checkDeadAfterBirth(self, element):
         ID = str(element)[2:].replace(str(element.get_tag()), '')
-        ID = ID.replace("@", '')
-        ID = ID.replace(" ", '')
-        ID = ID.splitlines()
-        ID = ID[0]
+        ID = sprint1.cleanString(ID)
         if self.isDead(element):
             children = element.get_child_elements()
             for child in children:
@@ -438,10 +426,7 @@ class Sprint1:
                     recently_born = sprint1.isRecentlyBorn(element) # returns true if recently born, false if not
                     recently_dead = sprint1.isRecentlyDead(element) # returns true if recently dead, false if not
                     ID = str(element)[2:].replace(str(element.get_tag()), '')
-                    ID = ID.replace("@", '')
-                    ID = ID.replace(" ", '')
-                    ID = ID.splitlines()
-                    ID = ID[0]
+                    ID = sprint1.cleanString(ID)
 
                     if married and not dead:
                         self.LivingMarried.append(ID)
@@ -467,10 +452,7 @@ class Sprint1:
                 
                 if element.get_tag() == "FAM":
                     fID = str(element)[2:].replace(str(element.get_tag()), '')
-                    fID = fID.replace("@", '')
-                    fID = fID.replace(" ", '')
-                    fID = fID.splitlines()
-                    fID = fID[0]
+                    fID = sprint1.cleanString(fID)
                     sprint1.family_helper(element,fID)
     
     def getBirthDates(self,element):
@@ -493,10 +475,7 @@ class Sprint1:
         for child in children:
             if child.get_tag() == "FAMC":
                 famc = str(child)[2:].replace(str(child.get_tag()), '')
-                famc = famc.replace("@", '')
-                famc = famc.replace(" ", '')
-                famc = famc.splitlines()
-                famc = famc[0]
+                famc = sprint1.cleanString(famc)
                 return famc
         return famc
     
