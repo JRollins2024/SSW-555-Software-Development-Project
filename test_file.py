@@ -382,6 +382,18 @@ class Test(unittest.TestCase):
         print("Actual:",['I8'])
         print("Finished testing: orphans test 2",end="\n\n")
 
+
+    ############### Refactored Code 1 ###############
+
+    # Check that cleanString works as expected
+    def test_0_cleanString(self):
+        given = "@I12@"
+        expected = "I12"
+        actual = self.sprint.cleanString(given)
+        self.assertEqual(actual, expected)
+        print("Expected: " + str(expected))
+        print("Actual: " + str(actual))
+
 if __name__ == '__main__':
     # begin the unittest.main()
     unittest.main()
