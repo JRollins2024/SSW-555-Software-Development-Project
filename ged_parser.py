@@ -66,6 +66,9 @@ class Parser_Class:
     # Divorces that took place after one of the spouses died
     DiedBeforeDivorce = []
 
+    # Wedding anniversary in the next 30 days
+    upcomingAnniversaries = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -252,6 +255,7 @@ class Parser_Class:
                             married = married[0] # marriage date
                             # make sure marriage takes place before death of either spouse
                             mday = date(int(married[-4:]), self.abbMonth_value[married.split(" ")[2]], int(married.split(" ")[1]))
+        
                 if child.get_tag() == "DIV":
                     #go down to level 2
                     dates = child.get_child_elements()
@@ -315,6 +319,15 @@ class Parser_Class:
                 if dday != "NA":
                     if dday > w_dday:
                         self.DiedBeforeDivorce.append(wID)
+            
+            if wID not in self.individuals_deathday and hID not in self.individuals_deathday:
+                deadline=datetime.today()+timedelta(days=30)
+                deadlineYear = deadline.strftime("%Y")
+                deadlineMonth = deadline.strftime("%m")
+                deadlineDay = deadline.strftime("%d")
+                deadline = date(int(deadlineYear), int(deadlineMonth), int(deadlineDay))
+                if mday.replace(year=int(deadlineYear)) > deadline:
+                    self.upcomingAnniversaries.append((wID,hID))
 
 
 
@@ -335,9 +348,7 @@ class Parser_Class:
                         todayMonth = self.today.month
                         todayDay   = self.today.day
                         date_today = date(todayYear, todayMonth, todayDay)
-                        no_of_days = timedelta(days=30) # Create a delta of Thirty Days 
-                        
-                        #before_thirty_days = date_today - no_of_days # Use Delta for Past Date
+
                         #print('Before Thirty Days:', before_thirty_days)
                         if((date_today - bday).days < 30):
                             return True
@@ -357,11 +368,11 @@ class Parser_Class:
                         deathday = deathday[0] #EX: 10 JAN 2002
                         dday = date(int(deathday[-4:]), self.abbMonth_value[deathday.split(" ")[2]], int(deathday.split(" ")[1]))
 
-                        #date_today  = today.strftime("%d %B %Y") #EX: June 15 2023
-                        date_today = date(2023, 6, 16)
-                        no_of_days = timedelta(days=30) # Create a delta of Thirty Days 
-                        
-                        #before_thirty_days = date_today - no_of_days # Use Delta for Past Date
+                        todayYear  = self.today.year
+                        todayMonth = self.today.month
+                        todayDay   = self.today.day
+                        date_today = date(todayYear, todayMonth, todayDay)
+
                         #print('Before Thirty Days:', before_thirty_days)
                         if((date_today - dday).days < 30):
                             return True
@@ -508,6 +519,9 @@ class Parser_Class:
     def getMultipleSpouseTwiceAge(self):
         return self.SpouseTwiceTheAge
 
+    def getUpcomingAnniversaries(self):
+        return self.upcomingAnniversaries
+
 
 sprint1 = Parser_Class()
 
@@ -549,31 +563,51 @@ print(sprint1.iTable)
 print("Families")
 print(sprint1.fTable)
 
-print("Individuals over 30 who have never been married", sprint1.getSingles())
+print("Individuals over 30 who have never been married:")
+for i in sprint1.getSingles():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Individuals who were born at the same time", sprint1.getMultipleBirths())
+print("Individuals who were born at the same time:")
+for i in sprint1.getMultipleBirths():
+    print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
 
 
-print("Recent Births", sprint1.recentbirths_list)
+print("Recent Births:")
+for i in sprint1.recentbirths_list:
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Recent Deaths", sprint1.recentdeaths_list)
+print("Recent Deaths:")
+for i in sprint1.recentdeaths_list:
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Individuals who are married", sprint1.getLivingMarried())
+print("Individuals who are married:")
+for i in sprint1.getLivingMarried():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Individuals who are dead", sprint1.getDead())
+print("Individuals who are dead:")
+for i in sprint1.getDead():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file", sprint1.getMultipleOrphans())
+print("Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file:")
+for i in sprint1.getMultipleOrphans():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
+print("Couples who were married when the older spouse was more than twice as old as the younger spouse:")
+for i in sprint1.getMultipleSpouseTwiceAge():
+    print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
+
+print("Living couples whose anniversaries are within the next 30 days:")
+for i in sprint1.getUpcomingAnniversaries():
+    print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
 
 for i in sprint1.DiedBeforeBorn:
-    print("Error: Individual " + i + " DIED BEFORE THEY WERE BORN.")
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE BORN.")
 
 for i in sprint1.DiedBeforeMarriage:
-    print("Error: Individual " + i + " DIED BEFORE THEY WERE MARRIED.")
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE MARRIED.")
 
 for i in sprint1.DiedBeforeDivorce:
-    print("Error: Individual " + i + " DIED BEFORE THEY WERE DIVORCED.")
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE DIVORCED.")
 
 sys.stdout.close()
 
