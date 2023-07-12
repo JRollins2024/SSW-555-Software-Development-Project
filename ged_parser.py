@@ -29,8 +29,11 @@ class Parser_Class:
     abbMonth_value = {"JAN":1, "FEB":2, "MAR":3, "APR":4,"MAY":5, "JUN":6, "JUL":7, "AUG":8, "SEP":9, "OCT":10, "NOV":11, "DEC":12}
     month_value = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, 'August':8, "September":9, "October":10, "November":11, "December":12 }
 
-    individuals_dict, families_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}, {}
+    individuals_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}
 
+
+    # Families List
+    Families = [] # will hold the IDs of all families
 
     #Singles List
     Singles = [] # will hold the IDs of all individuals who are single
@@ -463,6 +466,7 @@ class Parser_Class:
                 if element.get_tag() == "FAM":
                     fID = str(element)[2:].replace(str(element.get_tag()), '')
                     fID = sprint1.cleanString(fID)
+                    self.Families.append(fID)
                     sprint1.family_helper(element,fID)
     
     def getBirthDates(self,element):
