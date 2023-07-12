@@ -68,6 +68,9 @@ class Parser_Class:
     # Divorces that took place after one of the spouses died
     DiedBeforeDivorce = []
 
+    # Wedding anniversary in the next 30 days
+    upcomingAnniversaries = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -318,6 +321,15 @@ class Parser_Class:
                     if dday > w_dday:
                         self.DiedBeforeDivorce.append(wID)
 
+            if wID not in self.individuals_deathday and hID not in self.individuals_deathday:
+                deadline=datetime.today()+timedelta(days=30)
+                deadlineYear = deadline.strftime("%Y")
+                deadlineMonth = deadline.strftime("%m")
+                deadlineDay = deadline.strftime("%d")
+                deadline = date(int(deadlineYear), int(deadlineMonth), int(deadlineDay))
+                if mday.replace(year=int(deadlineYear)) > deadline:
+                    self.upcomingAnniversaries.append((wID,hID))
+
 
 
     def isRecentlyBorn(self,element):
@@ -510,6 +522,9 @@ class Parser_Class:
     
     def getMultipleSpouseTwiceAge(self):
         return self.SpouseTwiceTheAge
+
+    def getUpcomingAnniversaries(self):
+        return self.upcomingAnniversaries
 
 
 sprint1 = Parser_Class()

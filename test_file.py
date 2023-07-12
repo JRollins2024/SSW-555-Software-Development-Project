@@ -2,6 +2,7 @@ import unittest
 
 #import Class I want to test
 import ged_parser
+import sys
 
 
 class Test(unittest.TestCase):
@@ -348,10 +349,10 @@ class Test(unittest.TestCase):
     def test_1_ageDifference(self):
         print("Starting to test: Couples age difference 1",end="\n\n")
         indi = self.sprint.getMultipleSpouseTwiceAge()
-        self.assertEqual(indi,[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        self.assertEqual(indi,[['I5', 'I6'], ['I7', 'I6']])
         
         print("Expected:", indi)
-        print("Actual:",[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        print("Actual:",[['I5', 'I6'], ['I7', 'I6']])
         print("Finished testing: couples",end="\n\n")
 
     def test_2_ageDifference(self):

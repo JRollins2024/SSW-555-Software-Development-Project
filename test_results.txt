@@ -32,6 +32,8 @@ Number of Families: 8
 Number of Couples: 1
 Finished testing: amount of couples
 
+Expected: I12
+Actual: I12
 Starting to test: return int
 
 Finished testing: return int
