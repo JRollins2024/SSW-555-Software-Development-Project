@@ -29,8 +29,10 @@ class Parser_Class:
     abbMonth_value = {"JAN":1, "FEB":2, "MAR":3, "APR":4,"MAY":5, "JUN":6, "JUL":7, "AUG":8, "SEP":9, "OCT":10, "NOV":11, "DEC":12}
     month_value = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, 'August':8, "September":9, "October":10, "November":11, "December":12 }
 
-    individuals_dict, families_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}, {}
+    individuals_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}
 
+    # Families List
+    Families = [] # will hold the IDs of all families
 
     #Singles List
     Singles = [] # will hold the IDs of all individuals who are single
@@ -452,6 +454,7 @@ class Parser_Class:
                 if element.get_tag() == "FAM":
                     fID = str(element)[2:].replace(str(element.get_tag()), '')
                     fID = sprint1.cleanString(fID)
+                    self.Families.append(fID)
                     sprint1.family_helper(element,fID)
     
     def getBirthDates(self,element):
@@ -549,31 +552,51 @@ print(sprint1.iTable)
 print("Families")
 print(sprint1.fTable)
 
-print("Individuals over 30 who have never been married", sprint1.getSingles())
+print("Individuals over 30 who have never been married:")
+for i in sprint1.getSingles():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Individuals who were born at the same time", sprint1.getMultipleBirths())
+print("Individuals who were born at the same time:")
+for i in sprint1.getMultipleBirths():
+    print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
 
 
-print("Recent Births", sprint1.recentbirths_list)
+print("Recent Births:")
+for i in sprint1.recentbirths_list:
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Recent Deaths", sprint1.recentdeaths_list)
+print("Recent Deaths:")
+for i in sprint1.recentdeaths_list:
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Individuals who are married", sprint1.getLivingMarried())
+print("Individuals who are married:")
+for i in sprint1.getLivingMarried():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Individuals who are dead", sprint1.getDead())
+print("Individuals who are dead:")
+for i in sprint1.getDead():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file", sprint1.getMultipleOrphans())
+print("Orphaned children (both parents dead and child < 18 years old) in a GEDCOM file:")
+for i in sprint1.getMultipleOrphans():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
-print("Couples who were married when the older spouse was more than twice as old as the younger spouse", sprint1.getMultipleSpouseTwiceAge())
+print("Couples who were married when the older spouse was more than twice as old as the younger spouse:")
+for i in sprint1.getMultipleSpouseTwiceAge():
+    print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
+
+print("Living couples whose anniversaries are within the next 30 days:")
+for i in sprint1.getUpcomingAnniversaries():
+    print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
 
 for i in sprint1.DiedBeforeBorn:
-    print("Error: Individual " + i + " DIED BEFORE THEY WERE BORN.")
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE BORN.")
 
 for i in sprint1.DiedBeforeMarriage:
-    print("Error: Individual " + i + " DIED BEFORE THEY WERE MARRIED.")
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE MARRIED.")
 
 for i in sprint1.DiedBeforeDivorce:
-    print("Error: Individual " + i + " DIED BEFORE THEY WERE DIVORCED.")
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE DIVORCED.")
 
 sys.stdout.close()
 
