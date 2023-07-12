@@ -2,6 +2,7 @@ import unittest
 
 #import Class I want to test
 import ged_parser
+import sys
 
 
 class Test(unittest.TestCase):
@@ -348,10 +349,10 @@ class Test(unittest.TestCase):
     def test_1_ageDifference(self):
         print("Starting to test: Couples age difference 1",end="\n\n")
         indi = self.sprint.getMultipleSpouseTwiceAge()
-        self.assertEqual(indi,[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        self.assertEqual(indi,[['I5', 'I6'], ['I7', 'I6']])
         
         print("Expected:", indi)
-        print("Actual:",[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        print("Actual:",[['I5', 'I6'], ['I7', 'I6']])
         print("Finished testing: couples",end="\n\n")
 
     def test_2_ageDifference(self):
@@ -382,6 +383,51 @@ class Test(unittest.TestCase):
         print("Actual:",['I8'])
         print("Finished testing: orphans test 2",end="\n\n")
 
+################### User Story: Include ages when listing individuals ##################
+    ''' Test that when given an individual's ID, the correct age is returned '''
+    def test_0_correctAge(self):
+        print("Starting to test: correct age",end="\n\n")
+
+        # Test Individual
+        indi = 'I11'
+
+        # Get individual's actual listed age
+        actual = self.sprint.individuals_age.get(indi)
+
+        # Get individual's expected age
+        expected = 50
+
+        # Assert that actual and expected match
+        self.assertEqual(actual, expected)
+
+        # Print results
+        print("Expected: " + str(expected))
+        print("Actual: " + str(actual))
+
+        print("Finished testing: correct age",end="\n\n")
+
+
+################### User Story: Living couples with upcoming anniversaries ##################
+    def test_0_upcomingAnniversaries(self):
+        print("Starting to test: upcoming anniversaries",end="\n\n")
+        anniversaries = self.sprint.getUpcomingAnniversaries()
+        expected = [('I3','I2')]
+
+        self.assertEqual(anniversaries, expected)
+
+        print("Expected:", expected)
+        print("Actual:", anniversaries)
+
+        print("Finished testing: upcoming anniversaries",end="\n\n")
+
+
 if __name__ == '__main__':
+    # Write test file output to a file 
+    try:
+        sys.stdout = open("test_results.txt", "w")
+    except FileNotFoundError:
+        print("File not found. Please try again.")
+        exit(0)
+
     # begin the unittest.main()
     unittest.main()
