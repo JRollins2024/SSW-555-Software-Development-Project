@@ -1,0 +1,156 @@
+Starting to test: Deceased_Size
+
+Number of total individuals: 19
+Number of deceased: 6
+
+Finished testing: Deceased_Size
+
+Starting to test: LivingMarried_Size
+
+Number of total individuals: 19
+Number of living married: 8
+
+Finished testing: LivingMarried_Size
+
+Starting to test: Multiples_Size
+
+Number of total individuals: 19
+Number of multiple births: 1
+
+Finished testing: Multiples_Size
+
+Starting to test: Singles_Size
+
+Number of total individuals: 19
+Number of singles: 5
+
+Finished testing: Singles_Size
+
+Starting to test: amount of couples
+
+Number of Families: 8
+Number of Couples: 1
+Finished testing: amount of couples
+
+Starting to test: return int
+
+Finished testing: return int
+
+Starting to test: Deceased_Size2
+
+Number of deceased: 6
+
+Finished testing: Deceased_Size2
+
+Starting to test: LivingMarried_Size2
+
+Number of living married: 8
+
+Finished testing: LivingMarried_Size2
+
+Starting to test: Multiples_Size2
+
+Number of singles: 1
+
+Finished testing: Multiples_Size2
+
+Starting to test: Singles_Size2
+
+Number of singles: 5
+
+Finished testing: Singles_Size2
+
+Starting to test: Couples age difference 1
+
+Expected: [['I5', 'I6'], ['I7', 'I6']]
+Actual: [['I5', 'I6'], ['I7', 'I6']]
+Finished testing: couples
+
+Starting to test: correct age
+
+Expected: 50
+Actual: 50
+Finished testing: correct age
+
+Starting to test: upcoming anniversaries
+
+Expected: [('I3', 'I2')]
+Actual: [('I3', 'I2')]
+Finished testing: upcoming anniversaries
+
+Starting to test: Deceased_Dead
+
+Finished testing: Deceased_Dead
+
+Starting to test: LivingMarried_Alive
+
+Finished testing: LivingMarried_Alive
+
+Starting to test: Multiples_Birthday
+
+Finished testing: Multiples_Birthday
+
+Starting to test: Singles
+
+Finished testing: Singles
+
+Starting to test: Couples age difference 2
+
+Expected: [['I5', 'I6'], ['I7', 'I6']]
+Actual: [['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']]
+Finished testing: couples age difference 2
+
+Starting to test: Deceased_Individual
+
+Finished testing: Deceased_Individual
+
+Starting to test: LivingMarried_Married
+
+Finished testing: LivingMarried_Married
+
+Starting to test: Multiples_Siblings
+
+Finished testing: Multiples_Siblings
+
+Starting to test: Singles_Alive
+
+Finished testing: Singles_Alive
+
+Starting to test: orphans test 1
+
+Expected: ['I8']
+Actual: ['I8']
+Finished testing: orphans test 1
+
+Starting to test: Deceased_Value
+
+Expected: ['I5', 'I7', 'I16', 'I17', 'I18', 'I19']
+Actual: ['I5', 'I7', 'I16', 'I17', 'I18', 'I19']
+
+Finished testing: Deceased_Value
+
+Starting to test: LivingMarried_Value
+
+Expected: ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
+Actual: ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
+
+Finished testing: LivingMarried_Value
+
+Starting to test: Multiples
+
+Expected: [['I1', 'I4']]
+Actual: [['I1', 'I4']]
+
+Finished testing: Multiples
+
+Starting to test: Singles_Value
+
+Expected: ['I1', 'I4', 'I8', 'I13', 'I15']
+Actual: ['I1', 'I4', 'I8', 'I13', 'I15']
+
+Starting to test: orphans test 2
+
+Expected: ['I8']
+Actual: ['I8']
+Finished testing: orphans test 2
+
