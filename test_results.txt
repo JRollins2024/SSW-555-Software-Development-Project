@@ -1,35 +1,35 @@
 Starting to test: Deceased_Size
 
-Number of total individuals: 19
+Number of total individuals: 20
 Number of deceased: 6
 
 Finished testing: Deceased_Size
 
 Starting to test: LivingMarried_Size
 
-Number of total individuals: 19
-Number of living married: 8
+Number of total individuals: 20
+Number of living married: 10
 
 Finished testing: LivingMarried_Size
 
 Starting to test: Multiples_Size
 
-Number of total individuals: 19
+Number of total individuals: 20
 Number of multiple births: 1
 
 Finished testing: Multiples_Size
 
 Starting to test: Singles_Size
 
-Number of total individuals: 19
-Number of singles: 5
+Number of total individuals: 20
+Number of singles: 4
 
 Finished testing: Singles_Size
 
 Starting to test: amount of couples
 
-Number of Families: 8
-Number of Couples: 1
+Number of Families: 9
+Number of Couples: 2
 Finished testing: amount of couples
 
 Expected: I12
@@ -46,7 +46,7 @@ Finished testing: Deceased_Size2
 
 Starting to test: LivingMarried_Size2
 
-Number of living married: 8
+Number of living married: 10
 
 Finished testing: LivingMarried_Size2
 
@@ -58,7 +58,7 @@ Finished testing: Multiples_Size2
 
 Starting to test: Singles_Size2
 
-Number of singles: 5
+Number of singles: 4
 
 Finished testing: Singles_Size2
 
@@ -74,11 +74,19 @@ Expected: 50
 Actual: 50
 Finished testing: correct age
 
-Starting to test: upcoming anniversaries
+ Starting to test: people who married before birth
 
-Expected: [('I3', 'I2')]
-Actual: [('I3', 'I2')]
-Finished testing: upcoming anniversaries
+Expected: ['I1', 'I20']
+Actual: ['I1', 'I20']
+Finished testing: people who married before birth
+
+ Starting to test: parents too old
+
+Expected: ['I9', 'I10']
+Actual: [['I9', 'I10']]
+Finished testing: parents too old
+
+Starting to test: upcoming anniversaries
 
 Starting to test: Deceased_Dead
 
@@ -101,6 +109,18 @@ Starting to test: Couples age difference 2
 Expected: [['I5', 'I6'], ['I7', 'I6']]
 Actual: [['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']]
 Finished testing: couples age difference 2
+
+ Starting to test: people who did not marry before birth
+
+Expected: ['I1', 'I20']
+Actual: ['I5']
+Finished testing: people who did not marry before birth
+
+ Starting to test: parents too old
+
+Expected: ['I9', 'I10']
+Actual: [['I3']]
+Finished testing: parents too old
 
 Starting to test: Deceased_Individual
 
@@ -133,11 +153,6 @@ Finished testing: Deceased_Value
 
 Starting to test: LivingMarried_Value
 
-Expected: ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
-Actual: ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
-
-Finished testing: LivingMarried_Value
-
 Starting to test: Multiples
 
 Expected: [['I1', 'I4']]
@@ -146,9 +161,6 @@ Actual: [['I1', 'I4']]
 Finished testing: Multiples
 
 Starting to test: Singles_Value
-
-Expected: ['I1', 'I4', 'I8', 'I13', 'I15']
-Actual: ['I1', 'I4', 'I8', 'I13', 'I15']
 
 Starting to test: orphans test 2
 
