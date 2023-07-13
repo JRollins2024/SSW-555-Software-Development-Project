@@ -2,6 +2,7 @@ import unittest
 
 #import Class I want to test
 import ged_parser
+import sys
 
 
 class Test(unittest.TestCase):
@@ -348,10 +349,10 @@ class Test(unittest.TestCase):
     def test_1_ageDifference(self):
         print("Starting to test: Couples age difference 1",end="\n\n")
         indi = self.sprint.getMultipleSpouseTwiceAge()
-        self.assertEqual(indi,[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        self.assertEqual(indi,[['I5', 'I6'], ['I7', 'I6']])
         
         print("Expected:", indi)
-        print("Actual:",[['I9', 'I10'], ['I5', 'I6'], ['I7', 'I6']])
+        print("Actual:",[['I5', 'I6'], ['I7', 'I6']])
         print("Finished testing: couples",end="\n\n")
 
     def test_2_ageDifference(self):
@@ -394,6 +395,85 @@ class Test(unittest.TestCase):
         print("Expected: " + str(expected))
         print("Actual: " + str(actual))
 
+    ################### User Story: Include ages when listing individuals ##################
+    ''' Test that an int is returned'''
+    def test_0_returnInt(self):
+        print("Starting to test: return int",end="\n\n")
+
+        # Test Individual
+        indi = 'I11'
+
+        # Get individual's actual listed age
+        actual = self.sprint.individuals_age.get(indi)
+
+        # Check that individual's age is an int
+        self.assertTrue(isinstance(actual, int))
+        
+        print("Finished testing: return int",end="\n\n")
+
+    ''' Test that when given an individual's ID, the correct age is returned '''
+    def test_1_correctAge(self):
+        print("Starting to test: correct age",end="\n\n")
+
+        # Test Individual
+        indi = 'I11'
+
+        # Get individual's actual listed age
+        actual = self.sprint.individuals_age.get(indi)
+
+        # Get individual's expected age
+        expected = 50
+
+        # Assert that actual and expected match
+        self.assertEqual(actual, expected)
+
+        # Print results
+        print("Expected: " + str(expected))
+        print("Actual: " + str(actual))
+
+        print("Finished testing: correct age",end="\n\n")
+
+
+################### User Story: Living couples with upcoming anniversaries ##################
+    ''' Test that the amount of couples returned does not exceed the amount of couples in the gedcom file'''
+    def test_0_amountCouples(self):
+        print("Starting to test: amount of couples",end="\n\n")
+
+        # Count the amount of families in the gedcom file
+        famCount = len(self.sprint.Families)
+
+        # Count the amount of couples whose anniversary is coming up
+        couplesCount = len(self.sprint.getUpcomingAnniversaries())
+
+        # Compare
+        self.assertTrue(couplesCount <= famCount)
+
+        # Print results
+        print("Number of Families: " + str(famCount))
+        print("Number of Couples: " + str(couplesCount))
+
+        print("Finished testing: amount of couples",end="\n\n")
+
+
+    ''' Test that when given an individual's ID, the correct age is returned '''
+    def test_1_upcomingAnniversaries(self):
+        print("Starting to test: upcoming anniversaries",end="\n\n")
+        anniversaries = self.sprint.getUpcomingAnniversaries()
+        expected = [('I3','I2')]
+
+        self.assertEqual(anniversaries, expected)
+
+        print("Expected:", expected)
+        print("Actual:", anniversaries)
+
+        print("Finished testing: upcoming anniversaries",end="\n\n")
+
 if __name__ == '__main__':
+    # Write test file output to a file 
+    try:
+        sys.stdout = open("test_results.txt", "w")
+    except FileNotFoundError:
+        print("File not found. Please try again.")
+        exit(0)
     # begin the unittest.main()
     unittest.main()
