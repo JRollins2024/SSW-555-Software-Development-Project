@@ -468,6 +468,55 @@ class Test(unittest.TestCase):
 
         print("Finished testing: upcoming anniversaries",end="\n\n")
 
+
+    def test_1_marriageBeforeBirth(self):
+        print(" Starting to test: people who married before birth",end="\n\n")
+        peopleBornBeforeMariage = self.sprint.MarriageBeforeBirth()
+        res = sorted([*set(peopleBornBeforeMariage)])
+        print("Expected:", res)
+        print("Actual:",['I1', 'I20'])
+        self.assertEqual(res,['I1', 'I20'],'Marriage before birth')
+        print("Finished testing: people who married before birth",end="\n\n")
+
+
+    def test_2_marriageBeforeBirth(self):
+        print(" Starting to test: people who did not marry before birth",end="\n\n")
+        peopleBornBeforeMariage = self.sprint.MarriageBeforeBirth()
+        res = sorted([*set(peopleBornBeforeMariage)])
+        print("Expected:", res)
+        print("Actual:",['I5'])
+        self.assertNotEqual(res,['I5'],'Marriage not before birth')
+        print("Finished testing: people who did not marry before birth",end="\n\n")
+
+
+    def test_1_oldParents(self):
+        print(" Starting to test: parents too old",end="\n\n")
+        parentsList = self.sprint.parentsTooOld('I9','I10', ['I2'])
+        res = parentsList[0]
+        print("Expected:",res)
+        print("Actual:",[['I9', 'I10']])
+        self.assertEqual(res,['I9', 'I10'],'Parents too old')
+        print("Finished testing: parents too old",end="\n\n")
+
+
+    def test_2_oldParents(self):
+        print(" Starting to test: parents too old",end="\n\n")
+        parentsList = self.sprint.parentsTooOld('I9','I10', ['I2'])
+        res = parentsList[0]
+        print("Expected:",res)
+        print("Actual:",[['I3']])
+        self.assertNotEqual(res,['I3'],'Parents too old')
+        print("Finished testing: parents too old",end="\n\n")
+
+    def test_5_orphans(self):
+        orphans = self.sprint.getMultipleOrphans()
+        self.assertNotEqual(orphans,[ ], ' empty')
+
+        print("Starting to test: orphans",end="\n\n")
+        print("Expected:", orphans)
+        print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
+        print("Finished testing: orphans",end="\n\n")
+=======
 ################## USER STORY: List upcoming birthdays ##################
     ''' Test for the expected number of birthdays '''
     def test_0_upcomingBirthdays(self):
@@ -521,6 +570,7 @@ class Test(unittest.TestCase):
         print("Actual:", survivors)
 
         print("Finished testing: recent survivors 1",end="\n\n")
+
 
 if __name__ == '__main__':
     # Write test file output to a file 

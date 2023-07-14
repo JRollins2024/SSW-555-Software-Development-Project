@@ -13,11 +13,12 @@ import json
 from prettytable import PrettyTable
 import os
 import sys
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
+import datetime
 
 class Parser_Class:
     #initialize time
-    today = datetime.now()
+    today = datetime.datetime.now()
 
     #initialize tables
     fTable = PrettyTable() #table for families
@@ -30,6 +31,7 @@ class Parser_Class:
     month_value = {"January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, 'August':8, "September":9, "October":10, "November":11, "December":12 }
 
     individuals_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}
+    individual_marriages, individual_births = {}, {}
 
     # Families List
     Families = [] # will hold the IDs of all families
@@ -71,11 +73,17 @@ class Parser_Class:
     # Wedding anniversary in the next 30 days
     upcomingAnniversaries = []
 
+
+
     # Birthday in the next 30 days
     upcomingBirthdays = []
 
     # Living spouses and descendants of people who died in the last 30 days
     recentSurvivors = []
+
+    birthAfterMarriage = []
+
+    oldParents = []
 
     """ 
         Refactored code part 1
@@ -87,6 +95,38 @@ class Parser_Class:
         var = var.splitlines()
         var = var[0]
         return var
+    
+
+    def MarriageBeforeBirth(self):
+        for i in self.individual_marriages:
+            if i in self.individual_births and self.individual_marriages[i]!='NA' and self.individual_births[i]!='NA':
+                # print("Birth date:",self.individual_births[i], "   Marriage Date:",self.individual_marriages[i])
+                marriageDate = datetime.datetime.strptime(self.individual_marriages[i].strip(), '%d %b %Y')
+                birthdate = datetime.datetime.strptime(self.individual_births[i].strip(), '%d %b %Y')
+                if birthdate > marriageDate:
+                    self.birthAfterMarriage.append(i) 
+
+        return self.birthAfterMarriage
+
+        # print("ERROR: Individuals married before being born", self.birthAfterMarriage)
+
+
+    def parentsTooOld(self, hID, wID, spawns):
+        now = datetime.datetime.now()
+        if self.individual_births[hID] !='NA' and self.individual_births[wID] !='NA':
+            fatherBirth = datetime.datetime.strptime(self.individual_births[hID].strip(), '%d %b %Y')
+            motherBirth = datetime.datetime.strptime(self.individual_births[wID].strip(), '%d %b %Y')
+            for spawn in spawns:
+                spawnBirth = datetime.datetime.strptime(self.individual_births[spawn].strip(), '%d %b %Y')
+
+                ageDiffDad = now.year - fatherBirth.year - ((now.month, now.day) < (fatherBirth.month, fatherBirth.day)) - (now.year - spawnBirth.year - ((now.month, now.day) < (spawnBirth.month, spawnBirth.day)))
+                ageDiffMom = now.year - motherBirth.year - ((now.month, now.day) < (motherBirth.month, motherBirth.day)) - (now.year - spawnBirth.year - ((now.month, now.day) < (spawnBirth.month, spawnBirth.day)))
+                    # ageDiffDad = fatherBirth - spawnBirth
+                    # ageDiffMom = motherBirth - spawnBirth
+                if ageDiffDad > 79 and ageDiffMom > 59:
+                    self.oldParents.append([hID,wID])
+                        # self.oldParents.append([hID, wID])
+        return self.oldParents
 
     def ageDifference(self,hID, wID):  
         """ This function returns the couples whose age difference is huge """
@@ -234,6 +274,7 @@ class Parser_Class:
                 # Else subtract from the year of death
                 age = 2023 - int(birth_year)
             self.individuals_age[ID] = age
+            self.individual_births[ID] = birthday
             self.iTable.add_row([str(ID),name,gender,birthday,age,alive,death,spawn,spouse])
 
 
@@ -338,6 +379,10 @@ class Parser_Class:
                 if dday != "NA":
                     if dday > w_dday:
                         self.DiedBeforeDivorce.append(wID)
+            if hID != 'NA' and wID !='NA': 
+                self.parentsTooOld(hID, wID, spawns)
+            if hID != 'NA' and married!='NA':self.individual_marriages[hID] = married
+            if wID != 'NA' and married!='NA':self.individual_marriages[wID] = married 
 
                 # If wife died recently, put husband and children in recentSurvivors if they're alive
                 # Put husband in recentSurvivors, if he's alive
@@ -352,7 +397,7 @@ class Parser_Class:
                                 self.recentSurvivors.append(child)                
 
             if wID not in self.individuals_deathday and hID not in self.individuals_deathday:
-                deadline=datetime.today()+timedelta(days=30)
+                deadline=datetime.datetime.today()+timedelta(days=30)
                 deadlineYear = deadline.strftime("%Y")
                 deadlineMonth = deadline.strftime("%m")
                 deadlineDay = deadline.strftime("%d")
@@ -690,6 +735,10 @@ for i in sprint1.DiedBeforeMarriage:
 
 for i in sprint1.DiedBeforeDivorce:
     print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE DIVORCED.")
+
+print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
+
+print("Individuals married before birth", sprint1.MarriageBeforeBirth())
 
 sys.stdout.close()
 
