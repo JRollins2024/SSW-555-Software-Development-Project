@@ -73,6 +73,14 @@ class Parser_Class:
     # Wedding anniversary in the next 30 days
     upcomingAnniversaries = []
 
+
+
+    # Birthday in the next 30 days
+    upcomingBirthdays = []
+
+    # Living spouses and descendants of people who died in the last 30 days
+    recentSurvivors = []
+
     birthAfterMarriage = []
 
     oldParents = []
@@ -344,6 +352,18 @@ class Parser_Class:
                 if dday != "NA":
                     if dday > h_dday:
                         self.DiedBeforeDivorce.append(hID)
+
+                # If husband died recently, put wife and children in recentSurvivors if they're alive
+                if hID in self.recentdeaths_list:
+                    # Put wife in recentSurvivors, if she's alive
+                    if wID not in self.individuals_deathday:
+                        self.recentSurvivors.append(wID)
+                    
+                    # If there are any children in the family and they're alive, put them in recentSurvivors
+                    if len(spawns) > 0:
+                        for child in spawns:
+                            if child not in self.individuals_deathday:
+                                self.recentSurvivors.append(child)
                         
             if wID in self.individuals_deathday:
                 # Wife's death
@@ -363,6 +383,18 @@ class Parser_Class:
                 self.parentsTooOld(hID, wID, spawns)
             if hID != 'NA' and married!='NA':self.individual_marriages[hID] = married
             if wID != 'NA' and married!='NA':self.individual_marriages[wID] = married 
+
+                # If wife died recently, put husband and children in recentSurvivors if they're alive
+                # Put husband in recentSurvivors, if he's alive
+                if wID in self.recentdeaths_list:
+                    if hID not in self.individuals_deathday:
+                        self.recentSurvivors.append(hID)
+                    
+                    # If there are any children in the family and they're alive, put them in recentSurvivors
+                    if len(spawns) > 0:
+                        for child in spawns:
+                            if child not in self.individuals_deathday and child not in self.recentSurvivors:
+                                self.recentSurvivors.append(child)                
 
             if wID not in self.individuals_deathday and hID not in self.individuals_deathday:
                 deadline=datetime.datetime.today()+timedelta(days=30)
@@ -439,6 +471,32 @@ class Parser_Class:
             if child.get_tag() == "DEAT":
                 return True
         return False
+    
+    # Check that the individual has a birthday in the next 30 days
+    def isUpcomingBirthday(self, element):
+        children = element.get_child_elements()
+        for child in children:
+            if child.get_tag() == 'BIRT':
+                d = child.get_child_elements()
+                for x in d:
+                    if x.get_tag() == 'DATE':
+                        birthday = str(x)[2:].replace(str(x.get_tag()), '')
+                        birthday = birthday.splitlines()
+                        birthday = birthday[0]
+                        todayYear  = self.today.year
+                        bday = date(todayYear, self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
+
+                        # date for today
+                        todayYear  = self.today.year
+                        todayMonth = self.today.month
+                        todayDay   = self.today.day
+                        date_today = date(todayYear, todayMonth, todayDay)
+
+                        # See if bday falls within 30 days
+                        no_of_days = timedelta(days=30) # Create a delta of Thirty Days
+                        if((bday - date_today).days < 30 and (bday - date_today).days > 0):
+                            return True
+        return False
 
     # Check that individual dies AFTER they are born
     def checkDeadAfterBirth(self, element):
@@ -481,6 +539,7 @@ class Parser_Class:
                     dead = sprint1.isDead(element) # returns true if dead, false if not
                     recently_born = sprint1.isRecentlyBorn(element) # returns true if recently born, false if not
                     recently_dead = sprint1.isRecentlyDead(element) # returns true if recently dead, false if not
+                    upcoming_birthday = sprint1.isUpcomingBirthday(element) # returns true if upcoming birthday, false if not
                     ID = str(element)[2:].replace(str(element.get_tag()), '')
                     ID = sprint1.cleanString(ID)
 
@@ -499,6 +558,9 @@ class Parser_Class:
                     if recently_dead:
                 # Add the ID to the recently dead list
                         self.recentdeaths_list.append(ID)
+                    if upcoming_birthday:
+                # Add the ID to the upcoming birthday list
+                        self.upcomingBirthdays.append(ID)
 
                 # Add the ID to the list of all people who died before they were born
                     self.checkDeadAfterBirth(element)
@@ -527,7 +589,7 @@ class Parser_Class:
         return birthday
 
     def getChildFamily(self,element):
-        childrem = element.get_child_elements()
+        children = element.get_child_elements()
         famc = ""
         for child in children:
             if child.get_tag() == "FAMC":
@@ -568,6 +630,12 @@ class Parser_Class:
 
     def getUpcomingAnniversaries(self):
         return self.upcomingAnniversaries
+    
+    def getUpcomingBirthdays(self):
+        return self.upcomingBirthdays
+    
+    def getRecentSurvivors(self):
+        return self.recentSurvivors
 
 
 sprint1 = Parser_Class()
@@ -646,6 +714,18 @@ for i in sprint1.getMultipleSpouseTwiceAge():
 print("Living couples whose anniversaries are within the next 30 days:")
 for i in sprint1.getUpcomingAnniversaries():
     print(i[0] + "(" + str(sprint1.individuals_age.get(i[0])) + ")" + " and " + i[1] + "(" + str(sprint1.individuals_age.get(i[1])) + ")")
+
+print("Individuals whose birthdays occur in the next 30 days:")
+if len(sprint1.getUpcomingBirthdays()) == 0:
+    print("None")
+for i in sprint1.getUpcomingBirthdays():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
+
+print("Recent survivors of a deceased family member:")
+if len(sprint1.getRecentSurvivors()) == 0:
+    print("None")
+for i in sprint1.getRecentSurvivors():
+    print(i + "(" + str(sprint1.individuals_age.get(i)) + ")")
 
 for i in sprint1.DiedBeforeBorn:
     print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE BORN.")

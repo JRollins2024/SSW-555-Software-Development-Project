@@ -468,6 +468,7 @@ class Test(unittest.TestCase):
 
         print("Finished testing: upcoming anniversaries",end="\n\n")
 
+
     def test_1_marriageBeforeBirth(self):
         print(" Starting to test: people who married before birth",end="\n\n")
         peopleBornBeforeMariage = self.sprint.MarriageBeforeBirth()
@@ -515,6 +516,61 @@ class Test(unittest.TestCase):
         print("Expected:", orphans)
         print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
         print("Finished testing: orphans",end="\n\n")
+=======
+################## USER STORY: List upcoming birthdays ##################
+    ''' Test for the expected number of birthdays '''
+    def test_0_upcomingBirthdays(self):
+        print("Starting to test: upcoming birthdays 0",end="\n\n")
+        birthdays = self.sprint.getUpcomingBirthdays()
+
+        # This value will actually change within a week, so this test will need to be updated in the near future
+        self.assertEqual(len(birthdays), 0)
+
+        print("Expected: 0")
+        print("Actual:", len(birthdays))
+
+        print("Finished testing: upcoming birthdays 0",end="\n\n")
+
+    ''' Test for the expected birthdays '''
+    def test_1_upcomingBirthdays(self):
+        print("Starting to test: upcoming birthdays 1",end="\n\n")
+        birthdays = self.sprint.getUpcomingBirthdays()
+
+        # This value will actually change within a week, so this test will need to be updated in the near future
+        self.assertEqual(birthdays, [])
+
+        print("Expected: []")
+        print("Actual:", birthdays)
+
+        print("Finished testing: upcoming birthdays 1",end="\n\n")
+
+################## USER STORY: List recent survivors ##################
+    ''' Test for the expected number of survivors '''
+    def test_0_recentSurvivors(self):
+        print("Starting to test: recent survivors 0",end="\n\n")
+        survivors = self.sprint.getRecentSurvivors()
+
+        # Will need to update test file to include this
+        self.assertEqual(len(survivors), 0)
+
+        print("Expected: 0")
+        print("Actual:", len(survivors))
+
+        print("Finished testing: recent survivors 0",end="\n\n")
+        
+    ''' Test for the expected survivors ''' 
+    def test_1_recentSurvivors(self):
+        print("Starting to test: recent survivors 1",end="\n\n")
+        survivors = self.sprint.getRecentSurvivors()
+
+        # Will need to update test file to include this
+        self.assertEqual(survivors, [])
+
+        print("Expected: []")
+        print("Actual:", survivors)
+
+        print("Finished testing: recent survivors 1",end="\n\n")
+
 
 if __name__ == '__main__':
     # Write test file output to a file 
