@@ -507,6 +507,15 @@ class Test(unittest.TestCase):
         self.assertNotEqual(res,['I3'],'Parents too old')
         print("Finished testing: parents too old",end="\n\n")
 
+    def test_5_orphans(self):
+        orphans = self.sprint.getMultipleOrphans()
+        self.assertNotEqual(orphans,[ ], ' empty')
+
+        print("Starting to test: orphans",end="\n\n")
+        print("Expected:", orphans)
+        print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
+        print("Finished testing: orphans",end="\n\n")
+
 if __name__ == '__main__':
     # Write test file output to a file 
     try:
