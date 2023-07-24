@@ -384,17 +384,17 @@ class Parser_Class:
             if hID != 'NA' and married!='NA':self.individual_marriages[hID] = married
             if wID != 'NA' and married!='NA':self.individual_marriages[wID] = married 
 
-                # If wife died recently, put husband and children in recentSurvivors if they're alive
-                # Put husband in recentSurvivors, if he's alive
-                if wID in self.recentdeaths_list:
-                    if hID not in self.individuals_deathday:
-                        self.recentSurvivors.append(hID)
-                    
-                    # If there are any children in the family and they're alive, put them in recentSurvivors
-                    if len(spawns) > 0:
-                        for child in spawns:
-                            if child not in self.individuals_deathday and child not in self.recentSurvivors:
-                                self.recentSurvivors.append(child)                
+            # If wife died recently, put husband and children in recentSurvivors if they're alive
+            # Put husband in recentSurvivors, if he's alive
+            if wID in self.recentdeaths_list:
+                if hID not in self.individuals_deathday:
+                    self.recentSurvivors.append(hID)
+                
+                # If there are any children in the family and they're alive, put them in recentSurvivors
+                if len(spawns) > 0:
+                    for child in spawns:
+                        if child not in self.individuals_deathday and child not in self.recentSurvivors:
+                            self.recentSurvivors.append(child)                
 
             if wID not in self.individuals_deathday and hID not in self.individuals_deathday:
                 deadline=datetime.datetime.today()+timedelta(days=30)
