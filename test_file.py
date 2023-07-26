@@ -516,7 +516,7 @@ class Test(unittest.TestCase):
         print("Expected:", orphans)
         print("Actual:",[['I9', 'I10'], ['I7', 'I6']])
         print("Finished testing: orphans",end="\n\n")
-=======
+
 ################## USER STORY: List upcoming birthdays ##################
     ''' Test for the expected number of birthdays '''
     def test_0_upcomingBirthdays(self):
