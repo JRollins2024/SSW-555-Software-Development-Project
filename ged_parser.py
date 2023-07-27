@@ -83,6 +83,10 @@ class Parser_Class:
 
     birthAfterMarriage = []
 
+    FemaleHusband = []
+
+    MaleWife = []
+
     oldParents = []
 
     """ 
@@ -464,6 +468,35 @@ class Parser_Class:
                 return True
         return False
 
+    def isHusbandMale(self, element):
+        ID = str(element)[2:].replace(str(element.get_tag()), '')
+        ID = sprint1.cleanString(ID)
+        if sprint1.isMarr(self, element):
+           children = element.get_child_elements()
+           for child in children:
+                if child.get_tag() == "HUSB":
+                    if child.get_tag() == "SEX":
+                        sex = str(child)[2:].replace(str(child.get_tag()), '')
+                        sex = sex.splitlines()
+                        sex = sex[0]
+                        if sex == "F":
+                            self.FemaleHusband.append(ID)
+
+    def isWifeFemale(self, element):
+        ID = str(element)[2:].replace(str(element.get_tag()), '')
+        ID = sprint1.cleanString(ID)
+        if sprint1.isMarr(self, element):
+           children = element.get_child_elements()
+           for child in children:
+                if child.get_tag() == "WIFE":
+                    if child.get_tag() == "SEX":
+                        sex = str(child)[2:].replace(str(child.get_tag()), '')
+                        sex = sex.splitlines()
+                        sex = sex[0]
+                        if sex == "M":
+                            self.MaleWife.append(ID)                          
+                                
+
     #is element dead
     def isDead(self,element):
         children = element.get_child_elements()
@@ -735,6 +768,12 @@ for i in sprint1.DiedBeforeMarriage:
 
 for i in sprint1.DiedBeforeDivorce:
     print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE DIVORCED.")
+
+for i in sprint1.FemaleHusband:
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " is a female husband.")
+
+for i in sprint1.MaleWife:
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " is a male wife.")        
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 
