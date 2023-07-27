@@ -614,6 +614,14 @@ class Test(unittest.TestCase):
         print("Actual:",actualSiblings)
         print("Finished testing: married siblings",end="\n\n")
 
+################## USER STORY: Unique IDs #########################################################
+    def test_0_UniqueNonNegative(self):
+        print("Starting to test: Unique Non Negative",end="\n\n")
+        self.assertEqual(self.sprint.uniqueNonNegative(), True)
+        print("Finished testing: Unique Non Negative",end="\n\n")
+
+################## USER STORY: Fewer than 15 siblings in a family ##################
+
 
 
 if __name__ == '__main__':

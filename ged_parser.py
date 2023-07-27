@@ -73,8 +73,6 @@ class Parser_Class:
     # Wedding anniversary in the next 30 days
     upcomingAnniversaries = []
 
-
-
     # Birthday in the next 30 days
     upcomingBirthdays = []
 
@@ -89,11 +87,17 @@ class Parser_Class:
     #list of spawns
     checklist = spawnList = []
 
+    #list of families with 15 or more siblings
+    manySib = []
+
     #list of couples
     coupleList = []
 
     #list for recording couples who are sublings
     coupleError = []
+
+    #list of individuals and families that could not be added because of have the same ID as another individual or family
+    duplicateID = 0
 
     """ 
         Refactored code part 1
@@ -131,7 +135,6 @@ class Parser_Class:
                 self.coupleError.append(siblings)
 
         return self.coupleError
-
 
 
     def MarriageBeforeBirth(self):
@@ -203,7 +206,7 @@ class Parser_Class:
     def UniqueFamilyID(self, id):
         """ This function checks that before a family is added to a dictionary it's ID is not already in it """
         
-        if id in Families:
+        if id in self.Families:
             return False
         else:
             return True
@@ -279,10 +282,11 @@ class Parser_Class:
                     name = name.splitlines()
                     name = name[0]
                     # Check that ID is not already in individuals_dict
-                    if self.UniqueID(ID): # if not taken, then this returns true
+                    if self.UniqueIndividualID(ID): # if not taken, then this returns true
                         self.individuals_dict[ID] = name
                     else:
-                        print("ERROR: ID already taken")
+                        print("ERROR:", ID, "already taken")
+                        self.duplicateIDs += 1
                 #Look up gender of individual
                 if child.get_tag() == "SEX":
                     #separate gender from rest of the line
@@ -388,6 +392,9 @@ class Parser_Class:
                     chil = sprint1.cleanString(chil)
                     spawns.append(chil)
                     self.orphans(hID, wID, chil)
+            # Check how many siblings are in the family
+            if len(spawns) >= 15:
+                self.manySib.append(fID)
             #look up husband and wife IDs in dictionary
             hName = self.individuals_dict.get(hID)
             wName = self.individuals_dict.get(wID)
@@ -463,7 +470,6 @@ class Parser_Class:
                 deadline = date(int(deadlineYear), int(deadlineMonth), int(deadlineDay))
                 if mday.replace(year=int(deadlineYear)) > deadline:
                     self.upcomingAnniversaries.append((wID,hID))
-
 
 
     def isRecentlyBorn(self,element):
@@ -632,6 +638,8 @@ class Parser_Class:
                     fID = sprint1.cleanString(fID)
                     if self.UniqueFamilyID(fID):
                         self.Families.append(fID)
+                    else:
+                        self.duplicateID += 1
                     sprint1.family_helper(element,fID)
     
     def getBirthDates(self,element):
@@ -696,6 +704,12 @@ class Parser_Class:
     
     def getRecentSurvivors(self):
         return self.recentSurvivors
+
+    def getManySib(self):
+        return self.manySib
+
+    def getDuplicateID(self):
+        return self.duplicateID
 
 
 sprint1 = Parser_Class()
@@ -803,6 +817,12 @@ print("Individuals married before birth", sprint1.MarriageBeforeBirth())
 print("Ordered siblings by age: ",sprint1.siblingPair())
 
 print("Siblings that are married: ",sprint1.marriedSiblings())
+
+print("Number of Individuals and Families who had duplicate IDs: ", sprint1.getDuplicateID())
+
+if len(sprint1.getManySib()) > 0:
+    for f in sprint1.getManySib():
+        print("Error: Family " + f + " has 15 or more siblings.")
 
 sys.stdout.close()
 
