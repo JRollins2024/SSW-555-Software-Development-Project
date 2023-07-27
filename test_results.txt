@@ -32,8 +32,6 @@ Number of Families: 11
 Number of Couples: 1
 Finished testing: amount of couples
 
-Starting to test: bigamy 0
-
 Expected: I12
 Actual: I12
 Starting to test: marriage before 14 0
@@ -41,6 +39,12 @@ Starting to test: marriage before 14 0
 Expected: 3
 Actual: 3
 Finished testing: marriage before 14 0
+
+Starting to test: married siblings
+
+Expected: []
+Actual: []
+Finished testing: married siblings
 
 Starting to test: recent survivors 0
 
@@ -51,6 +55,12 @@ Finished testing: recent survivors 0
 Starting to test: return int
 
 Finished testing: return int
+
+Starting to test: siblings
+
+Expected: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I6'], ['I8'], ['I15', 'I16'], ['I17', 'I13']]
+Actual: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I6'], ['I8'], ['I15', 'I16'], ['I17', 'I13']]
+Finished testing: siblings
 
 Starting to test: upcoming birthdays 0
 
@@ -88,8 +98,6 @@ Expected: [['I5', 'I6'], ['I7', 'I6']]
 Actual: [['I5', 'I6'], ['I7', 'I6']]
 Finished testing: couples
 
-Starting to test: bigamy 1
-
 Starting to test: correct age
 
 Expected: 50
@@ -108,6 +116,12 @@ Expected: ['I1', 'I20']
 Actual: ['I1', 'I20']
 Finished testing: people who married before birth
 
+Starting to test: married siblings
+
+Expected: []
+Actual: ['I3', 'I11']
+Finished testing: married siblings
+
  Starting to test: parents too old
 
 Expected: ['I9', 'I10']
@@ -119,6 +133,12 @@ Starting to test: recent survivors 1
 Expected: []
 Actual: []
 Finished testing: recent survivors 1
+
+Starting to test: siblings
+
+Expected: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I6'], ['I8'], ['I15', 'I16'], ['I17', 'I13']]
+Actual: [[]]
+Finished testing: siblings
 
 Starting to test: upcoming anniversaries
 
