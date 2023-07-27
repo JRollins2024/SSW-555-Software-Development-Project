@@ -571,6 +571,34 @@ class Test(unittest.TestCase):
 
         print("Finished testing: recent survivors 1",end="\n\n")
 
+################## USER STORY: Marriage After 14 ##################
+    ''' Test for the expected number of marriages before 14 '''
+    def test_0_marriageBefore14(self):
+        print("Starting to test: marriage before 14 0",end="\n\n")
+        marriages = self.sprint.getMarriagesBefore15()
+
+        self.assertEqual(len(marriages), 1)
+
+        print("Expected: 1")
+        print("Actual:", len(marriages))
+
+        print("Finished testing: marriage before 14 0",end="\n\n")
+
+    ''' Test for the expected marriages before 14 '''
+    def test_1_marriageBefore14(self):
+        print("Starting to test: marriage before 14 1",end="\n\n")
+        marriages = self.sprint.getMarriagesBefore15()
+
+        self.assertEqual(marriages, [('I13', 'I21')])
+
+        print("Expected: [('I13', 'I21')]")
+        print("Actual:", marriages)
+
+        print("Finished testing: marriage before 14 1",end="\n\n")
+
+################## USER STORY: No bigamy ##################
+
+
 
 if __name__ == '__main__':
     # Write test file output to a file 
