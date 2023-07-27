@@ -640,6 +640,23 @@ class Test(unittest.TestCase):
         print("Actual:",actualSiblings)
         print("Finished testing: married siblings",end="\n\n")
 
+################## USER STORY: Marriage before divorce ##################
+    ''' Test for the expected number of marriages before divorce '''
+    def test_0_marriageBeforeDivorce(self):
+        print("Starting to test: marriage before divorce 0",end="\n\n")
+        marriageBeforeDivorce = self.sprint.marriageBeforeDivorce()
+        self.assertEqual(len(marriageBeforeDivorce), 1)
+        print("Expected:", 1)
+        print("Actual:", len(marriageBeforeDivorce))
+        print("Finished testing: marriage before divorce",end="\n\n")
+
+    ''' Test for the expected marriages before divorce '''
+    def test_1_marriageBeforeDivorce(self):
+        print("Starting to test: marriage before divorce 1",end="\n\n")
+        marriageBeforeDivorce = self.sprint.marriageBeforeDivorce()
+        self.assertEqual(marriageBeforeDivorce, [('I17', 'I18')])
+        print("Expected:", [('I17', 'I18')])
+        print("Actual:", marriageBeforeDivorce)
 
 
 if __name__ == '__main__':
