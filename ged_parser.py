@@ -73,8 +73,6 @@ class Parser_Class:
     # Wedding anniversary in the next 30 days
     upcomingAnniversaries = []
 
-
-
     # Birthday in the next 30 days
     upcomingBirthdays = []
 
@@ -84,6 +82,10 @@ class Parser_Class:
     birthAfterMarriage = []
 
     oldParents = []
+
+    Bigamists = []
+
+    MarriagesBefore14 = []
 
     """ 
         Refactored code part 1
@@ -109,7 +111,16 @@ class Parser_Class:
         return self.birthAfterMarriage
 
         # print("ERROR: Individuals married before being born", self.birthAfterMarriage)
-
+    
+    def MarriagesOccurredBefore14(self):
+        for i in self.individual_marriages:
+            if i in self.individual_births and self.individual_marriages[i]!='NA' and self.individual_births[i]!='NA':
+                marriageDate = datetime.datetime.strptime(self.individual_marriages[i].strip(), '%d %b %Y')
+                birthdate = datetime.datetime.strptime(self.individual_births[i].strip(), '%d %b %Y')
+                ageDiff = marriageDate.year - birthdate.year - ((marriageDate.month, marriageDate.day) < (birthdate.month, birthdate.day))
+                if ageDiff < 14:
+                    self.MarriagesBefore14.append(i)
+        return self.MarriagesBefore14
 
     def parentsTooOld(self, hID, wID, spawns):
         now = datetime.datetime.now()
@@ -527,7 +538,7 @@ class Parser_Class:
                 # Add id birth before death list
                 self.DiedBeforeBorn.append(ID)
 
-    
+
     #Start parsing the file
     def parse(self):
         root_child_elements = gedcom_parser.get_root_child_elements()
@@ -636,6 +647,12 @@ class Parser_Class:
     
     def getRecentSurvivors(self):
         return self.recentSurvivors
+    
+    def getBigamists(self):
+        return self.Bigamists
+    
+    def getMarriagesBefore14(self):
+        return self.MarriagesBefore14
 
 
 sprint1 = Parser_Class()
@@ -739,6 +756,8 @@ for i in sprint1.DiedBeforeDivorce:
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 
 print("Individuals married before birth", sprint1.MarriageBeforeBirth())
+
+print("Individuals married before they were 15", sprint1.MarriagesOccurredBefore14())
 
 sys.stdout.close()
 
