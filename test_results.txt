@@ -38,6 +38,10 @@ Expected: I12
 Actual: I12
 Starting to test: marriage before 14 0
 
+Expected: 3
+Actual: 3
+Finished testing: marriage before 14 0
+
 Starting to test: recent survivors 0
 
 Expected: 0
@@ -93,6 +97,10 @@ Actual: 50
 Finished testing: correct age
 
 Starting to test: marriage before 14 1
+
+Expected: [('I13', 'I21')]
+Actual: ['I20', 'I1', 'I21']
+Finished testing: marriage before 14 1
 
  Starting to test: people who married before birth
 
