@@ -85,6 +85,16 @@ class Parser_Class:
 
     oldParents = []
 
+
+    #list of spawns
+    checklist = spawnList = []
+
+    #list of couples
+    coupleList = []
+
+    #list for recording couples who are sublings
+    coupleError = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -96,14 +106,6 @@ class Parser_Class:
         var = var[0]
         return var
     
-
-
-    checklist = spawnList = []
-    # spawnList = []
-
-    coupleList = []
-
-    coupleError = []
 
     def siblingPairUnordered(self):
         return self.checklist 
