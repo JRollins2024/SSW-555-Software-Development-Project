@@ -753,11 +753,13 @@ for i in sprint1.DiedBeforeMarriage:
 for i in sprint1.DiedBeforeDivorce:
     print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE DIVORCED.")
 
+for i in sprint1.MarriagesOccurredBefore14():
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " MARRIED BEFORE THEY WERE 14 YEARS OLD.")
+
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 
 print("Individuals married before birth", sprint1.MarriageBeforeBirth())
 
-print("Individuals married before they were 15", sprint1.MarriagesOccurredBefore14())
 
 sys.stdout.close()
 
