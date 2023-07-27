@@ -83,8 +83,6 @@ class Parser_Class:
 
     oldParents = []
 
-    Bigamists = []
-
     MarriagesBefore14 = []
 
     """ 
@@ -647,9 +645,6 @@ class Parser_Class:
     
     def getRecentSurvivors(self):
         return self.recentSurvivors
-    
-    def getBigamists(self):
-        return self.Bigamists
     
     def getMarriagesBefore14(self):
         return self.MarriagesBefore14
