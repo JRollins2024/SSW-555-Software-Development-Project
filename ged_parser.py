@@ -192,6 +192,22 @@ class Parser_Class:
                 self.orphansUnder18.append(chil)
         return orphanChild
 
+    def UniqueIndividualID(self, id):
+        """ This function checks that before an individual is added to a dictionary it's ID is not already in it """
+        takenIDs = list(self.individuals_dict.keys())
+        if id in takenIDs:
+            return False # this ID has already been used by another individual
+        else:
+            return True
+    
+    def UniqueFamilyID(self, id):
+        """ This function checks that before a family is added to a dictionary it's ID is not already in it """
+        
+        if id in Families:
+            return False
+        else:
+            return True
+
     #compare each individual's birthday and famc to every other individual's birthday and famc
     def compareBirthday(self,birthday, family, ID):
         mult = []
@@ -262,7 +278,11 @@ class Parser_Class:
                     name = str(child)[2:].replace(str(child.get_tag()), '')
                     name = name.splitlines()
                     name = name[0]
-                    self.individuals_dict[ID] = name
+                    # Check that ID is not already in individuals_dict
+                    if self.UniqueID(ID): # if not taken, then this returns true
+                        self.individuals_dict[ID] = name
+                    else:
+                        print("ERROR: ID already taken")
                 #Look up gender of individual
                 if child.get_tag() == "SEX":
                     #separate gender from rest of the line
@@ -610,7 +630,8 @@ class Parser_Class:
                 if element.get_tag() == "FAM":
                     fID = str(element)[2:].replace(str(element.get_tag()), '')
                     fID = sprint1.cleanString(fID)
-                    self.Families.append(fID)
+                    if self.UniqueFamilyID(fID):
+                        self.Families.append(fID)
                     sprint1.family_helper(element,fID)
     
     def getBirthDates(self,element):
