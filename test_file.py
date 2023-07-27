@@ -597,6 +597,29 @@ class Test(unittest.TestCase):
         print("Finished testing: marriage before 14 1",end="\n\n")
 
 ################## USER STORY: No bigamy ##################
+    ''' Test for the expected number of bigamists '''
+    def test_0_bigamy(self):
+        print("Starting to test: bigamy 0",end="\n\n")
+        bigamists = self.sprint.getBigamists()
+
+        self.assertEqual(len(bigamists), 1)
+
+        print("Expected: 1")
+        print("Actual:", len(bigamists))
+
+        print("Finished testing: bigamy 0",end="\n\n")
+
+    ''' Test for the expected bigamists '''
+    def test_1_bigamy(self):
+        print("Starting to test: bigamy 1",end="\n\n")
+        bigamists = self.sprint.getBigamists()
+
+        self.assertEqual(bigamists, [('I13', 'I21,', 'I22')])
+
+        print("Expected: [('I13', 'I21,', 'I22')]")
+        print("Actual:", bigamists)
+
+        print("Finished testing: bigamy 1",end="\n\n")
 
 
 
