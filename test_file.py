@@ -598,6 +598,50 @@ class Test(unittest.TestCase):
 
 
 
+################## USER STORY: List siblings in families by decreasing age ##################
+    def test_0_siblingList(self):
+        siblingListOrdered = self.sprint.siblingPair()
+        siblingListUnordered = self.sprint.siblingPairUnordered()
+        self.assertEqual(siblingListOrdered,siblingListUnordered,'sibling list is ordered')
+        print("Starting to test: siblings",end="\n\n")
+        print("Expected:", siblingListOrdered)
+        print("Actual:",siblingListUnordered)
+        print("Finished testing: siblings",end="\n\n")
+
+
+    def test_1_siblingList(self):
+        siblingListOrdered = self.sprint.siblingPair()
+        siblingListUnordered = [[]]
+        self.assertNotEqual(siblingListOrdered,siblingListUnordered,'empty list')
+        print("Starting to test: siblings",end="\n\n")
+        print("Expected:", siblingListOrdered)
+        print("Actual:",siblingListUnordered)
+        print("Finished testing: siblings",end="\n\n")
+
+
+
+################## USER STORY: Siblings should not marry one another ##################
+
+    def test_0_marriedsiblings(self):
+        marriedSibling = self.sprint.marriedSiblings()
+        emptyList = []
+        self.assertEqual(marriedSibling,emptyList,'No such siblings')
+        print("Starting to test: married siblings",end="\n\n")
+        print("Expected:", marriedSibling)
+        print("Actual:",emptyList)
+        print("Finished testing: married siblings",end="\n\n")
+
+    def test_1_marriedsiblings(self):
+        marriedSibling = self.sprint.marriedSiblings()
+        actualSiblings = ['I3', 'I11']
+        self.assertNotEqual(marriedSibling,actualSiblings,'siblings')
+        print("Starting to test: married siblings",end="\n\n")
+        print("Expected:", marriedSibling)
+        print("Actual:",actualSiblings)
+        print("Finished testing: married siblings",end="\n\n")
+
+
+
 if __name__ == '__main__':
     # Write test file output to a file 
     try:

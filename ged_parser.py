@@ -85,6 +85,16 @@ class Parser_Class:
 
     MarriagesBefore14 = []
 
+
+    #list of spawns
+    checklist = spawnList = []
+
+    #list of couples
+    coupleList = []
+
+    #list for recording couples who are sublings
+    coupleError = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -96,6 +106,33 @@ class Parser_Class:
         var = var[0]
         return var
     
+
+    def siblingPairUnordered(self):
+        return self.checklist 
+
+    def siblingPair(self):
+        now = datetime.datetime.now()
+        for spawn in self.spawnList:
+            if len(spawn) == 1:
+                continue
+                # age = datetime.datetime.strptime(self.individual_births[spawn[0]].strip(), '%d %b %Y')
+                # print(spawn,'-',age)
+            else: 
+                age1 = now - datetime.datetime.strptime(self.individual_births[spawn[0]].strip(), '%d %b %Y')
+                age2 = now - datetime.datetime.strptime(self.individual_births[spawn[1]].strip(), '%d %b %Y')
+                if age2 > age1:
+                    spawn[0],spawn[1] = spawn[1],spawn[0]
+        return self.spawnList
+
+
+    def marriedSiblings(self):
+        for siblings in self.checklist:
+            if siblings in self.coupleList:
+                self.coupleError.append(siblings)
+
+        return self.coupleError
+
+
 
     def MarriageBeforeBirth(self):
         for i in self.individual_marriages:
@@ -343,6 +380,8 @@ class Parser_Class:
             #look up husband and wife IDs in dictionary
             hName = self.individuals_dict.get(hID)
             wName = self.individuals_dict.get(wID)
+            #if list is not empty then append to spawn list
+            if len(spawns) != 0: self.spawnList.append(spawns)
             self.fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
             # Check that husband and wife are married before either of them die
@@ -755,6 +794,9 @@ print("Mother is more than 60 years old and father is more than 80 years older t
 
 print("Individuals married before birth", sprint1.MarriageBeforeBirth())
 
+print("Ordered siblings by age: ",sprint1.siblingPair())
+
+print("Siblings that are married: ",sprint1.marriedSiblings())
 
 sys.stdout.close()
 
