@@ -89,7 +89,7 @@ class Test(unittest.TestCase):
         actual = self.sprint.getSingles()
 
         # expected output
-        expected = ['I1', 'I4', 'I8', 'I13', 'I15']
+        expected = ['I4', 'I8', 'I15']
 
         #check that the actual matched the expected output
         self.assertEqual(actual, expected)
@@ -337,7 +337,7 @@ class Test(unittest.TestCase):
         actual = self.sprint.getLivingMarried()
 
         # Expected output from class
-        expected = ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
+        expected = ['I1', 'I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I20', 'I21', 'I22']
 
         # Assert that actual matches expected output
         self.assertEqual(actual, expected)
@@ -524,9 +524,9 @@ class Test(unittest.TestCase):
         birthdays = self.sprint.getUpcomingBirthdays()
 
         # This value will actually change within a week, so this test will need to be updated in the near future
-        self.assertEqual(len(birthdays), 0)
+        self.assertEqual(len(birthdays), 2)
 
-        print("Expected: 0")
+        print("Expected: 2")
         print("Actual:", len(birthdays))
 
         print("Finished testing: upcoming birthdays 0",end="\n\n")
@@ -537,7 +537,7 @@ class Test(unittest.TestCase):
         birthdays = self.sprint.getUpcomingBirthdays()
 
         # This value will actually change within a week, so this test will need to be updated in the near future
-        self.assertEqual(birthdays, [])
+        self.assertEqual(birthdays, ['I10', 'I17'])
 
         print("Expected: []")
         print("Actual:", birthdays)
