@@ -89,12 +89,14 @@ class Test(unittest.TestCase):
         actual = self.sprint.getSingles()
 
         # expected output
-        expected = ['I1', 'I4', 'I8', 'I13', 'I15']
+        expected = ['I4', 'I8', 'I22', 'I23', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
+
+        print("Expected: " + str(expected))
+        print("Actual: " + str(actual),end="\n\n")
 
         #check that the actual matched the expected output
         self.assertEqual(actual, expected)
-        print("Expected: " + str(expected))
-        print("Actual: " + str(actual),end="\n\n")
+        
 
 
 ################### USER STORY: List multiple births ##################
@@ -137,12 +139,12 @@ class Test(unittest.TestCase):
 
         # get actual output from class
         actual = self.sprint.getMultipleBirthsElem()
-
         # iterate through each sibling group
         for sg in actual[:-1]:
             # check that the surrent individual has the same birthday as the next individual
-            for i in sg:
-                self.assertEqual(self.sprint.getBirthDate(i), self.sprint.getBirthDate(sg[i+1]))
+            for i in range(len(sg)):
+                if i != len(sg)-1:
+                    self.assertEqual(self.sprint.getBirthDates(sg[i]), self.sprint.getBirthDates(sg[i+1]))
 
         print("Finished testing: Multiples_Birthday",end="\n\n")
 
@@ -156,9 +158,10 @@ class Test(unittest.TestCase):
         # iterate through each sibling group
         for sg in actual[:-1]:
             # iterate through each sibling in the group
-            for i in sg:
+            for i in range(len(sg)):
                 # and assert that each one is a sibling of the next individual by seeing they are both children of the same family
-                self.assertEqual(self.sprint.getChildFamily(i), self.sprint.getChildFamily(sg[i+1]))
+                if i != len(sg)-1:
+                    self.assertEqual(self.sprint.getChildFamily(sg[i]), self.sprint.getChildFamily(sg[i+1]))
                 
         print("Finished testing: Multiples_Siblings",end="\n\n")
 
@@ -171,12 +174,12 @@ class Test(unittest.TestCase):
         actual = self.sprint.getMultipleBirths()
 
         # Expected output from class
-        expected = [['I1', 'I4']]
-
-        # Assert that actual matches expected output
-        self.assertEqual(actual, expected)
+        expected = [['I1','I4'],['I24','I25'], ['I29','I30'], ['I31','I33'],['I35','I36'],['I38','I39'],['I40','I41']]
         print("Expected: " + str(expected))
         print("Actual: " + str(actual), end="\n\n")
+        # Assert that actual matches expected output
+        self.assertEqual(actual, expected)
+        
 
         print("Finished testing: Multiples",end="\n\n")
 
@@ -254,7 +257,7 @@ class Test(unittest.TestCase):
         actual = self.sprint.getDead()
 
         # Expected output from class
-        expected = ['I5', 'I7', 'I16', 'I17', 'I18', 'I19']
+        expected = ['I5', 'I7', 'I15', 'I16', 'I17', 'I18']
 
         # Assert that actual matches expected output
         self.assertEqual(actual, expected)
@@ -337,7 +340,7 @@ class Test(unittest.TestCase):
         actual = self.sprint.getLivingMarried()
 
         # Expected output from class
-        expected = ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
+        expected = ['I1', 'I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I26', 'I27']
 
         # Assert that actual matches expected output
         self.assertEqual(actual, expected)
@@ -459,7 +462,7 @@ class Test(unittest.TestCase):
     def test_1_upcomingAnniversaries(self):
         print("Starting to test: upcoming anniversaries",end="\n\n")
         anniversaries = self.sprint.getUpcomingAnniversaries()
-        expected = [('I3','I2')]
+        expected = [('I3','I2'), ('I26','I27')]
 
         self.assertEqual(anniversaries, expected)
 
@@ -475,7 +478,7 @@ class Test(unittest.TestCase):
         res = sorted([*set(peopleBornBeforeMariage)])
         print("Expected:", res)
         print("Actual:",['I1', 'I20'])
-        self.assertEqual(res,['I1', 'I20'],'Marriage before birth')
+        self.assertEqual(res,['I1', 'I19'],'Marriage before birth')
         print("Finished testing: people who married before birth",end="\n\n")
 
 
@@ -524,9 +527,9 @@ class Test(unittest.TestCase):
         birthdays = self.sprint.getUpcomingBirthdays()
 
         # This value will actually change within a week, so this test will need to be updated in the near future
-        self.assertEqual(len(birthdays), 0)
+        self.assertEqual(len(birthdays), 4)
 
-        print("Expected: 0")
+        print("Expected: 2")
         print("Actual:", len(birthdays))
 
         print("Finished testing: upcoming birthdays 0",end="\n\n")
@@ -537,7 +540,7 @@ class Test(unittest.TestCase):
         birthdays = self.sprint.getUpcomingBirthdays()
 
         # This value will actually change within a week, so this test will need to be updated in the near future
-        self.assertEqual(birthdays, [])
+        self.assertEqual(birthdays, ['I10', 'I16', 'I38', 'I39'])
 
         print("Expected: []")
         print("Actual:", birthdays)
@@ -570,7 +573,7 @@ class Test(unittest.TestCase):
         print("Actual:", survivors)
 
         print("Finished testing: recent survivors 1",end="\n\n")
-
+        
 
 ################## USER STORY: List siblings in families by decreasing age ##################
     def test_0_siblingList(self):
@@ -613,6 +616,32 @@ class Test(unittest.TestCase):
         print("Expected:", marriedSibling)
         print("Actual:",actualSiblings)
         print("Finished testing: married siblings",end="\n\n")
+
+################## USER STORY: Unique IDs #########################################################
+    ''' Check that a non-negative number of IDs are returned'''
+    def test_0_UniqueNonNegative(self):
+        print("Starting to test: Unique Non Negative",end="\n\n")
+        actual = self.sprint.getDuplicateID()
+        self.assertEqual(actual >= 0, True)
+        print("Finished testing: Unique Non Negative",end="\n\n")
+
+    ''' Check that number of IDs returned is correct'''
+    def test_1_CorrectUniqueIDs(self):
+        print("Starting to test: Correct Unique IDs",end="\n\n")
+        expected = 0
+        actual = self.sprint.getDuplicateID()
+        print("Expected: ", expected)
+        print("Actual: ", actual)
+        self.assertEqual(expected, actual)
+        print("Finished testing: Correct Unique IDs",end="\n\n")
+
+################## USER STORY: Fewer than 15 siblings in a family ################## 
+    def test_0_fewerThan15Siblings(self):
+        print("Starting to test: fewer than 15 siblings 0",end="\n\n")
+        expected = 1
+        actual = len(self.sprint.getManySib())
+        self.assertEqual(expected, actual)
+        print("Finished testing: fewer than 15 siblings 0",end="\n\n")          
 
 
 

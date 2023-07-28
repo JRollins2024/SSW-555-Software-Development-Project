@@ -1,39 +1,47 @@
 Starting to test: Deceased_Size
 
-Number of total individuals: 19
+Number of total individuals: 42
 Number of deceased: 6
 
 Finished testing: Deceased_Size
 
 Starting to test: LivingMarried_Size
 
-Number of total individuals: 19
-Number of living married: 8
+Number of total individuals: 42
+Number of living married: 15
 
 Finished testing: LivingMarried_Size
 
 Starting to test: Multiples_Size
 
-Number of total individuals: 19
-Number of multiple births: 1
+Number of total individuals: 42
+Number of multiple births: 7
 
 Finished testing: Multiples_Size
 
 Starting to test: Singles_Size
 
-Number of total individuals: 19
-Number of singles: 5
+Number of total individuals: 42
+Number of singles: 21
 
 Finished testing: Singles_Size
 
+Starting to test: Unique Non Negative
+
+Finished testing: Unique Non Negative
+
 Starting to test: amount of couples
 
-Number of Families: 8
-Number of Couples: 1
+Number of Families: 12
+Number of Couples: 2
 Finished testing: amount of couples
 
 Expected: I12
 Actual: I12
+Starting to test: fewer than 15 siblings 0
+
+Finished testing: fewer than 15 siblings 0
+
 Starting to test: married siblings
 
 Expected: []
@@ -52,11 +60,21 @@ Finished testing: return int
 
 Starting to test: siblings
 
-Expected: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I6'], ['I8'], ['I15', 'I16'], ['I17', 'I13']]
-Actual: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I6'], ['I8'], ['I15', 'I16'], ['I17', 'I13']]
+Expected: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I26', 'I6'], ['I8'], ['I22', 'I15', 'I23', 'I24', 'I25'], ['I16', 'I13'], ['I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']]
+Actual: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I26', 'I6'], ['I8'], ['I22', 'I15', 'I23', 'I24', 'I25'], ['I16', 'I13'], ['I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']]
 Finished testing: siblings
 
 Starting to test: upcoming birthdays 0
+
+Expected: 2
+Actual: 4
+Finished testing: upcoming birthdays 0
+
+Starting to test: Correct Unique IDs
+
+Expected:  0
+Actual:  0
+Finished testing: Correct Unique IDs
 
 Starting to test: Deceased_Size2
 
@@ -66,19 +84,19 @@ Finished testing: Deceased_Size2
 
 Starting to test: LivingMarried_Size2
 
-Number of living married: 8
+Number of living married: 15
 
 Finished testing: LivingMarried_Size2
 
 Starting to test: Multiples_Size2
 
-Number of singles: 1
+Number of singles: 7
 
 Finished testing: Multiples_Size2
 
 Starting to test: Singles_Size2
 
-Number of singles: 5
+Number of singles: 21
 
 Finished testing: Singles_Size2
 
@@ -96,8 +114,10 @@ Finished testing: correct age
 
  Starting to test: people who married before birth
 
-Expected: []
+Expected: ['I1', 'I19']
 Actual: ['I1', 'I20']
+Finished testing: people who married before birth
+
 Starting to test: married siblings
 
 Expected: []
@@ -105,6 +125,10 @@ Actual: ['I3', 'I11']
 Finished testing: married siblings
 
  Starting to test: parents too old
+
+Expected: ['I9', 'I10']
+Actual: [['I9', 'I10']]
+Finished testing: parents too old
 
 Starting to test: recent survivors 1
 
@@ -114,17 +138,21 @@ Finished testing: recent survivors 1
 
 Starting to test: siblings
 
-Expected: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I6'], ['I8'], ['I15', 'I16'], ['I17', 'I13']]
+Expected: [['I1', 'I4'], ['I2'], ['I3', 'I11'], ['I26', 'I6'], ['I8'], ['I22', 'I15', 'I23', 'I24', 'I25'], ['I16', 'I13'], ['I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']]
 Actual: [[]]
 Finished testing: siblings
 
 Starting to test: upcoming anniversaries
 
-Expected: [('I3', 'I2')]
-Actual: [('I3', 'I2')]
+Expected: [('I3', 'I2'), ('I26', 'I27')]
+Actual: [('I3', 'I2'), ('I26', 'I27')]
 Finished testing: upcoming anniversaries
 
 Starting to test: upcoming birthdays 1
+
+Expected: []
+Actual: ['I10', 'I16', 'I38', 'I39']
+Finished testing: upcoming birthdays 1
 
 Starting to test: Deceased_Dead
 
@@ -150,11 +178,15 @@ Finished testing: couples age difference 2
 
  Starting to test: people who did not marry before birth
 
-Expected: []
+Expected: ['I1', 'I19']
 Actual: ['I5']
 Finished testing: people who did not marry before birth
 
  Starting to test: parents too old
+
+Expected: ['I9', 'I10']
+Actual: [['I3']]
+Finished testing: parents too old
 
 Starting to test: Deceased_Individual
 
@@ -180,29 +212,29 @@ Finished testing: orphans test 1
 
 Starting to test: Deceased_Value
 
-Expected: ['I5', 'I7', 'I16', 'I17', 'I18', 'I19']
-Actual: ['I5', 'I7', 'I16', 'I17', 'I18', 'I19']
+Expected: ['I5', 'I7', 'I15', 'I16', 'I17', 'I18']
+Actual: ['I5', 'I7', 'I15', 'I16', 'I17', 'I18']
 
 Finished testing: Deceased_Value
 
 Starting to test: LivingMarried_Value
 
-Expected: ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
-Actual: ['I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I14']
+Expected: ['I1', 'I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I26', 'I27']
+Actual: ['I1', 'I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I26', 'I27']
 
 Finished testing: LivingMarried_Value
 
 Starting to test: Multiples
 
-Expected: [['I1', 'I4']]
-Actual: [['I1', 'I4']]
+Expected: [['I1', 'I4'], ['I24', 'I25'], ['I29', 'I30'], ['I31', 'I33'], ['I35', 'I36'], ['I38', 'I39'], ['I40', 'I41']]
+Actual: [['I1', 'I4'], ['I24', 'I25'], ['I29', 'I30'], ['I31', 'I33'], ['I35', 'I36'], ['I38', 'I39'], ['I40', 'I41']]
 
 Finished testing: Multiples
 
 Starting to test: Singles_Value
 
-Expected: ['I1', 'I4', 'I8', 'I13', 'I15']
-Actual: ['I1', 'I4', 'I8', 'I13', 'I15']
+Expected: ['I4', 'I8', 'I22', 'I23', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
+Actual: ['I4', 'I8', 'I22', 'I23', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
 
 Starting to test: orphans test 2
 
