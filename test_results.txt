@@ -42,6 +42,18 @@ Starting to test: fewer than 15 siblings 0
 
 Finished testing: fewer than 15 siblings 0
 
+Starting to test: marriage before 14 0
+
+Expected: 3
+Actual: 3
+Finished testing: marriage before 14 0
+
+Starting to test: marriage before divorce 0
+
+Expected: 1
+Actual: 1
+Finished testing: marriage before divorce
+
 Starting to test: married siblings
 
 Expected: []
@@ -112,12 +124,22 @@ Expected: 50
 Actual: 50
 Finished testing: correct age
 
+Starting to test: marriage before 14 1
+
+Expected: ['I19', 'I1', 'I20']
+Actual: ['I19', 'I1', 'I20']
+Finished testing: marriage before 14 1
+
  Starting to test: people who married before birth
 
 Expected: ['I1', 'I19']
 Actual: ['I1', 'I20']
 Finished testing: people who married before birth
 
+Starting to test: marriage before divorce 1
+
+Expected: ['F6']
+Actual: ['F6']
 Starting to test: married siblings
 
 Expected: []

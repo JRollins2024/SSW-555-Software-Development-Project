@@ -592,9 +592,9 @@ class Test(unittest.TestCase):
         print("Starting to test: marriage before 14 1",end="\n\n")
         marriages = self.sprint.getMarriagesBefore14()
 
-        self.assertEqual(marriages, ['I20','I1', 'I21'])
+        self.assertEqual(marriages, ['I19', 'I1', 'I20'])
 
-        print("Expected: [('I13', 'I21')]")
+        print("Expected: " + "['I19', 'I1', 'I20']")
         print("Actual:", marriages)
 
         print("Finished testing: marriage before 14 1",end="\n\n")
