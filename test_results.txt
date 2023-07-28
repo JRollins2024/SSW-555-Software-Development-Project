@@ -42,6 +42,10 @@ Finished testing: marriage before 14 0
 
 Starting to test: marriage before divorce 0
 
+Expected: 1
+Actual: 1
+Finished testing: marriage before divorce
+
 Starting to test: married siblings
 
 Expected: []
@@ -110,6 +114,8 @@ Expected: ['I1', 'I19']
 Actual: ['I1', 'I20']
 Starting to test: marriage before divorce 1
 
+Expected: ['F6']
+Actual: ['F6']
 Starting to test: married siblings
 
 Expected: []

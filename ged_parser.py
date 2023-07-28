@@ -85,6 +85,7 @@ class Parser_Class:
 
     MarriagesBefore14 = []
 
+    MarriagesBeforeDivorce = []
 
     #list of spawns
     checklist = spawnList = []
@@ -383,6 +384,12 @@ class Parser_Class:
             #if list is not empty then append to spawn list
             if len(spawns) != 0: self.spawnList.append(spawns)
             self.fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
+
+            # Check that husband and wife are married before they divorce
+            if mday != "NA" and dday != "NA":
+                # If their divorce date is before their marriage date, add to list
+                if dday < mday:
+                    self.MarriagesBeforeDivorce.append(fID)
 
             # Check that husband and wife are married before either of them die
             if hID in self.individuals_deathday:
@@ -688,6 +695,8 @@ class Parser_Class:
     def getMarriagesBefore14(self):
         return self.MarriagesBefore14
 
+    def marriageBeforeDivorce(self):
+        return self.MarriagesBeforeDivorce
 
 sprint1 = Parser_Class()
 
@@ -789,6 +798,9 @@ for i in sprint1.DiedBeforeDivorce:
 
 for i in sprint1.MarriagesOccurredBefore14():
     print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " MARRIED BEFORE THEY WERE 14 YEARS OLD.")
+
+for i in sprint1.marriageBeforeDivorce():
+    print("Error: Family " + i + " DIVORCED BEFORE THEY WERE MARRIED.")
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 

@@ -654,8 +654,8 @@ class Test(unittest.TestCase):
     def test_1_marriageBeforeDivorce(self):
         print("Starting to test: marriage before divorce 1",end="\n\n")
         marriageBeforeDivorce = self.sprint.marriageBeforeDivorce()
-        self.assertEqual(marriageBeforeDivorce, [('I17', 'I18')])
-        print("Expected:", [('I17', 'I18')])
+        self.assertEqual(marriageBeforeDivorce, ['F6'])
+        print("Expected:", ['F6'])
         print("Actual:", marriageBeforeDivorce)
 
 
