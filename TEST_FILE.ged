@@ -1,14 +1,14 @@
 0 HEAD
 1 SOUR Family Echo
 2 WWW http://www.familyecho.com/
-1 FILE Family Echo
+1 FILE My Family
 1 DATE 27 JUL 2023
 1 DEST ANSTFILE
 1 GEDC
 2 VERS 5.5.1
 2 FORM LINEAGE-LINKED
-1 SUBM @I13@
-2 NAME Dominick Varano
+1 SUBM @I1@
+2 NAME Jamie Rollins
 1 SUBN
 1 CHAR UTF-8
 0 @I1@ INDI
@@ -364,7 +364,7 @@
 2 _MARNM Fallon
 1 SEX M
 1 BIRT
-2 DATE 28 MAY 1866
+2 DATE 24 NOV 1869
 1 FAMC @F12@
 0 @I38@ INDI
 1 NAME Guilia /Fallon/
