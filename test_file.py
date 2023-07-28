@@ -573,6 +573,33 @@ class Test(unittest.TestCase):
         print("Actual:", survivors)
 
         print("Finished testing: recent survivors 1",end="\n\n")
+
+################## USER STORY: Marriage After 14 ##################
+    ''' Test for the expected number of marriages before 14 '''
+    def test_0_marriageBefore14(self):
+        print("Starting to test: marriage before 14 0",end="\n\n")
+        marriages = self.sprint.getMarriagesBefore14()
+
+        self.assertEqual(len(marriages), 3)
+
+        print("Expected: 3")
+        print("Actual:", len(marriages))
+
+        print("Finished testing: marriage before 14 0",end="\n\n")
+
+    ''' Test for the expected marriages before 14 '''
+    def test_1_marriageBefore14(self):
+        print("Starting to test: marriage before 14 1",end="\n\n")
+        marriages = self.sprint.getMarriagesBefore14()
+
+        self.assertEqual(marriages, ['I19', 'I1', 'I20'])
+
+        print("Expected: " + "['I19', 'I1', 'I20']")
+        print("Actual:", marriages)
+
+        print("Finished testing: marriage before 14 1",end="\n\n")
+
+
         
 
 ################## USER STORY: List siblings in families by decreasing age ##################
@@ -617,6 +644,23 @@ class Test(unittest.TestCase):
         print("Actual:",actualSiblings)
         print("Finished testing: married siblings",end="\n\n")
 
+################## USER STORY: Marriage before divorce ##################
+    ''' Test for the expected number of marriages before divorce '''
+    def test_0_marriageBeforeDivorce(self):
+        print("Starting to test: marriage before divorce 0",end="\n\n")
+        marriageBeforeDivorce = self.sprint.marriageBeforeDivorce()
+        self.assertEqual(len(marriageBeforeDivorce), 1)
+        print("Expected:", 1)
+        print("Actual:", len(marriageBeforeDivorce))
+        print("Finished testing: marriage before divorce",end="\n\n")
+
+    ''' Test for the expected marriages before divorce '''
+    def test_1_marriageBeforeDivorce(self):
+        print("Starting to test: marriage before divorce 1",end="\n\n")
+        marriageBeforeDivorce = self.sprint.marriageBeforeDivorce()
+        self.assertEqual(marriageBeforeDivorce, ['F6'])
+        print("Expected:", ['F6'])
+        print("Actual:", marriageBeforeDivorce)
 ################## USER STORY: Unique IDs #########################################################
     ''' Check that a non-negative number of IDs are returned'''
     def test_0_UniqueNonNegative(self):

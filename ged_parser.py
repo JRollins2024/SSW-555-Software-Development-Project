@@ -83,6 +83,9 @@ class Parser_Class:
 
     oldParents = []
 
+    MarriagesBefore14 = []
+
+    MarriagesBeforeDivorce = []
 
     #list of spawns
     checklist = spawnList = []
@@ -149,7 +152,16 @@ class Parser_Class:
         return self.birthAfterMarriage
 
         # print("ERROR: Individuals married before being born", self.birthAfterMarriage)
-
+    
+    def MarriagesOccurredBefore14(self):
+        for i in self.individual_marriages:
+            if i in self.individual_births and self.individual_marriages[i]!='NA' and self.individual_births[i]!='NA':
+                marriageDate = datetime.datetime.strptime(self.individual_marriages[i].strip(), '%d %b %Y')
+                birthdate = datetime.datetime.strptime(self.individual_births[i].strip(), '%d %b %Y')
+                ageDiff = marriageDate.year - birthdate.year - ((marriageDate.month, marriageDate.day) < (birthdate.month, birthdate.day))
+                if ageDiff < 14:
+                    self.MarriagesBefore14.append(i)
+        return self.MarriagesBefore14
 
     def parentsTooOld(self, hID, wID, spawns):
         now = datetime.datetime.now()
@@ -402,6 +414,12 @@ class Parser_Class:
             if len(spawns) != 0: self.spawnList.append(spawns)
             self.fTable.add_row([fID,married,divorced,hID,hName,wID,wName,spawns])
 
+            # Check that husband and wife are married before they divorce
+            if mday != "NA" and dday != "NA":
+                # If their divorce date is before their marriage date, add to list
+                if dday < mday:
+                    self.MarriagesBeforeDivorce.append(fID)
+
             # Check that husband and wife are married before either of them die
             if hID in self.individuals_deathday:
                 # Husband's death
@@ -592,7 +610,7 @@ class Parser_Class:
                 # Add id birth before death list
                 self.DiedBeforeBorn.append(ID)
 
-    
+
     #Start parsing the file
     def parse(self):
         root_child_elements = gedcom_parser.get_root_child_elements()
@@ -704,7 +722,12 @@ class Parser_Class:
     
     def getRecentSurvivors(self):
         return self.recentSurvivors
+    
+    def getMarriagesBefore14(self):
+        return self.MarriagesBefore14
 
+    def marriageBeforeDivorce(self):
+        return self.MarriagesBeforeDivorce
     def getManySib(self):
         return self.manySib
 
@@ -809,6 +832,12 @@ for i in sprint1.DiedBeforeMarriage:
 
 for i in sprint1.DiedBeforeDivorce:
     print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " DIED BEFORE THEY WERE DIVORCED.")
+
+for i in sprint1.MarriagesOccurredBefore14():
+    print("Error: Individual " + i + "(" + str(sprint1.individuals_age.get(i)) + ")" + " MARRIED BEFORE THEY WERE 14 YEARS OLD.")
+
+for i in sprint1.marriageBeforeDivorce():
+    print("Error: Family " + i + " DIVORCED BEFORE THEY WERE MARRIED.")
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 
