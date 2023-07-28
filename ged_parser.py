@@ -249,7 +249,7 @@ class Parser_Class:
                 multiples = True
                 mult.append(id)
                 mult_elem.append(e)
-        if multiples == True:
+        if multiples == True and id not in mult:
             mult.append(ID)
             #check if this set of multiples has already been added to the list (including reversal)
             for m in self.Multiples:
