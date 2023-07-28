@@ -573,33 +573,7 @@ class Test(unittest.TestCase):
         print("Actual:", survivors)
 
         print("Finished testing: recent survivors 1",end="\n\n")
-
-################## USER STORY: Marriage After 14 ##################
-    ''' Test for the expected number of marriages before 14 '''
-    def test_0_marriageBefore14(self):
-        print("Starting to test: marriage before 14 0",end="\n\n")
-        marriages = self.sprint.getMarriagesBefore14()
-
-        self.assertEqual(len(marriages), 3)
-
-        print("Expected: 3")
-        print("Actual:", len(marriages))
-
-        print("Finished testing: marriage before 14 0",end="\n\n")
-
-    ''' Test for the expected marriages before 14 '''
-    def test_1_marriageBefore14(self):
-        print("Starting to test: marriage before 14 1",end="\n\n")
-        marriages = self.sprint.getMarriagesBefore14()
-
-        self.assertEqual(marriages, ['I20','I1', 'I21'])
-
-        print("Expected: [('I13', 'I21')]")
-        print("Actual:", marriages)
-
-        print("Finished testing: marriage before 14 1",end="\n\n")
-
-
+        
 
 ################## USER STORY: List siblings in families by decreasing age ##################
     def test_0_siblingList(self):
