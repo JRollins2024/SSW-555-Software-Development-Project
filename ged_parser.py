@@ -102,6 +102,9 @@ class Parser_Class:
     #list of individuals and families that could not be added because of have the same ID as another individual or family
     duplicateID = 0
 
+    # Father's and Sons who don't have the same last name
+    incorrectMaleNames = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -581,6 +584,31 @@ class Parser_Class:
                             return True
         return False
 
+    def checkMaleNames(self, element, fID):
+        # get Father last name (Husband)
+        children = element.get_child_elements()
+        for child in children:
+            if child.get_tag() == 'HUSB': # Father
+                hID = str(child)[2:].replace(str(child.get_tag()), '')
+                hID = sprint1.cleanString(hID)
+                fatherName = self.individuals_dict[hID].split()[-1].replace('/', '')
+        #Get son last names
+            if child.get_tag() == 'CHIL': # Child
+                cID = str(child)[2:].replace(str(child.get_tag()), '')
+                cID = sprint1.cleanString(cID)
+                # check gender
+                gender = self.iTable[int(cID[1:])-1]
+                gender.border = False
+                gender.header = False
+                gender = gender.get_string(fields=["Gender"]).strip()
+                if gender == 'M':
+                    childName = self.individuals_dict[cID].split()[-1].replace('/', '')
+                    if fatherName != childName:
+                        self.incorrectMaleNames.append(fID)
+                else:
+                    continue
+        return
+
     # Check that individual dies AFTER they are born
     def checkDeadAfterBirth(self, element):
         ID = str(element)[2:].replace(str(element.get_tag()), '')
@@ -658,6 +686,10 @@ class Parser_Class:
                         self.Families.append(fID)
                     else:
                         self.duplicateID += 1
+                    # check male names in family
+                    sprint1.checkMaleNames(element,fID)
+                    # check that the husband and wife are not cousins
+                    sprint1.checkCousins(element,fID)
                     sprint1.family_helper(element,fID)
     
     def getBirthDates(self,element):
@@ -733,6 +765,9 @@ class Parser_Class:
 
     def getDuplicateID(self):
         return self.duplicateID
+
+    def getIncorrectMaleNames(self):
+        return self.incorrectMaleNames
 
 
 sprint1 = Parser_Class()
@@ -838,6 +873,9 @@ for i in sprint1.MarriagesOccurredBefore14():
 
 for i in sprint1.marriageBeforeDivorce():
     print("Error: Family " + i + " DIVORCED BEFORE THEY WERE MARRIED.")
+
+for i in sprint1.incorrectMaleNames:
+    print("Error: Family " + i + " MALE MEMBERS DON'T HAVE THE SAME LAST NAME.")
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 

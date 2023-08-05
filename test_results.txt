@@ -42,9 +42,9 @@ Starting to test: fewer than 15 siblings 0
 
 Finished testing: fewer than 15 siblings 0
 
-Staring to test: male family members
+Starting to test: kissing cousins 0
 
-Finished testing: male family members
+Finished testing: kissing cousins 0
 
 Starting to test: marriage before 14 0
 
@@ -127,6 +127,10 @@ Starting to test: correct age
 Expected: 50
 Actual: 50
 Finished testing: correct age
+
+Starting to test: kissing cousins 1
+
+Finished testing: kissing cousins 1
 
 Staring to test: male family members have the same last name
 

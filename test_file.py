@@ -688,19 +688,30 @@ class Test(unittest.TestCase):
         print("Finished testing: fewer than 15 siblings 0",end="\n\n")     
 
 ################## USER STORY: Male Last Names ##################
-    ''' All family member being compared are male'''
-    def test_0_maleLastNames(self): 
-        print("Staring to test: male family members",end="\n\n")
-        example = 'F2' # Family F2 should throw an error
-        print("Finished testing: male family members", end="\n\n")
-        return
-
     ''' All family members being compared have the same last name'''
     def test_1_maleLastNames(self): 
         print("Staring to test: male family members have the same last name",end="\n\n")
+        # Family F2 should throw an error because the father and son have different last name
+        expected = 'F2'
+        actual = self.sprint.getIncorrectMaleNames()
+        self.assertEqual(expected, actual[0])
         print("Finished testing: male family members have the same last name", end="\n\n")
         return   
 
+################ USER STORY: Kissing Cousins #############################
+    ''' Two individuals being checked are first cousins '''
+    def test_0_kissingCousins(self):
+        print("Starting to test: kissing cousins 0",end="\n\n")
+        #self.assertTrue()
+        print("Finished testing: kissing cousins 0",end="\n\n")
+        return
+
+    ''' If the two individuals being checked are first cousins then they should not be married '''
+    def test_1_kissingCousins(self):
+        print("Starting to test: kissing cousins 1",end="\n\n")
+        #self.assertTrue()
+        print("Finished testing: kissing cousins 1",end="\n\n")
+        return
 
 
 if __name__ == '__main__':
