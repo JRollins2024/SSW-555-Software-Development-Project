@@ -304,7 +304,7 @@ class Parser_Class:
                         self.individuals_dict[ID] = name
                     else:
                         print("ERROR:", ID, "already taken")
-                        self.duplicateIDs += 1
+                        self.duplicateID += 1
                 #Look up gender of individual
                 if child.get_tag() == "SEX":
                     #separate gender from rest of the line
@@ -819,6 +819,9 @@ class Parser_Class:
 
     def getIncorrectMaleNames(self):
         return self.incorrectMaleNames
+
+    def getKissingCousins(self):
+        return self.kissingCousins
 
 
 sprint1 = Parser_Class()

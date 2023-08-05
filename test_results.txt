@@ -128,10 +128,6 @@ Expected: 50
 Actual: 50
 Finished testing: correct age
 
-Starting to test: kissing cousins 1
-
-Finished testing: kissing cousins 1
-
 Staring to test: male family members have the same last name
 
 Finished testing: male family members have the same last name
