@@ -720,7 +720,7 @@ class Test(unittest.TestCase):
     def test_0_datesBeforeCurrent(self):
         print("Starting to test: dates before current 0",end="\n\n")
         expected = 1
-        actual = len(self.sprint.getDatesAfterCurrent()
+        actual = len(self.sprint.getDatesAfterCurrent())
         self.assertEqual(expected, actual)
         print("Finished testing: dates before current 0",end="\n\n")
 
