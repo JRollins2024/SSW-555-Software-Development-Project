@@ -102,6 +102,12 @@ class Parser_Class:
     #list of individuals and families that could not be added because of have the same ID as another individual or family
     duplicateID = 0
 
+    # The current date as a datetime object
+    today = datetime.date.today()
+
+    # Dates ahead of current date
+    futureDates = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -317,6 +323,13 @@ class Parser_Class:
                             birth_year = birthday[-6:]
                             birthday = birthday.splitlines()
                             birthday = birthday[0]
+
+                            # Check if birthday is after today's date
+                            birt = birthday.split()
+                            birt = date(int(birt[2]), self.abbMonth_value[birt[1]], int(birt[0]))
+                            if birt > self.today:
+                                self.futureDates.append([ID, "Birthday"])
+
                 # Indicates that this individual has died
                 if child.get_tag() == "DEAT":
                     alive = "False"
@@ -329,6 +342,13 @@ class Parser_Class:
                             death = death.splitlines()
                             death = death[0]
                             self.individuals_deathday[ID] = death
+
+                            # # Check if death is after today's date
+                            deat = death.split()
+                            deat = date(int(deat[2]), self.abbMonth_value[deat[1]], int(deat[0]))
+                            if deat > self.today:
+                                self.futureDates.append([ID, "Death"])
+
                 self.is_alive[ID]=alive
                 # This individual is the child of the this family ID
                 if child.get_tag() == "FAMC":
@@ -377,6 +397,11 @@ class Parser_Class:
                             married = married[0] # marriage date
                             # make sure marriage takes place before death of either spouse
                             mday = date(int(married[-4:]), self.abbMonth_value[married.split(" ")[2]], int(married.split(" ")[1]))
+
+                            # Check if marriage is after today's date
+                            if mday > self.today:
+                                self.futureDates.append([fID, "Marriage"])
+
                 if child.get_tag() == "DIV":
                     #go down to level 2
                     dates = child.get_child_elements()
@@ -387,6 +412,11 @@ class Parser_Class:
                             divorced = divorced[0] # divorce date
                             # make sure divorce takes place before death of either spouse
                             dday = date(int(divorced[-4:]), self.abbMonth_value[divorced.split(" ")[2]], int(divorced.split(" ")[1]))
+
+                            # Check if divorce is after today's date
+                            if dday > self.today:
+                                self.futureDates.append([fID, "Divorce"])
+
                 if child.get_tag() == "HUSB":
                     #handles getting the husband's ID separated from rest of the line
                     hID = str(child)[2:].replace(str(child.get_tag()), '')
@@ -733,6 +763,9 @@ class Parser_Class:
 
     def getDuplicateID(self):
         return self.duplicateID
+    
+    def getDatesAfterCurrent(self):
+        return self.futureDates
 
 
 sprint1 = Parser_Class()
@@ -838,6 +871,9 @@ for i in sprint1.MarriagesOccurredBefore14():
 
 for i in sprint1.marriageBeforeDivorce():
     print("Error: Family " + i + " DIVORCED BEFORE THEY WERE MARRIED.")
+
+for i in sprint1.getDatesAfterCurrent():
+    print("Error: " + i[1] + " of " + i[0] + " AFTER TODAY'S DATE.")
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 

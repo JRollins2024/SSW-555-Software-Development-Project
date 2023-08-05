@@ -705,14 +705,14 @@ class Test(unittest.TestCase):
     def test_0_multipleBirths(self):
         print("Starting to test: multiple births 0",end="\n\n")
         expected = 1
-        actual = len(self.sprint.getMultipleBirths())
+        actual = len(self.sprint.getAboveQuintuples())
         self.assertEqual(expected, actual)
         print("Finished testing: multiple births 0",end="\n\n")
 
     def test_1_multipleBirths(self):
         print("Starting to test: multiple births 1",end="\n\n")
         expected = [['I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41']]
-        actual = self.sprint.getMultipleBirths()
+        actual = self.sprint.getAboveQuintuples()
         self.assertEqual(expected, actual)
         print("Finished testing: multiple births 1",end="\n\n")
 
