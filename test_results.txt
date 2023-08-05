@@ -173,7 +173,7 @@ Finished testing: upcoming anniversaries
 Starting to test: upcoming birthdays 1
 
 Expected: []
-Actual: ['I10', 'I16', 'I38', 'I39']
+Actual: ['I10', 'I16', 'I31', 'I33']
 Finished testing: upcoming birthdays 1
 
 Starting to test: Deceased_Dead

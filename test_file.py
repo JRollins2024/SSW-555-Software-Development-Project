@@ -540,7 +540,7 @@ class Test(unittest.TestCase):
         birthdays = self.sprint.getUpcomingBirthdays()
 
         # This value will actually change within a week, so this test will need to be updated in the near future
-        self.assertEqual(birthdays, ['I10', 'I16', 'I38', 'I39'])
+        self.assertEqual(birthdays, ['I10', 'I16', 'I31', 'I33'])
 
         print("Expected: []")
         print("Actual:", birthdays)
