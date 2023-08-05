@@ -108,6 +108,9 @@ class Parser_Class:
     # Dates ahead of current date
     futureDates = []
 
+    # above quintuplets
+    aboveQuintuples = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -689,6 +692,8 @@ class Parser_Class:
                     else:
                         self.duplicateID += 1
                     sprint1.family_helper(element,fID)
+                    
+        self.checkAboveQuintuplets()
     
     def getBirthDates(self,element):
         children = element.get_child_elements()
@@ -713,6 +718,45 @@ class Parser_Class:
                 famc = sprint1.cleanString(famc)
                 return famc
         return famc
+    
+    def checkAboveQuintuplets(self):
+        list_of_large_families = []
+        list_of_families_with_above_quintuplets = []
+        list_with_above_quintuplets_indices = []
+
+        # Get lists of children for each family that has more than 5 children
+        for row in self.fTable:
+            row.border = False
+            row.header = False
+            child_list = row.get_string(fields=["Children"]).strip()
+            child_list = child_list.strip('][').split(', ')
+            child_list = list(map(lambda x: x.strip("'"), child_list))
+            if len(child_list) > 5:
+                list_of_large_families.append(child_list)
+
+        # Map through the list of lists and replace each list with a list of the children's birthdays using self.individual_births
+        list_of_large_families_birthdays = list(map(lambda x: list(map(lambda y: self.individual_births[y], x)), list_of_large_families))
+
+        # Map through the list of lists. For each list, create a temporary dictionary to count the number of times each element appears.
+        # If any element appears more than five times, add the index of the list to list_with_above_quintuplets_indices
+        for i in range(len(list_of_large_families_birthdays)):
+            temp_dict = {}
+            for j in list_of_large_families_birthdays[i]:
+                if j in temp_dict:
+                    temp_dict[j] += 1
+                else:
+                    temp_dict[j] = 1
+            for k in temp_dict:
+                if temp_dict[k] > 5:
+                    list_with_above_quintuplets_indices.append(i)
+                    break
+
+        # For each index in list_with_above_quintuplets_indices, add the corresponding element from list_of_large_families to list_of_families_with_above_quintuplets
+        for i in list_with_above_quintuplets_indices:
+            list_of_families_with_above_quintuplets.append(list_of_large_families[i])
+        
+        self.aboveQuintuples = list_of_families_with_above_quintuplets
+        return 
     
     def getSingles(self):
         return self.Singles
@@ -766,11 +810,14 @@ class Parser_Class:
     
     def getDatesAfterCurrent(self):
         return self.futureDates
+    
+    def getAboveQuintuples(self):
+        return self.aboveQuintuples
 
 
 sprint1 = Parser_Class()
 
-    # Initialize the parser
+# Initialize the parser
 gedcom_parser = Parser()
 
     # Get the file name from the user
@@ -874,6 +921,9 @@ for i in sprint1.marriageBeforeDivorce():
 
 for i in sprint1.getDatesAfterCurrent():
     print("Error: " + i[1] + " of " + i[0] + " AFTER TODAY'S DATE.")
+
+for i in sprint1.getAboveQuintuples():
+    print("Error: FAMILY OF CHILDREN " + str(i) + " HAS MORE THAN 5 CHILDREN WITH THE SAME BIRTHDAY.")
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 
