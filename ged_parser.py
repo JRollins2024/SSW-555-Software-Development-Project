@@ -105,6 +105,9 @@ class Parser_Class:
     # Father's and Sons who don't have the same last name
     incorrectMaleNames = []
 
+    # Husband and Wives who are first cousins
+    kissingCousins = []
+
     """ 
         Refactored code part 1
     A method to return cleaned up strings of variables so these lines don't have to be repeated
@@ -609,6 +612,53 @@ class Parser_Class:
                     continue
         return
 
+    def findChildFamily(self, ID):
+        childFamily = 'NA'
+        ''' Finds the family the element is a child in '''
+        if ID != 'NA':
+            childFamily = self.iTable[int(ID[1:])-1]
+            childFamily.border = False
+            childFamily.header = False
+            childFamily = childFamily.get_string(fields=["Child"]).strip()
+        return childFamily
+
+    def findHusbandWife(self, fID):
+        hID = 'NA'
+        wID = 'NA'
+        if fID != 'NA':
+            hID = self.fTable[int(fID[1:])-1]
+            hID.border = False
+            hID.header = False
+            hID = hID.get_string(fields=["Husband ID"]).strip()
+            wID = self.fTable[int(fID[1:])-1]
+            wID.border = False
+            wID.header = False
+            wID = wID.get_string(fields=["Wife ID"]).strip()
+        return hID, wID
+
+
+    def checkCousins(self,fID):
+        ''' Get the parents for both husband and wife and check if any of the parents are siblings '''
+        # Get husband and wife IDs
+        hID, wID = self.findHusbandWife(fID)
+        
+        #Get the families the husabnd and wife are children in
+        familyHusband = self.findChildFamily(hID)
+        familyWife = self.findChildFamily(wID)
+
+        # Get the inlaws for both husband and wife
+            # element is the family line from ged file
+        husbandFather, husbandMother = self.findHusbandWife(familyHusband)
+        wifeFather, wifeMother = self.findHusbandWife(familyWife)
+
+        # For each parent check that are not children in the same family as the any of the other set of parents
+        # Check husband father
+        if (self.findChildFamily(husbandFather) == self.findChildFamily(wifeFather) or self.findChildFamily(husbandFather) == self.findChildFamily(wifeMother)) and self.findChildFamily(husbandFather) != 'NA':
+            self.kissingCousins.append(fID)
+        if (self.findChildFamily(husbandMother) == self.findChildFamily(wifeFather) or self.findChildFamily(husbandMother) == self.findChildFamily(wifeMother)) and self.findChildFamily(husbandMother) != 'NA':
+            self.kissingCousins.append(fID)
+        return
+
     # Check that individual dies AFTER they are born
     def checkDeadAfterBirth(self, element):
         ID = str(element)[2:].replace(str(element.get_tag()), '')
@@ -689,8 +739,9 @@ class Parser_Class:
                     # check male names in family
                     sprint1.checkMaleNames(element,fID)
                     # check that the husband and wife are not cousins
-                    sprint1.checkCousins(element,fID)
                     sprint1.family_helper(element,fID)
+        for f in self.Families:
+            self.checkCousins(f)
     
     def getBirthDates(self,element):
         children = element.get_child_elements()
@@ -876,6 +927,9 @@ for i in sprint1.marriageBeforeDivorce():
 
 for i in sprint1.incorrectMaleNames:
     print("Error: Family " + i + " MALE MEMBERS DON'T HAVE THE SAME LAST NAME.")
+
+for i in sprint1.kissingCousins:
+    print("Error: Family " + i + " HUSBAND AND WIFE ARE FIRST COUSINS.")
 
 print("Mother is more than 60 years old and father is more than 80 years older than his children ", sprint1.oldParents)
 
