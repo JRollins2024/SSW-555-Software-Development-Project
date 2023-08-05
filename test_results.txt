@@ -42,9 +42,9 @@ Starting to test: fewer than 15 siblings 0
 
 Finished testing: fewer than 15 siblings 0
 
-Starting to test: kissing cousins 0
+Starting to test: kissing cousins
 
-Finished testing: kissing cousins 0
+Finished testing: kissing cousins
 
 Starting to test: marriage before 14 0
 
