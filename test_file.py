@@ -716,6 +716,21 @@ class Test(unittest.TestCase):
         self.assertEqual(expected, actual)
         print("Finished testing: multiple births 1",end="\n\n")
 
+################## USER STORY: Dates before current date ################## 
+    def test_0_datesBeforeCurrent(self):
+        print("Starting to test: dates before current 0",end="\n\n")
+        expected = 1
+        actual = len(self.sprint.getDatesAfterCurrent()
+        self.assertEqual(expected, actual)
+        print("Finished testing: dates before current 0",end="\n\n")
+
+    def test_1_datesBeforeCurrent(self):
+        print("Starting to test: dates before current 1",end="\n\n")
+        expected = [['I42', 'Birthday']]
+        actual = self.sprint.getDatesAfterCurrent()
+        self.assertEqual(expected, actual)
+        print("Finished testing: dates before current 1",end="\n\n")
+
 if __name__ == '__main__':
     # Write test file output to a file 
     try:
