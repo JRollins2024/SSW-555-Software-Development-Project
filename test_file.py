@@ -687,7 +687,20 @@ class Test(unittest.TestCase):
         self.assertEqual(expected, actual)
         print("Finished testing: fewer than 15 siblings 0",end="\n\n")          
 
+################## USER STORY: Multiple births <- 5 ################## 
+    def test_0_multipleBirths(self):
+        print("Starting to test: multiple births 0",end="\n\n")
+        expected = 1
+        actual = len(self.sprint.getMultipleBirths())
+        self.assertEqual(expected, actual)
+        print("Finished testing: multiple births 0",end="\n\n")
 
+    def test_1_multipleBirths(self):
+        print("Starting to test: multiple births 1",end="\n\n")
+        expected = [['I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41']]
+        actual = self.sprint.getMultipleBirths()
+        self.assertEqual(expected, actual)
+        print("Finished testing: multiple births 1",end="\n\n")
 
 if __name__ == '__main__':
     # Write test file output to a file 
