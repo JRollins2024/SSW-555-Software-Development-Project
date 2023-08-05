@@ -701,11 +701,11 @@ class Test(unittest.TestCase):
 ################ USER STORY: Kissing Cousins #############################
     ''' Two individuals being checked are first cousins and married'''
     def test_0_kissingCousins(self):
-        print("Starting to test: kissing cousins 0",end="\n\n")
+        print("Starting to test: kissing cousins",end="\n\n")
         expected = 'F5'
         actual = self.sprint.getKissingCousins()
         self.assertEqual(expected, actual[0])
-        print("Finished testing: kissing cousins 0",end="\n\n")
+        print("Finished testing: kissing cousins",end="\n\n")
         return
 
 
