@@ -685,7 +685,21 @@ class Test(unittest.TestCase):
         expected = 1
         actual = len(self.sprint.getManySib())
         self.assertEqual(expected, actual)
-        print("Finished testing: fewer than 15 siblings 0",end="\n\n")          
+        print("Finished testing: fewer than 15 siblings 0",end="\n\n")     
+
+################## USER STORY: Male Last Names ##################
+    ''' All family member being compared are male'''
+    def test_0_maleLastNames(self): 
+        print("Staring to test: male family members",end="\n\n")
+        example = F2 # Family F2 should throw an error
+        print("Finished testing: male family members", end="\n\n")
+        return
+
+    ''' All family members being compared have the same last name'''
+    def test_1_maleLastNames(self): 
+        print("Staring to test: male family members have the same last name",end="\n\n")
+        print("Finished testing: male family members have the same last name", end="\n\n")
+        return   
 
 
 
