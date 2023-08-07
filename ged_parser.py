@@ -15,6 +15,8 @@ import os
 import sys
 from datetime import date, timedelta
 import datetime
+from dateutil.relativedelta import relativedelta
+# from datetime import datetime
 
 class Parser_Class:
     #initialize time
@@ -32,7 +34,9 @@ class Parser_Class:
 
     individuals_dict, individuals_age, is_alive, individuals_deathday = {}, {}, {}, {}
     individual_marriages, individual_births = {}, {}
-
+    marriageDates = {}
+    family = {}
+    deathDates = {}
     # Families List
     Families = [] # will hold the IDs of all families
 
@@ -99,6 +103,12 @@ class Parser_Class:
     #list for recording couples who are sublings
     coupleError = []
 
+    #list of children born before parents marriage 
+    bornBeforeParentsMarriage = []
+
+    #list of child who were born before death of parents
+    bornAfterParentsDeath = []
+
     #list of individuals and families that could not be added because of have the same ID as another individual or family
     duplicateID = 0
 
@@ -113,6 +123,33 @@ class Parser_Class:
         var = var[0]
         return var
     
+    def birthAfterDeathOfParents(self):
+        date_format = '%d %b %Y'
+        for parents in self.family:
+            hID = parents[0]
+            wID = parents[1]
+            if hID in self.deathDates and wID in self.deathDates:
+                fatherDeath = datetime.datetime.strptime(self.deathDates[hID].strip(), date_format)
+                sub9 = fatherDeath - relativedelta(months=9)
+                motherDeath = datetime.datetime.strptime(self.deathDates[wID].strip(), date_format)
+                for child in self.family[parents]:
+                    childBirth = datetime.datetime.strptime(self.individual_births[child].strip(), date_format)
+                    if childBirth > sub9 and childBirth > motherDeath:
+                        self.bornAfterParentsDeath.append(child)
+
+        return self.bornAfterParentsDeath
+
+    def birthBeforeParentsMarriage(self):
+        date_format = '%d %b %Y'
+        for couple in self.marriageDates:
+            parentsMarriage = datetime.datetime.strptime(self.marriageDates[couple].strip(), date_format)
+            for child in self.family[couple]:
+                childBirth = datetime.datetime.strptime(self.individual_births[child].strip(), date_format)
+                if childBirth < parentsMarriage:
+                    self.bornBeforeParentsMarriage.append(child)
+        return self.bornBeforeParentsMarriage
+
+
 
     def siblingPairUnordered(self):
         return self.checklist 
@@ -122,8 +159,6 @@ class Parser_Class:
         for spawn in self.spawnList:
             if len(spawn) == 1:
                 continue
-                # age = datetime.datetime.strptime(self.individual_births[spawn[0]].strip(), '%d %b %Y')
-                # print(spawn,'-',age)
             else: 
                 age1 = now - datetime.datetime.strptime(self.individual_births[spawn[0]].strip(), '%d %b %Y')
                 age2 = now - datetime.datetime.strptime(self.individual_births[spawn[1]].strip(), '%d %b %Y')
@@ -343,12 +378,15 @@ class Parser_Class:
             # If the individual is NOT dead subtract birth year from current year
             if death != "NA":
                 age = int(death_year) - int(birth_year)
+                if age >= 0:
+                    self.deathDates[ID] = death
             else:
                 # Else subtract from the year of death
                 age = 2023 - int(birth_year)
             self.individuals_age[ID] = age
             self.individual_births[ID] = birthday
             self.iTable.add_row([str(ID),name,gender,birthday,age,alive,death,spawn,spouse])
+
 
 
     def family_helper(self,element, fID):
@@ -488,6 +526,11 @@ class Parser_Class:
                 deadline = date(int(deadlineYear), int(deadlineMonth), int(deadlineDay))
                 if mday.replace(year=int(deadlineYear)) > deadline:
                     self.upcomingAnniversaries.append((wID,hID))
+            if hID and wID:
+                # print(hID,wID,"-",spawns)
+                self.family[hID,wID] = spawns
+            if married != 'NA':
+                self.marriageDates[hID,wID] = married
 
 
     def isRecentlyBorn(self,element):
@@ -585,6 +628,7 @@ class Parser_Class:
     def checkDeadAfterBirth(self, element):
         ID = str(element)[2:].replace(str(element.get_tag()), '')
         ID = sprint1.cleanString(ID)
+        dday = None
         if self.isDead(element):
             children = element.get_child_elements()
             for child in children:
@@ -606,7 +650,7 @@ class Parser_Class:
                             deathday = deathday[0]
                             dday = date(int(deathday[-4:]), self.abbMonth_value[deathday.split(" ")[2]], int(deathday.split(" ")[1]))
             
-            if dday < bday:
+            if dday and dday < bday:
                 # Add id birth before death list
                 self.DiedBeforeBorn.append(ID)
 
@@ -852,7 +896,8 @@ print("Number of Individuals and Families who had duplicate IDs: ", sprint1.getD
 if len(sprint1.getManySib()) > 0:
     for f in sprint1.getManySib():
         print("Error: Family " + f + " has 15 or more siblings.")
-
+print('ERROR: Birth before death of parents', sprint1.birthAfterDeathOfParents())
+print("ERROR: Birth before marriage of parents",sprint1.birthBeforeParentsMarriage())
 sys.stdout.close()
 
 # Reset stdout to the original file descriptor
