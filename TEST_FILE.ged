@@ -448,6 +448,7 @@
 2 TYPE Ending
 1 _CURRENT N
 1 _PRIMARY N
+<<<<<<< Jamie-Sprint4
 0 @F5@ FAM
 1 HUSB @I4@
 1 WIFE @I23@
@@ -455,6 +456,8 @@
 2 DATE 10 NOV 2021
 1 _CURRENT Y
 1 _PRIMARY Y
+=======
+>>>>>>> Development
 0 @F6@ FAM
 1 HUSB @I7@
 1 WIFE @I6@
@@ -462,6 +465,16 @@
 2 DATE 10 MAY 2021
 1 _CURRENT Y
 1 _PRIMARY Y
+<<<<<<< Jamie-Sprint4
+=======
+0 @F5@ FAM
+1 HUSB @I4@
+1 WIFE @I23@
+1 MARR
+2 DATE 10 NOV 2021
+1 _CURRENT Y
+1 _PRIMARY Y
+>>>>>>> Development
 0 @F7@ FAM
 1 HUSB @I17@
 1 WIFE @I18@

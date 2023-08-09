@@ -36,6 +36,18 @@ Number of Families: 13
 Number of Couples: 3
 Finished testing: amount of couples
 
+Starting to test: born before parent's marriage
+
+Expected: ['I23', 'I1']
+Actual: ['I26', 'I6', 'I26', 'I6']
+Finished testing: born before parent's marriage
+
+Starting to test: born before parent's marriage
+
+Expected: ['I19']
+Actual: ['I23', 'I16', 'I23', 'I16']
+Finished testing: born before parent's marriage
+
 Expected: I12
 Actual: I12
 Starting to test: fewer than 15 siblings 0
@@ -121,6 +133,18 @@ Starting to test: Couples age difference 1
 Expected: [['I5', 'I6'], ['I7', 'I6']]
 Actual: [['I5', 'I6'], ['I7', 'I6']]
 Finished testing: couples
+
+Starting to test: born after parent's death
+
+Expected: ['I26', 'I6']
+Actual: ['I26', 'I6']
+Finished testing: born after parent's death
+
+Starting to test: born before parent's marriage
+
+Expected: ['I23', 'I16']
+Actual: ['I23', 'I16']
+Finished testing: born before parent's marriage
 
 Starting to test: correct age
 

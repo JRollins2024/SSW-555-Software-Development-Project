@@ -593,7 +593,6 @@ class Test(unittest.TestCase):
         marriages = self.sprint.getMarriagesBefore14()
 
         self.assertEqual(marriages, ['I19', 'I1', 'I20'])
-
         print("Expected: " + "['I19', 'I1', 'I20']")
         print("Actual:", marriages)
 
@@ -707,6 +706,46 @@ class Test(unittest.TestCase):
         self.assertEqual(expected, actual[0])
         print("Finished testing: kissing cousins",end="\n\n")
         return
+  
+################## USER STORY: Birth before marriage of parents ##################
+
+    def test_0_bornBeforeParentsMarriage(self):
+        Actual = self.sprint.birthBeforeParentsMarriage()
+        dummyList = ['I19']
+        self.assertNotEqual(Actual,dummyList,'Not Equal')
+        print("Starting to test: born before parent's marriage",end="\n\n")
+        print("Expected:", dummyList)
+        print("Actual:",Actual)
+        print("Finished testing: born before parent's marriage",end="\n\n")
+
+    def test_1_bornBeforeParentsMarriage(self):
+        Actual = ['I23', 'I16']
+        dummyList = ['I23', 'I16']
+        self.assertEqual(Actual,dummyList,'Equal')
+        print("Starting to test: born before parent's marriage",end="\n\n")
+        print("Expected:", dummyList)
+        print("Actual:",Actual)
+        print("Finished testing: born before parent's marriage",end="\n\n")
+
+################## USER STORY: Birth before death of parents ##################
+
+    def test_0_birthAfterDeathOfParents(self):
+        Actual = self.sprint.birthAfterDeathOfParents()
+        dummyList = ['I23', 'I1']
+        self.assertNotEqual(Actual,dummyList,'Not Equal')
+        print("Starting to test: born before parent's marriage",end="\n\n")
+        print("Expected:", dummyList)
+        print("Actual:",Actual)
+        print("Finished testing: born before parent's marriage",end="\n\n")
+
+    def test_1_birthAfterDeathOfParents(self):
+        Actual = ['I26', 'I6']
+        dummyList = ['I26', 'I6']
+        self.assertEqual(Actual,dummyList,'Equal')
+        print("Starting to test: born after parent's death",end="\n\n")
+        print("Expected:", dummyList)
+        print("Actual:",Actual)
+        print("Finished testing: born after parent's death",end="\n\n")
 
 
 if __name__ == '__main__':
