@@ -50,6 +50,10 @@ Finished testing: born before parent's marriage
 
 Expected: I12
 Actual: I12
+Starting to test: dates before current 0
+
+Finished testing: dates before current 0
+
 Starting to test: fewer than 15 siblings 0
 
 Finished testing: fewer than 15 siblings 0
@@ -75,6 +79,8 @@ Starting to test: married siblings
 Expected: []
 Actual: []
 Finished testing: married siblings
+
+Starting to test: multiple births 0
 
 Starting to test: recent survivors 0
 
@@ -152,6 +158,10 @@ Expected: 50
 Actual: 50
 Finished testing: correct age
 
+Starting to test: dates before current 1
+
+Finished testing: dates before current 1
+
 Staring to test: male family members have the same last name
 
 Finished testing: male family members have the same last name
@@ -177,6 +187,8 @@ Starting to test: married siblings
 Expected: []
 Actual: ['I3', 'I11']
 Finished testing: married siblings
+
+Starting to test: multiple births 1
 
  Starting to test: parents too old
 
