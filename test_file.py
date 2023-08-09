@@ -687,19 +687,26 @@ class Test(unittest.TestCase):
         print("Finished testing: fewer than 15 siblings 0",end="\n\n")     
 
 ################## USER STORY: Male Last Names ##################
-    ''' All family member being compared are male'''
-    def test_0_maleLastNames(self): 
-        print("Staring to test: male family members",end="\n\n")
-        example = 'F2' # Family F2 should throw an error
-        print("Finished testing: male family members", end="\n\n")
-        return
-
     ''' All family members being compared have the same last name'''
     def test_1_maleLastNames(self): 
         print("Staring to test: male family members have the same last name",end="\n\n")
+        # Family F2 should throw an error because the father and son have different last name
+        expected = 'F2'
+        actual = self.sprint.getIncorrectMaleNames()
+        self.assertEqual(expected, actual[0])
         print("Finished testing: male family members have the same last name", end="\n\n")
         return   
 
+################ USER STORY: Kissing Cousins #############################
+    ''' Two individuals being checked are first cousins and married'''
+    def test_0_kissingCousins(self):
+        print("Starting to test: kissing cousins",end="\n\n")
+        expected = 'F5'
+        actual = self.sprint.getKissingCousins()
+        self.assertEqual(expected, actual[0])
+        print("Finished testing: kissing cousins",end="\n\n")
+        return
+  
 ################## USER STORY: Birth before marriage of parents ##################
 
     def test_0_bornBeforeParentsMarriage(self):
@@ -720,7 +727,6 @@ class Test(unittest.TestCase):
         print("Actual:",Actual)
         print("Finished testing: born before parent's marriage",end="\n\n")
 
-
 ################## USER STORY: Birth before death of parents ##################
 
     def test_0_birthAfterDeathOfParents(self):
@@ -740,6 +746,7 @@ class Test(unittest.TestCase):
         print("Expected:", dummyList)
         print("Actual:",Actual)
         print("Finished testing: born after parent's death",end="\n\n")
+
 
 if __name__ == '__main__':
     # Write test file output to a file 
