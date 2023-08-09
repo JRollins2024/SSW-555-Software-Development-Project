@@ -112,6 +112,14 @@ class Parser_Class:
     #list of individuals and families that could not be added because of have the same ID as another individual or family
     duplicateID = 0
 
+    # The current date as a datetime object
+    today = datetime.date.today()
+
+    # Dates ahead of current date
+    futureDates = []
+
+    # above quintuplets
+    aboveQuintuples = []
     # Father's and Sons who don't have the same last name
     incorrectMaleNames = []
 
@@ -358,6 +366,13 @@ class Parser_Class:
                             birth_year = birthday[-6:]
                             birthday = birthday.splitlines()
                             birthday = birthday[0]
+
+                            # Check if birthday is after today's date
+                            birt = birthday.split()
+                            birt = date(int(birt[2]), self.abbMonth_value[birt[1]], int(birt[0]))
+                            if birt > self.today:
+                                self.futureDates.append([ID, "Birthday"])
+
                 # Indicates that this individual has died
                 if child.get_tag() == "DEAT":
                     alive = "False"
@@ -370,6 +385,13 @@ class Parser_Class:
                             death = death.splitlines()
                             death = death[0]
                             self.individuals_deathday[ID] = death
+
+                            # # Check if death is after today's date
+                            deat = death.split()
+                            deat = date(int(deat[2]), self.abbMonth_value[deat[1]], int(deat[0]))
+                            if deat > self.today:
+                                self.futureDates.append([ID, "Death"])
+
                 self.is_alive[ID]=alive
                 # This individual is the child of the this family ID
                 if child.get_tag() == "FAMC":
@@ -421,6 +443,11 @@ class Parser_Class:
                             married = married[0] # marriage date
                             # make sure marriage takes place before death of either spouse
                             mday = date(int(married[-4:]), self.abbMonth_value[married.split(" ")[2]], int(married.split(" ")[1]))
+
+                            # Check if marriage is after today's date
+                            if mday > self.today:
+                                self.futureDates.append([fID, "Marriage"])
+
                 if child.get_tag() == "DIV":
                     #go down to level 2
                     dates = child.get_child_elements()
@@ -431,6 +458,11 @@ class Parser_Class:
                             divorced = divorced[0] # divorce date
                             # make sure divorce takes place before death of either spouse
                             dday = date(int(divorced[-4:]), self.abbMonth_value[divorced.split(" ")[2]], int(divorced.split(" ")[1]))
+
+                            # Check if divorce is after today's date
+                            if dday > self.today:
+                                self.futureDates.append([fID, "Divorce"])
+
                 if child.get_tag() == "HUSB":
                     #handles getting the husband's ID separated from rest of the line
                     hID = str(child)[2:].replace(str(child.get_tag()), '')
@@ -784,6 +816,9 @@ class Parser_Class:
                     sprint1.checkMaleNames(element,fID)
                     # check that the husband and wife are not cousins
                     sprint1.family_helper(element,fID)
+                    
+        self.checkAboveQuintuplets()
+        
         for f in self.Families:
             self.checkCousins(f)
     
@@ -810,6 +845,45 @@ class Parser_Class:
                 famc = sprint1.cleanString(famc)
                 return famc
         return famc
+    
+    def checkAboveQuintuplets(self):
+        list_of_large_families = []
+        list_of_families_with_above_quintuplets = []
+        list_with_above_quintuplets_indices = []
+
+        # Get lists of children for each family that has more than 5 children
+        for row in self.fTable:
+            row.border = False
+            row.header = False
+            child_list = row.get_string(fields=["Children"]).strip()
+            child_list = child_list.strip('][').split(', ')
+            child_list = list(map(lambda x: x.strip("'"), child_list))
+            if len(child_list) > 5:
+                list_of_large_families.append(child_list)
+
+        # Map through the list of lists and replace each list with a list of the children's birthdays using self.individual_births
+        list_of_large_families_birthdays = list(map(lambda x: list(map(lambda y: self.individual_births[y], x)), list_of_large_families))
+
+        # Map through the list of lists. For each list, create a temporary dictionary to count the number of times each element appears.
+        # If any element appears more than five times, add the index of the list to list_with_above_quintuplets_indices
+        for i in range(len(list_of_large_families_birthdays)):
+            temp_dict = {}
+            for j in list_of_large_families_birthdays[i]:
+                if j in temp_dict:
+                    temp_dict[j] += 1
+                else:
+                    temp_dict[j] = 1
+            for k in temp_dict:
+                if temp_dict[k] > 5:
+                    list_with_above_quintuplets_indices.append(i)
+                    break
+
+        # For each index in list_with_above_quintuplets_indices, add the corresponding element from list_of_large_families to list_of_families_with_above_quintuplets
+        for i in list_with_above_quintuplets_indices:
+            list_of_families_with_above_quintuplets.append(list_of_large_families[i])
+        
+        self.aboveQuintuples = list_of_families_with_above_quintuplets
+        return 
     
     def getSingles(self):
         return self.Singles
@@ -860,6 +934,12 @@ class Parser_Class:
 
     def getDuplicateID(self):
         return self.duplicateID
+    
+    def getDatesAfterCurrent(self):
+        return self.futureDates
+    
+    def getAboveQuintuples(self):
+        return self.aboveQuintuples
 
     def getIncorrectMaleNames(self):
         return self.incorrectMaleNames
@@ -870,7 +950,7 @@ class Parser_Class:
 
 sprint1 = Parser_Class()
 
-    # Initialize the parser
+# Initialize the parser
 gedcom_parser = Parser()
 
     # Get the file name from the user
@@ -971,6 +1051,12 @@ for i in sprint1.MarriagesOccurredBefore14():
 
 for i in sprint1.marriageBeforeDivorce():
     print("Error: Family " + i + " DIVORCED BEFORE THEY WERE MARRIED.")
+
+for i in sprint1.getDatesAfterCurrent():
+    print("Error: " + i[1] + " of " + i[0] + " AFTER TODAY'S DATE.")
+
+for i in sprint1.getAboveQuintuples():
+    print("Error: FAMILY OF CHILDREN " + str(i) + " HAS MORE THAN 5 CHILDREN WITH THE SAME BIRTHDAY.")
 
 for i in sprint1.incorrectMaleNames:
     print("Error: Family " + i + " MALE MEMBERS DON'T HAVE THE SAME LAST NAME.")
