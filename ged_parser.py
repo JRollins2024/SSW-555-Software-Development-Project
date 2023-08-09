@@ -818,6 +818,7 @@ class Parser_Class:
                     sprint1.family_helper(element,fID)
                     
         self.checkAboveQuintuplets()
+        
         for f in self.Families:
             self.checkCousins(f)
     
@@ -1056,6 +1057,7 @@ for i in sprint1.getDatesAfterCurrent():
 
 for i in sprint1.getAboveQuintuples():
     print("Error: FAMILY OF CHILDREN " + str(i) + " HAS MORE THAN 5 CHILDREN WITH THE SAME BIRTHDAY.")
+
 for i in sprint1.incorrectMaleNames:
     print("Error: Family " + i + " MALE MEMBERS DON'T HAVE THE SAME LAST NAME.")
 

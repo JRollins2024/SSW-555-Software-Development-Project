@@ -746,6 +746,7 @@ class Test(unittest.TestCase):
         print("Expected:", dummyList)
         print("Actual:",Actual)
         print("Finished testing: born after parent's death",end="\n\n")
+        
 ################## USER STORY: Multiple births <= 5 ################## 
     def test_0_multipleBirths(self):
         print("Starting to test: multiple births 0",end="\n\n")
