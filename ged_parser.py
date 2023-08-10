@@ -570,7 +570,6 @@ class Parser_Class:
             if married != 'NA':
                 self.marriageDates[hID,wID] = married
 
-
     def isRecentlyBorn(self,element):
         children = element.get_child_elements()
         for child in children:
@@ -661,6 +660,97 @@ class Parser_Class:
                         if((bday - date_today).days < 30 and (bday - date_today).days > 0):
                             return True
         return False
+    
+    #is element too old
+    def isTooOld(self, element):
+        children = element.get_child_elements()
+        if self.isDead(element):
+            for child in children:
+                if child.get_tag() == "BIRT": # birthday!
+                    d = child.get_child_elements()
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            #get individuals birthday
+                            birthday = str(x)[2:].replace(str(x.get_tag()), '')
+                            birthday = birthday.splitlines()
+                            birthday = birthday[0] #EX: 10 JAN 2002
+                            bday = date(int(birthday[-4:]), self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
+
+                            todayYear  = self.today.year
+                            todayMonth = self.today.month
+                            todayDay   = self.today.day
+                            date_today = date(todayYear, todayMonth, todayDay)
+                elif child.get_tag() == "DEAT":
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            deathday = str(x)[2:].replace(str(x.get_tag()), '')
+                            deathday = deathday.splitlines()
+                            deathday = deathday[0]
+                            dday = date(int(deathday[-4:]), self.abbMonth_value[deathday.split(" ")[2]], int(deathday.split(" ")[1]))    
+
+                            #if dead
+                            if((dday - bday).year >= 150):
+                                return True
+                            else:
+                                return False                   
+        else:
+            for child in children:
+                if child.get_tag() == "BIRT": # birthday!
+                    d = child.get_child_elements()
+                    for x in d:
+                        if x.get_tag() == "DATE":
+                            #get individuals birthday
+                            birthday = str(x)[2:].replace(str(x.get_tag()), '')
+                            birthday = birthday.splitlines()
+                            birthday = birthday[0] #EX: 10 JAN 2002
+                            bday = date(int(birthday[-4:]), self.abbMonth_value[birthday.split(" ")[2]], int(birthday.split(" ")[1]))
+
+                            todayYear  = self.today.year
+                            todayMonth = self.today.month
+                            todayDay   = self.today.day
+                            date_today = date(todayYear, todayMonth, todayDay)
+                            
+                            #if alive
+                            if((date_today - bday).year >= 150):
+                                return True
+                            else:
+                                return False
+                            
+    def invalidSiblingSpacing(self, birthday, family, ID):
+        for e in gedcom_parser.get_root_child_elements():
+            sameFam = False
+            sameBirth = False
+            samePerson = False
+            #Get thid id of the individual you are comparing the given one to
+            if e.get_tag() == "INDI":
+                id = str(e)[2:].replace(str(e.get_tag()), '')
+                id = sprint1.cleanString(id)
+                if ID == id:
+                    samePerson = True
+            children = e.get_child_elements()
+            for child in children:
+                #Make sure siblings are children in the same family
+                if child.get_tag() == "FAMC":
+                    spawn = str(child)[2:].replace(str(child.get_tag()), '')
+                    spawn = sprint1.cleanString(spawn)
+                    if spawn == family:
+                        sameFam = True
+                #Get birthday of each child to compare to given birthday
+                if child.get_tag() == "BIRT":
+                    dates = child.get_child_elements()
+                    for d in dates:
+                        if d.get_tag() == "DATE":
+                            # separate date from rest of the line
+                            bday = str(d)[2:].replace(str(d.get_tag()), '')
+                            bday = bday.splitlines()
+                            bday = bday[0]
+                            if bday == birthday:
+                                sameBirth = True
+            if sameFam and not sameBirth and not samePerson:
+                if abs(birthday-bday.days) < 2 or abs(birthday-bday.month) >= 8:
+                    return False
+                else:
+                    return True                                                        
 
     def checkMaleNames(self, element, fID):
         # get Father last name (Husband)
@@ -777,6 +867,8 @@ class Parser_Class:
                     recently_born = sprint1.isRecentlyBorn(element) # returns true if recently born, false if not
                     recently_dead = sprint1.isRecentlyDead(element) # returns true if recently dead, false if not
                     upcoming_birthday = sprint1.isUpcomingBirthday(element) # returns true if upcoming birthday, false if not
+                    too_old = sprint1.isTooOld(element) #returns true if older than 150, false if not
+                    invalid_spacing = sprint1.invalidSiblingSpacing() #returns true if sibling birthdays too close together, false if not
                     ID = str(element)[2:].replace(str(element.get_tag()), '')
                     ID = sprint1.cleanString(ID)
 
