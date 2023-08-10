@@ -8,21 +8,21 @@ Finished testing: Deceased_Size
 Starting to test: LivingMarried_Size
 
 Number of total individuals: 42
-Number of living married: 15
+Number of living married: 17
 
 Finished testing: LivingMarried_Size
 
 Starting to test: Multiples_Size
 
 Number of total individuals: 42
-Number of multiple births: 7
+Number of multiple births: 11
 
 Finished testing: Multiples_Size
 
 Starting to test: Singles_Size
 
 Number of total individuals: 42
-Number of singles: 21
+Number of singles: 19
 
 Finished testing: Singles_Size
 
@@ -32,15 +32,35 @@ Finished testing: Unique Non Negative
 
 Starting to test: amount of couples
 
-Number of Families: 12
-Number of Couples: 2
+Number of Families: 13
+Number of Couples: 3
 Finished testing: amount of couples
+
+Starting to test: born before parent's marriage
+
+Expected: ['I23', 'I1']
+Actual: ['I26', 'I6', 'I26', 'I6']
+Finished testing: born before parent's marriage
+
+Starting to test: born before parent's marriage
+
+Expected: ['I19']
+Actual: ['I23', 'I16', 'I23', 'I16']
+Finished testing: born before parent's marriage
 
 Expected: I12
 Actual: I12
+Starting to test: dates before current 0
+
+Finished testing: dates before current 0
+
 Starting to test: fewer than 15 siblings 0
 
 Finished testing: fewer than 15 siblings 0
+
+Starting to test: kissing cousins
+
+Finished testing: kissing cousins
 
 Starting to test: marriage before 14 0
 
@@ -59,6 +79,8 @@ Starting to test: married siblings
 Expected: []
 Actual: []
 Finished testing: married siblings
+
+Starting to test: multiple births 0
 
 Starting to test: recent survivors 0
 
@@ -96,19 +118,19 @@ Finished testing: Deceased_Size2
 
 Starting to test: LivingMarried_Size2
 
-Number of living married: 15
+Number of living married: 17
 
 Finished testing: LivingMarried_Size2
 
 Starting to test: Multiples_Size2
 
-Number of singles: 7
+Number of singles: 11
 
 Finished testing: Multiples_Size2
 
 Starting to test: Singles_Size2
 
-Number of singles: 21
+Number of singles: 19
 
 Finished testing: Singles_Size2
 
@@ -118,11 +140,31 @@ Expected: [['I5', 'I6'], ['I7', 'I6']]
 Actual: [['I5', 'I6'], ['I7', 'I6']]
 Finished testing: couples
 
+Starting to test: born after parent's death
+
+Expected: ['I26', 'I6']
+Actual: ['I26', 'I6']
+Finished testing: born after parent's death
+
+Starting to test: born before parent's marriage
+
+Expected: ['I23', 'I16']
+Actual: ['I23', 'I16']
+Finished testing: born before parent's marriage
+
 Starting to test: correct age
 
 Expected: 50
 Actual: 50
 Finished testing: correct age
+
+Starting to test: dates before current 1
+
+Finished testing: dates before current 1
+
+Staring to test: male family members have the same last name
+
+Finished testing: male family members have the same last name
 
 Starting to test: marriage before 14 1
 
@@ -139,12 +181,14 @@ Finished testing: people who married before birth
 Starting to test: marriage before divorce 1
 
 Expected: ['F6']
-Actual: ['F6']
+Actual: ['F7']
 Starting to test: married siblings
 
 Expected: []
 Actual: ['I3', 'I11']
 Finished testing: married siblings
+
+Starting to test: multiple births 1
 
  Starting to test: parents too old
 
@@ -166,14 +210,14 @@ Finished testing: siblings
 
 Starting to test: upcoming anniversaries
 
-Expected: [('I3', 'I2'), ('I26', 'I27')]
-Actual: [('I3', 'I2'), ('I26', 'I27')]
+Expected: [('I3', 'I2'), ('I23', 'I4'), ('I26', 'I27')]
+Actual: [('I3', 'I2'), ('I23', 'I4'), ('I26', 'I27')]
 Finished testing: upcoming anniversaries
 
 Starting to test: upcoming birthdays 1
 
 Expected: []
-Actual: ['I10', 'I16', 'I38', 'I39']
+Actual: ['I10', 'I16', 'I31', 'I33']
 Finished testing: upcoming birthdays 1
 
 Starting to test: Deceased_Dead
@@ -241,22 +285,22 @@ Finished testing: Deceased_Value
 
 Starting to test: LivingMarried_Value
 
-Expected: ['I1', 'I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I26', 'I27']
-Actual: ['I1', 'I2', 'I3', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I26', 'I27']
+Expected: ['I1', 'I2', 'I3', 'I4', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I23', 'I26', 'I27']
+Actual: ['I1', 'I2', 'I3', 'I4', 'I6', 'I9', 'I10', 'I11', 'I12', 'I13', 'I14', 'I19', 'I20', 'I21', 'I23', 'I26', 'I27']
 
 Finished testing: LivingMarried_Value
 
 Starting to test: Multiples
 
-Expected: [['I1', 'I4'], ['I24', 'I25'], ['I29', 'I30'], ['I31', 'I33'], ['I35', 'I36'], ['I38', 'I39'], ['I40', 'I41']]
-Actual: [['I1', 'I4'], ['I24', 'I25'], ['I29', 'I30'], ['I31', 'I33'], ['I35', 'I36'], ['I38', 'I39'], ['I40', 'I41']]
+Expected: [['I4', 'I1'], ['I25', 'I24'], ['I30', 'I29'], ['I33', 'I31'], ['I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I35'], ['I36', 'I41', 'I40', 'I39', 'I38', 'I37', 'I35'], ['I35', 'I36', 'I38', 'I39', 'I40', 'I41', 'I37'], ['I38', 'I41', 'I40', 'I39', 'I37', 'I36', 'I35'], ['I35', 'I36', 'I37', 'I38', 'I40', 'I41', 'I39'], ['I40', 'I41', 'I39', 'I38', 'I37', 'I36', 'I35'], ['I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41']]
+Actual: [['I4', 'I1'], ['I25', 'I24'], ['I30', 'I29'], ['I33', 'I31'], ['I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I35'], ['I36', 'I41', 'I40', 'I39', 'I38', 'I37', 'I35'], ['I35', 'I36', 'I38', 'I39', 'I40', 'I41', 'I37'], ['I38', 'I41', 'I40', 'I39', 'I37', 'I36', 'I35'], ['I35', 'I36', 'I37', 'I38', 'I40', 'I41', 'I39'], ['I40', 'I41', 'I39', 'I38', 'I37', 'I36', 'I35'], ['I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41']]
 
 Finished testing: Multiples
 
 Starting to test: Singles_Value
 
-Expected: ['I4', 'I8', 'I22', 'I23', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
-Actual: ['I4', 'I8', 'I22', 'I23', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
+Expected: ['I8', 'I22', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
+Actual: ['I8', 'I22', 'I24', 'I25', 'I28', 'I29', 'I30', 'I31', 'I32', 'I33', 'I34', 'I35', 'I36', 'I37', 'I38', 'I39', 'I40', 'I41', 'I42']
 
 Starting to test: orphans test 2
 
